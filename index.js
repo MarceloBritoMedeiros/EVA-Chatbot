@@ -2,8 +2,7 @@
 
 var request = require('request');
 var _estados = [];
-var mensagem;
-var lista;
+var lista=require("./config.json"); 
 const fs = require('fs');
 // Imports dependencies and set up http server
 const
@@ -31,23 +30,13 @@ app.post('/webhook', (req, res) => {
         if(event.message){
           trataMensagem(event);
         }else{
-          if(event.postback && event.postback.payload){
-            switch(event.postback.payload){
-              case 'documentos_pessoais':
-                mensagem="Certo, você escolheu documentos pessoais. Qual documento você precisa consultar?";
-                lista=require("./config.json");                  
-                console.log(readJSON());
-                sendMenu(event.sender.id, mensagem, lista);
-                break;              
-              default:
-
-            }
+          if(event.postback && event.postback.payload){                
+            sendMenu(event.sender.id, event.postback.payload, lista);
           }
         }
       });
       //console.log(webhook_event);
     });
-
     // Returns a '200 OK' response to all requests
     res.status(200).send('EVENT_RECEIVED');
   } else {
@@ -85,27 +74,12 @@ app.get('/webhook', (req, res) => {
   }
 });
 
-function readJSON(){
-  var file;
-  fs.readFile("C:\\Users\\marce\\Docs\\Desenvolvimento\\UaiForce\\messenger-webhook\\config.json", 'utf8', (err, jsonString) => {
-    if (err) {
-        console.log("Error reading file from disk:", err);        
-    }
-    try {
-        file = JSON.parse(jsonString);         
-    } catch(err) {
-        console.log('Error parsing JSON string:', err);
-    }
-  })
-  return file;
-}
-
 function trataMensagem(event){
   var senderID = event.sender.id;
   var recipientID = event.recipient.id;
   var timeOffMessage = event.timestamp;
   var message = event.message;
-  console.log("Mensgem recebida pelo usurario %d pela página %d", senderID, recipientID);
+  console.log("Mensagem recebida pelo usuário %d pela página %d", senderID, recipientID);
 
   var messageID = message.mid;
   var messageText = message.text;
@@ -122,27 +96,8 @@ function trataMensagem(event){
       }
     }else{
       switch(messageText){
-        case 'start':
-          mensagem="Olá, eu sou a Eva, a assistente pessoal da UAI. Qual serviço você gostaria de acessar? ";
-          lista = [
-            {
-              type: "postback",
-              title: "Documentos Pessoais",
-              payload: "documentos_pessoais"
-            }, 
-            {
-              type: "postback",
-              title: "Emprego e trabalho",
-              payload: "emprego_trabalho"
-            },
-            {
-              type: "postback",
-              title: "Veículos",
-              payload: "veiculos"
-            }            
-          ]
-          console.log(lista);
-          sendMenu(senderID, mensagem, lista);
+        case 'start':                
+          sendMenu(senderID, "0", lista);
           break;
         case 'oi':
           sendTextMessage(senderID, 'Oi, tudo bem com você?')
@@ -153,10 +108,8 @@ function trataMensagem(event){
         default:
           sendTextMessage(senderID, 'Eu não entendi a sua pergunta.');
       }
-    }
-    
+    }    
   }
-
 }
 
 
@@ -172,31 +125,46 @@ function sendTextMessage(recipientID, messageText){
   callSendAPI(messageData);
 }
 
-
-
-
-function sendMenu(recipientId, textId, listId){
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "button",
-          text: textId,
-          buttons: listId
-        }
+function sendMenu(recipientId, payloader, listId){
+  var li,textId;
+  if(payloader=="0"){
+    li=listId[0].slice(1);
+    textId=listId[0][0]["text"];
+  }else{
+    for(var i of listId.slice(1)){       
+      if(i[0]["id"]==payloader){
+        li=i.slice(1);
+        textId=i[0]["text"];   
+        break; 
       }
     }
   }
-  callSendAPI(messageData);
+  if (li.length==0){
+    console.log("Está indo para o texto!!!!");
+    sendTextMessage(recipientId, textId);
+  }else{
+    var messageData = {
+      recipient: {
+        id: recipientId
+      },
+      message: {
+        attachment: {
+          type: "template",
+          payload: {
+            template_type: "button",
+            text: textId,
+            buttons: li
+          }
+        }
+      }
+    }
+    callSendAPI(messageData);
+  }
+  
 }
 
 
 function callSendAPI(messageData){
-
   request({
     uri: "https://graph.facebook.com/v2.6/me/messages",
     qs:{access_token:'EAALOOKHQWHoBAEsLaDejLas5aR4romuTJTvqjUHkITUDULs9RV4FpQdHLKK9O26JaV3x9JRd89w5NUHyXzVVeeQ6H82aloOIHEtILTnu6xcoZCTqe2u9REGX5RZCJBdkoLwX0HhWuJHjSDMX6L92IccO8r7Twz48mtvRt33QP9hcjWR0P1GghSWtwjOAIZD'},

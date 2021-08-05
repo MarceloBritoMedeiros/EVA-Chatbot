@@ -1,17 +1,70 @@
-  [
-    {
-      "type": "postback",
-      "title": "RG",
-      "payload": "rg"
-    }, 
-    {
-      "type": "postback",
-      "title": "CNH",
-      "payload": "cnh"
-    },
-    {
-      "type": "postback",
-      "title": "Alistamento Militar",
-      "payload": "alistamento_militar"
-    }            
-  ]
+[
+    [
+        {
+            "text":"Olá, eu sou a Eva, a assistente pessoal da UAI. Qual serviço você gostaria de acessar? "
+        },
+        {
+            "type": "postback",
+            "title": "Documentos Pessoais",
+            "payload": "documentos_pessoais"
+        }, 
+        {
+            "type": "postback",
+            "title": "Emprego e trabalho",
+            "payload": "emprego_trabalho"
+        },
+        {
+            "type": "postback",
+            "title": "Veículos",
+            "payload": "veiculos"
+        }            
+    ],
+    [
+        {
+            "text":"Certo, você escolheu documentos pessoais. Qual documento você precisa consultar?",
+            "id":"documentos_pessoais"
+        },
+        {
+            "type": "postback",
+            "title": "RG",
+            "payload": "rg"
+        }, 
+        {
+            "type": "postback",
+            "title": "CNH",
+            "payload": "cnh"
+        },
+        {
+            "type": "postback",
+            "title": "Alistamento Militar",
+            "payload": "alistamento_militar"
+        }            
+    ],
+    [
+        {
+            "text": "Ok, o que podemos fazer em relação ao seu RG?",
+            "id": "rg"
+        },
+        {
+            "type": "postback",
+            "title": "Correção RG",
+            "payload": "consultar_rg"
+        },
+        {
+            "type": "postback",
+            "title": "Agendar Cadastro de RG",
+            "payload": "agendar_rg"
+        },
+        {
+            "type": "postback",
+            "title": "Tirar Dúvidas sobre RG",
+            "payload": "duvidas_rg"
+        }
+    ],
+    [
+        {
+            "text": "Certo, então você precisa agendar o cadastro do RG. Agora, preciso que escolha uma das unidades abaixo.\n1)Betim\n2)Governador Valadares\n3)Juiz de Fora\n4)Montes Claros\n5)Uberlândia\n6)Varginha",
+            "id": "agendar_rg"
+        }        
+    ]
+]
