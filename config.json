@@ -1,0 +1,17 @@
+  [
+    {
+      "type": "postback",
+      "title": "RG",
+      "payload": "rg"
+    }, 
+    {
+      "type": "postback",
+      "title": "CNH",
+      "payload": "cnh"
+    },
+    {
+      "type": "postback",
+      "title": "Alistamento Militar",
+      "payload": "alistamento_militar"
+    }            
+  ]
