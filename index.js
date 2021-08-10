@@ -1,8 +1,15 @@
 'use strict';
-
+const mysql2 = require('mysql2');
+const DbConnection = require('./dbConnection.js');
+let v = new DbConnection();
+v.setConnection();
+var database = v.getConnection();
+var servico;
+var listas;
 var request = require('request');
 var _estados = [];
-var lista=require("./config.json"); 
+var listaBotoes=require("./config.json"); 
+var listaTexto=require("./configText.json");
 const fs = require('fs');
 // Imports dependencies and set up http server
 const
@@ -31,7 +38,7 @@ app.post('/webhook', (req, res) => {
           trataMensagem(event);
         }else{
           if(event.postback && event.postback.payload){                
-            sendMenu(event.sender.id, event.postback.payload, lista);
+            sendMenu(event.sender.id, event.postback.payload, listaBotoes);
           }
         }
       });
@@ -94,38 +101,110 @@ function trataMensagem(event){
         case "não":
           console.log("sss");
       }
-    }else{
-      switch(messageText){
-        case 'start':                
-          sendMenu(senderID, "0", lista);
-          break;
-        case 'oi':
-          sendTextMessage(senderID, 'Oi, tudo bem com você?')
-          break;
-        case 'tchau':
-          sendTextMessage(senderID, 'Tchau, até a próxima!');
-          break;
-        default:
-          sendTextMessage(senderID, 'Eu não entendi a sua pergunta.');
-      }
+    }else{      
+        if(messageText=='start'){
+          sendMenu(senderID, "0", listaBotoes);
+        }
+        else{
+          sendTextMessage(senderID, messageText);
+        }
     }    
   }
 }
 
-
-function sendTextMessage(recipientID, messageText){
-  var messageData = {
-    recipient:{
-      id:recipientID
-    },
-    message: {
-      text: messageText
+function sendList(recipientID, textId, i, userInput){  
+  if(i["type"]=="list"){
+    database.query(i["menu"], (err, rows, inf)=>{
+      listas=[]
+      var cont=1;
+      if(!err){
+        var mySet=new Set();        
+          for(var j of rows){
+            mySet.add(j.UNIDADE); 
+          } 
+          
+          for(var j of mySet){
+            console.log(j);
+            listas.push(j);
+            textId+="\n"+cont+") "+j;
+            cont++;
+          }
+          var messageData = {
+            recipient:{
+              id:recipientID
+            },
+            message: {
+              text: textId
+            }
+          };
+          callSendAPI(messageData);
+      }else{
+          console.log('Erro ao realizar a consulta');
+      }          
+    });
+  }else if(i["type"]=="specified_list"){ 
+    var unidade;
+    for(var j=1;j<listas.length;j++){
+      console.log("AAAAAAAA");
+      if(j==parseInt(userInput)){        
+        unidade=listas[j-1];
+        break;
+      }
     }
-  };
-  callSendAPI(messageData);
+    console.log(`${i["menu"]} '${unidade}'`);
+    database.query(`${i["menu"]} '${unidade}'`,(err, rows, inf)=>{
+      if(!err){          
+        var cont=1;   
+        console.log(rows)     
+        for(var j of rows){          
+          console.log(j.dia)
+          textId+="\n" + cont + ") " + j.horario + " " +j.dia;
+          cont++;
+        }
+        var messageData = {
+            recipient:{
+              id:recipientID
+            },
+            message: {
+              text: textId
+            }
+          };
+          callSendAPI(messageData);
+      }else{
+          console.log('Erro ao realizar a consulta');
+      }          
+    });
+  }
+  servico=i["send"];
 }
 
-function sendMenu(recipientId, payloader, listId){
+function sendTextMessage(recipientID, userInput){
+  var textId;
+  var keepGoing=true;
+  for(var i of listaTexto){
+    if(userInput==i["keyword"] || servico==i["keyword"]){
+      textId=i["text"];
+        if(i["menu"].slice(0, 6)=="SELECT"){
+        sendList(recipientID, textId, i, userInput);
+        keepGoing=false;
+        break;
+      }            
+    }    
+  }   
+  if(keepGoing==true){  
+    var messageData = {
+      recipient:{
+        id:recipientID
+      },
+      message: {
+        text: textId
+      }
+    };
+    callSendAPI(messageData);
+  }
+}
+
+function sendMenu(recipientId, payloader, listId){  
   var li,textId;
   if(payloader=="0"){
     li=listId[0].slice(1);

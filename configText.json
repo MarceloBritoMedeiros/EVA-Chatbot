@@ -1,0 +1,16 @@
+[
+    {
+        "text":"Certo, então você precisa agendar o cadastro do RG. Agora, preciso que escolha uma das unidades abaixo.",
+        "keyword":"pass1",
+        "menu":"SELECT UNIDADE FROM SERVICOS_DISPONIVEIS",
+        "send":"horarios",
+        "type":"list"
+    },
+    {
+        "text": "Certo, agora escolha um dos horários disponíveis.",
+        "keyword":"horarios", 
+        "menu": "SELECT horario, dia FROM servicos_disponiveis WHERE unidade=",
+        "send":"",
+        "type":"specified_list"
+    }
+]

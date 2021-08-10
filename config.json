@@ -53,7 +53,7 @@
         {
             "type": "postback",
             "title": "Agendar Cadastro de RG",
-            "payload": "agendar_rg"
+            "payload": "Agendamento de RG"
         },
         {
             "type": "postback",
@@ -63,8 +63,8 @@
     ],
     [
         {
-            "text": "Certo, então você precisa agendar o cadastro do RG. Agora, preciso que escolha uma das unidades abaixo.\n1)Betim\n2)Governador Valadares\n3)Juiz de Fora\n4)Montes Claros\n5)Uberlândia\n6)Varginha",
-            "id": "agendar_rg"
+            "text": "pass1",
+            "id": "Agendamento de RG"
         }        
     ]
 ]
