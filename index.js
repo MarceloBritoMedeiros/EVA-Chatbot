@@ -1,4 +1,5 @@
 'use strict';
+var dateFormat = require('dateformat');
 const mysql2 = require('mysql2');
 const DbConnection = require('./dbConnection.js');
 let v = new DbConnection();
@@ -7,6 +8,7 @@ var database = v.getConnection();
 var servico;
 var services;
 var listas;
+var uInput;
 var request = require('request');
 var _estados = [];
 var listaBotoes=require("./config.json"); 
@@ -138,8 +140,7 @@ function sendList(recipientID, textId, i, userInput){
             message: {
               text: textId
             }
-          };
-          
+          };          
           callSendAPI(messageData);
       }else{
           console.log('Erro ao realizar a consulta');
@@ -147,42 +148,54 @@ function sendList(recipientID, textId, i, userInput){
     });
   }else if(i["type"]=="specified_list"){ 
     var unidade;
-    for(var j=1;j<listas.length;j++){
-      console.log("AAAAAAAA");
-      if(j==parseInt(userInput)){        
-        unidade=listas[j-1];
-        break;
+    database.query(`SELECT UNIDADE FROM SERVICOS_DISPONIVEIS where nome='${services}'`, (err, rows, inf)=>{ 
+      console.log(rows);
+      var mySet=new Set();        
+      for(var j of rows){
+        mySet.add(j.UNIDADE); 
+        console.log(j.UNIDADE);
       }
-    }
-    console.log(`${i["menu"]}`);
-    database.query(`${i["menu"]}`,(err, rows, inf)=>{
-      if(!err){          
-        var cont=1;   
-        console.log(rows)     
-        for(var j of rows){          
-          console.log(j.dia)
-          textId+="\n" + cont + ") " + j.horario + " " +j.dia;
-          cont++;
+      var cont=1;
+      for (let j of mySet){
+        console.log("AAAAAAAA");        
+        if(cont==parseInt(uInput)){        
+          unidade=j;
+          break;
         }
-        var messageData = {
-            recipient:{
-              id:recipientID
-            },
-            message: {
-              text: textId
-            }
-          };
-          callSendAPI(messageData);
-      }else{
-          console.log('Erro ao realizar a consulta');
-      }          
-    });
+        cont++;
+      }
+      console.log(`${i["menu"]} where unidade='${unidade}'`);
+      database.query(`${i["menu"]} where unidade='${unidade}'`,(err, rows, inf)=>{
+        if(!err){          
+          var cont=1;   
+          console.log(rows)     
+          for(var j of rows){          
+            console.log(j.dia)
+            textId+="\n" + cont + ") " + j.horario + " " +dateFormat(j.dia, "dd/mm/yyyy");
+            cont++;
+          }
+          var messageData = {
+              recipient:{
+                id:recipientID
+              },
+              message: {
+                text: textId
+              }
+            };
+            callSendAPI(messageData);
+        }else{
+            console.log('Erro ao realizar a consulta');
+        } 
+               
+      });
+    })
   }
   servico=i["send"];
 }
 
 function sendTextMessage(recipientID, userInput){
   var textId;
+  uInput=userInput;
   var keepGoing=true;
   for(var i of listaTexto){
     if(userInput==i["keyword"] || servico==i["keyword"]){
@@ -263,3 +276,4 @@ function callSendAPI(messageData){
     }
   })
 }
+
