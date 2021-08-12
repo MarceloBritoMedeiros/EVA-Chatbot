@@ -5,6 +5,7 @@ let v = new DbConnection();
 v.setConnection();
 var database = v.getConnection();
 var servico;
+var services;
 var listas;
 var request = require('request');
 var _estados = [];
@@ -114,15 +115,16 @@ function trataMensagem(event){
 
 function sendList(recipientID, textId, i, userInput){  
   if(i["type"]=="list"){
-    database.query(i["menu"], (err, rows, inf)=>{
-      listas=[]
+    console.log(`${i["menu"]} where nome='${services}'`);
+    database.query(`${i["menu"]} where nome='${services}'`, (err, rows, inf)=>{
+      listas=[];
       var cont=1;
       if(!err){
         var mySet=new Set();        
           for(var j of rows){
             mySet.add(j.UNIDADE); 
           } 
-          
+
           for(var j of mySet){
             console.log(j);
             listas.push(j);
@@ -137,6 +139,7 @@ function sendList(recipientID, textId, i, userInput){
               text: textId
             }
           };
+          
           callSendAPI(messageData);
       }else{
           console.log('Erro ao realizar a consulta');
@@ -151,8 +154,8 @@ function sendList(recipientID, textId, i, userInput){
         break;
       }
     }
-    console.log(`${i["menu"]} '${unidade}'`);
-    database.query(`${i["menu"]} '${unidade}'`,(err, rows, inf)=>{
+    console.log(`${i["menu"]}`);
+    database.query(`${i["menu"]}`,(err, rows, inf)=>{
       if(!err){          
         var cont=1;   
         console.log(rows)     
@@ -206,6 +209,7 @@ function sendTextMessage(recipientID, userInput){
 
 function sendMenu(recipientId, payloader, listId){  
   var li,textId;
+  services=payloader;
   if(payloader=="0"){
     li=listId[0].slice(1);
     textId=listId[0][0]["text"];

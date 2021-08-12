@@ -9,7 +9,7 @@
     {
         "text": "Certo, agora escolha um dos horários disponíveis.",
         "keyword":"horarios", 
-        "menu": "SELECT horario, dia FROM servicos_disponiveis WHERE unidade=",
+        "menu": "SELECT horario, dia FROM servicos_disponiveis",
         "send":"",
         "type":"specified_list"
     }
