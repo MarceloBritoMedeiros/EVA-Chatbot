@@ -1,7 +1,8 @@
 [
     [
         {
-            "text":"Olá, eu sou a Eva, a assistente pessoal da UAI. Qual serviço você gostaria de acessar? "
+            "text":"Olá, eu sou a Eva, a assistente pessoal da UAI. Qual serviço você gostaria de acessar? ",
+            "id":"texto_inicial"
         },
         {
             "type": "postback",

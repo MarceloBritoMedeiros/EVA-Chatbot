@@ -5,15 +5,14 @@ const DbConnection = require('./dbConnection.js');
 let v = new DbConnection();
 v.setConnection();
 var database = v.getConnection();
-var servico;
-var services;
-var listas;
-var uInput;
+var servico,services,uInput;
+var inputList=[];
 var request = require('request');
 var _estados = [];
 var listaBotoes=require("./config.json"); 
 var listaTexto=require("./configText.json");
 const fs = require('fs');
+
 // Imports dependencies and set up http server
 const
   express = require('express'),
@@ -90,11 +89,9 @@ function trataMensagem(event){
   var timeOffMessage = event.timestamp;
   var message = event.message;
   console.log("Mensagem recebida pelo usuário %d pela página %d", senderID, recipientID);
-
   var messageID = message.mid;
   var messageText = message.text;
   var attachments = message.attachments;
-
   if(messageText){
     if(_estados[senderID]){
       switch(_estados[senderID]){
@@ -118,21 +115,20 @@ function trataMensagem(event){
 function sendList(recipientID, textId, i, userInput){  
   if(i["type"]=="list"){
     console.log(`${i["menu"]} where nome='${services}'`);
-    database.query(`${i["menu"]} where nome='${services}'`, (err, rows, inf)=>{
-      listas=[];
+    database.query(`${i["menu"]} where nome='${services}'`, (err, rows, inf)=>{       
       var cont=1;
+      var lset=[];
       if(!err){
         var mySet=new Set();        
           for(var j of rows){
-            mySet.add(j.UNIDADE); 
+            mySet.add(j.UNIDADE);             
           } 
-
-          for(var j of mySet){
-            console.log(j);
-            listas.push(j);
+          for(var j of mySet){            
             textId+="\n"+cont+") "+j;
+            lset.push(j);
             cont++;
           }
+          writeTemporary(lset, './temporary.json');
           var messageData = {
             recipient:{
               id:recipientID
@@ -146,34 +142,31 @@ function sendList(recipientID, textId, i, userInput){
           console.log('Erro ao realizar a consulta');
       }          
     });
+    inputList.push(services);
+    console.log(inputList);
   }else if(i["type"]=="specified_list"){ 
-    var unidade;
-    database.query(`SELECT UNIDADE FROM SERVICOS_DISPONIVEIS where nome='${services}'`, (err, rows, inf)=>{ 
-      console.log(rows);
-      var mySet=new Set();        
-      for(var j of rows){
-        mySet.add(j.UNIDADE); 
-        console.log(j.UNIDADE);
-      }
+      var unidade;      
       var cont=1;
-      for (let j of mySet){
-        console.log("AAAAAAAA");        
-        if(cont==parseInt(uInput)){        
+      for(let j of readTemporary()){
+        if(cont==parseInt(userInput)){
           unidade=j;
-          break;
         }
         cont++;
       }
-      console.log(`${i["menu"]} where unidade='${unidade}'`);
+      inputList.push(unidade);
+      console.log(`${i["menu"]} where unidade='${unidade}'`);      
       database.query(`${i["menu"]} where unidade='${unidade}'`,(err, rows, inf)=>{
         if(!err){          
           var cont=1;   
+          var horarios=[]
           console.log(rows)     
           for(var j of rows){          
-            console.log(j.dia)
+            console.log(j.dia);
             textId+="\n" + cont + ") " + j.horario + " " +dateFormat(j.dia, "dd/mm/yyyy");
+            horarios.push([j.horario,j.dia]);
             cont++;
           }
+          writeTemporary(horarios, './temporary2.json');
           var messageData = {
               recipient:{
                 id:recipientID
@@ -185,12 +178,31 @@ function sendList(recipientID, textId, i, userInput){
             callSendAPI(messageData);
         }else{
             console.log('Erro ao realizar a consulta');
-        } 
-               
-      });
-    })
+        }               
+      });    
+  }else if(i["type"]=="last_part"){
+    var horario, dia;    
+    cont=1;
+    console.log(require("./temporary2.json"));
+    for(let j of require("./temporary2.json")){      
+      if(cont==parseInt(userInput)){
+        horario=j[0];
+        dia=dateFormat(j[1],"yyyy-mm-dd");
+      }
+      cont++;      
+    }
+    console.log(`${i["menu"]} '${inputList[0]}','${inputList[1]}','${horario}','${dia}')`);
+    database.query(`${i["menu"]} '${inputList[0]}','${inputList[1]}','${horario}','${dia}')`,(err, rows, inf)=>{
+      if(!err){                   
+        
+      }else{
+        console.log('Erro ao realizar a consulta');
+      }               
+    });    
+  console.log(inputList);
+  
   }
-  servico=i["send"];
+servico=i["send"];
 }
 
 function sendTextMessage(recipientID, userInput){
@@ -200,7 +212,7 @@ function sendTextMessage(recipientID, userInput){
   for(var i of listaTexto){
     if(userInput==i["keyword"] || servico==i["keyword"]){
       textId=i["text"];
-        if(i["menu"].slice(0, 6)=="SELECT"){
+        if(i["menu"].slice(0, 6)=="SELECT" || i["menu"].slice(0, 6)=="INSERT"){
         sendList(recipientID, textId, i, userInput);
         keepGoing=false;
         break;
@@ -255,10 +267,21 @@ function sendMenu(recipientId, payloader, listId){
       }
     }
     callSendAPI(messageData);
-  }
-  
+  }  
 }
 
+function writeTemporary(x, path){
+  let data = JSON.stringify(x, null, 2);
+  fs.writeFile(path, data, (err) => {
+      if (err) throw err;
+      console.log('Data written to file');
+  });
+}
+
+function readTemporary(){
+  var x = require("./temporary.json")
+  return x;
+}
 
 function callSendAPI(messageData){
   request({

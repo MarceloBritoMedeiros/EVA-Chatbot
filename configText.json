@@ -10,7 +10,15 @@
         "text": "Certo, agora escolha um dos horários disponíveis.",
         "keyword":"horarios", 
         "menu": "SELECT horario, dia FROM servicos_disponiveis",
-        "send":"",
+        "send":"fim atendimento rg",
         "type":"specified_list"
+    },
+    {
+        "text": "Ok, sua consulta acabou de ser agendada. Obrigada",
+        "keyword":"fim atendimento rg", 
+        "menu": "INSERT INTO agendamentos(nome, unidade, horario, dia) VALUES(",
+        "send":"fim atendimento rg",
+        "type":"last_part"
     }
+
 ]
