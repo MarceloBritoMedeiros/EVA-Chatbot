@@ -1,7 +1,7 @@
 [
     [
         {
-            "text":"Olá, eu sou a Eva, a assistente pessoal da UAI. Qual serviço você gostaria de acessar? ",
+            "text":"Qual serviço você gostaria de acessar? ",
             "id":"texto_inicial"
         },
         {
@@ -54,7 +54,7 @@
         {
             "type": "postback",
             "title": "Agendar Cadastro de RG",
-            "payload": "Agendamento de RG"
+            "payload": "agendamento de rg"
         },
         {
             "type": "postback",
@@ -64,8 +64,31 @@
     ],
     [
         {
-            "text": "pass1",
-            "id": "Agendamento de RG"
+            "text": "cUnidades",
+            "id": "agendamento de rg"
         }        
+    ],
+    [
+        {
+            "text":"Agendamento Efetuado! Por favor comparecer ao local e horários selecionados com todos os documentos. ",
+            "id":"texto_final"
+        },
+        {
+            "type":"postback",
+            "title":"Quero continuar no atendimento",
+            "payload":"texto_inicial"
+        },
+        {
+            "type":"postback",
+            "title":"Finalizar Atendimento",
+            "payload":"fim"
+        }
+    ],
+    [
+        {
+            "text":"Fim",
+            "id":"fim"
+        }
     ]
+
 ]

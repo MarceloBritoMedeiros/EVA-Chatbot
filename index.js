@@ -103,7 +103,8 @@ function trataMensagem(event){
       }
     }else{      
         if(messageText=='start'){
-          sendMenu(senderID, "0", listaBotoes);
+          sendTextMessage(senderID, "Olá, eu sou a Eva, a assistente pessoal da UAI.");
+          sendMenu(senderID, "texto_inicial", listaBotoes);
         }
         else{
           sendTextMessage(senderID, messageText);
@@ -113,38 +114,40 @@ function trataMensagem(event){
 }
 
 function sendList(recipientID, textId, i, userInput){  
-  if(i["type"]=="list"){
-    console.log(`${i["menu"]} where nome='${services}'`);
-    database.query(`${i["menu"]} where nome='${services}'`, (err, rows, inf)=>{       
+  if(i["type"]=="selecao_unidades"){
+    console.log(`SELECT UNIDADE FROM servicos_disponiveis WHERE nome='${services}'`);
+    database.query(`SELECT UNIDADE FROM servicos_disponiveis WHERE nome='${services}'`, (err, rows, inf)=>{       
       var cont=1;
       var lset=[];
       if(!err){
         var mySet=new Set();        
-          for(var j of rows){
-            mySet.add(j.UNIDADE);             
-          } 
-          for(var j of mySet){            
-            textId+="\n"+cont+") "+j;
-            lset.push(j);
-            cont++;
+        console.log(rows);
+        for(var j of rows){
+          mySet.add(j.UNIDADE);             
+        } 
+        for(var j of mySet){            
+          textId+="\n"+cont+") "+j;
+          lset.push(j);
+          cont++;
+        }
+        console.log(lset);
+        writeTemporary(lset, './temporary.json');
+        var messageData = {
+          recipient:{
+            id:recipientID
+          },
+          message: {
+            text: textId
           }
-          writeTemporary(lset, './temporary.json');
-          var messageData = {
-            recipient:{
-              id:recipientID
-            },
-            message: {
-              text: textId
-            }
-          };          
-          callSendAPI(messageData);
+        };          
+        callSendAPI(messageData);
       }else{
           console.log('Erro ao realizar a consulta');
       }          
     });
     inputList.push(services);
     console.log(inputList);
-  }else if(i["type"]=="specified_list"){ 
+  }else if(i["type"]=="selecao_horarios"){ 
       var unidade;      
       var cont=1;
       for(let j of readTemporary()){
@@ -155,7 +158,7 @@ function sendList(recipientID, textId, i, userInput){
       }
       inputList.push(unidade);
       console.log(`${i["menu"]} where unidade='${unidade}'`);      
-      database.query(`${i["menu"]} where unidade='${unidade}'`,(err, rows, inf)=>{
+      database.query(`SELECT horario, dia FROM servicos_disponiveis WHERE unidade='${unidade}'`,(err, rows, inf)=>{
         if(!err){          
           var cont=1;   
           var horarios=[]
@@ -180,8 +183,8 @@ function sendList(recipientID, textId, i, userInput){
             console.log('Erro ao realizar a consulta');
         }               
       });    
-  }else if(i["type"]=="last_part"){
-    var horario, dia;    
+  }else if(i["type"]=="transicao"){
+    var horario, dia;
     cont=1;
     console.log(require("./temporary2.json"));
     for(let j of require("./temporary2.json")){      
@@ -189,18 +192,24 @@ function sendList(recipientID, textId, i, userInput){
         horario=j[0];
         dia=dateFormat(j[1],"yyyy-mm-dd");
       }
-      cont++;      
-    }
-    console.log(`${i["menu"]} '${inputList[0]}','${inputList[1]}','${horario}','${dia}')`);
-    database.query(`${i["menu"]} '${inputList[0]}','${inputList[1]}','${horario}','${dia}')`,(err, rows, inf)=>{
+      cont++;
+    }    
+    database.query(`INSERT INTO agendamentos(nome, unidade, horario, dia) VALUES( '${inputList[0]}','${inputList[1]}','${horario}','${dia}')`,(err, rows, inf)=>{
+      if(!err){                   
+        sendMenu(recipientID, "texto_final", listaBotoes);
+      }else{
+        console.log('Erro ao realizar a consulta');
+      }               
+    });
+    console.log(`DELETE FROM servicos_disponiveis WHERE nome='${inputList[0]}' AND unidade='${inputList[1]}' AND horario='${horario}' AND dia='${dia}'`);
+    database.query(`DELETE FROM servicos_disponiveis WHERE nome='${inputList[0]}' AND unidade='${inputList[1]}' AND horario='${horario}' AND dia='${dia}'`,(err, rows, inf)=>{
       if(!err){                   
         
       }else{
         console.log('Erro ao realizar a consulta');
       }               
     });    
-  console.log(inputList);
-  
+  console.log(inputList);  
   }
 servico=i["send"];
 }
@@ -212,11 +221,13 @@ function sendTextMessage(recipientID, userInput){
   for(var i of listaTexto){
     if(userInput==i["keyword"] || servico==i["keyword"]){
       textId=i["text"];
-        if(i["menu"].slice(0, 6)=="SELECT" || i["menu"].slice(0, 6)=="INSERT"){
+      console.log(i["keyword"].slice(0,1));
+      console.log(i["keyword"]);
+      if(i["keyword"].slice(0,1)=="c"){
         sendList(recipientID, textId, i, userInput);
         keepGoing=false;
         break;
-      }            
+      }
     }    
   }   
   if(keepGoing==true){  
@@ -235,18 +246,15 @@ function sendTextMessage(recipientID, userInput){
 function sendMenu(recipientId, payloader, listId){  
   var li,textId;
   services=payloader;
-  if(payloader=="0"){
-    li=listId[0].slice(1);
-    textId=listId[0][0]["text"];
-  }else{
-    for(var i of listId.slice(1)){       
-      if(i[0]["id"]==payloader){
-        li=i.slice(1);
-        textId=i[0]["text"];   
-        break; 
-      }
+
+  for(var i of listId){       
+    if(i[0]["id"]==payloader){
+      li=i.slice(1);
+      textId=i[0]["text"];
+      break; 
     }
   }
+  
   if (li.length==0){
     console.log("Está indo para o texto!!!!");
     sendTextMessage(recipientId, textId);
