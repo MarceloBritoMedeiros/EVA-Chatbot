@@ -103,8 +103,18 @@ function trataMensagem(event){
       }
     }else{      
         if(messageText=='start'){
-          sendTextMessage(senderID, "Olá, eu sou a Eva, a assistente pessoal da UAI.");
+          var messageData = {
+            recipient:{
+              id:senderID
+            },
+            message: {
+              text: "Olá, eu sou a Eva, a assistente pessoal da UAI."
+            }
+          };
+          callSendAPI(messageData);           
           sendMenu(senderID, "texto_inicial", listaBotoes);
+        }else if(messageText=='lista'){
+          sendListOfButtons(senderID);
         }
         else{
           sendTextMessage(senderID, messageText);
@@ -157,8 +167,8 @@ function sendList(recipientID, textId, i, userInput){
         cont++;
       }
       inputList.push(unidade);
-      console.log(`${i["menu"]} where unidade='${unidade}'`);      
-      database.query(`SELECT horario, dia FROM servicos_disponiveis WHERE unidade='${unidade}'`,(err, rows, inf)=>{
+      console.log(`SELECT horario, dia FROM servicos_disponiveis WHERE unidade='${unidade} AND nome=${services}'`);      
+      database.query(`SELECT horario, dia FROM servicos_disponiveis WHERE unidade='${unidade}' AND nome='${services}'`,(err, rows, inf)=>{
         if(!err){          
           var cont=1;   
           var horarios=[]
@@ -195,7 +205,16 @@ function sendList(recipientID, textId, i, userInput){
       cont++;
     }    
     database.query(`INSERT INTO agendamentos(nome, unidade, horario, dia) VALUES( '${inputList[0]}','${inputList[1]}','${horario}','${dia}')`,(err, rows, inf)=>{
-      if(!err){                   
+      if(!err){          
+        var messageData = {
+          recipient:{
+            id:recipientID
+          },
+          message: {
+            text: textId
+          }
+        };
+        callSendAPI(messageData);    
         sendMenu(recipientID, "texto_final", listaBotoes);
       }else{
         console.log('Erro ao realizar a consulta');
@@ -223,7 +242,7 @@ function sendTextMessage(recipientID, userInput){
       textId=i["text"];
       console.log(i["keyword"].slice(0,1));
       console.log(i["keyword"]);
-      if(i["keyword"].slice(0,1)=="c"){
+      if(i["keyword"].slice(0,2)=="c_"){
         sendList(recipientID, textId, i, userInput);
         keepGoing=false;
         break;
@@ -243,10 +262,9 @@ function sendTextMessage(recipientID, userInput){
   }
 }
 
-function sendMenu(recipientId, payloader, listId){  
+function sendMenu(recipientID, payloader, listId){  
   var li,textId;
-  services=payloader;
-
+  services=payloader;  
   for(var i of listId){       
     if(i[0]["id"]==payloader){
       li=i.slice(1);
@@ -254,14 +272,25 @@ function sendMenu(recipientId, payloader, listId){
       break; 
     }
   }
-  
-  if (li.length==0){
+  console.log(payloader.slice(0,1));
+  if(payloader.slice(0,2)=="p_"){
+    var messageData = {
+      recipient:{
+        id:recipientID
+      },
+      message: {
+        text: textId
+      }
+    };
+    callSendAPI(messageData); 
+    sendMenu(recipientID, "texto_final", listId);
+  }else if (li.length==0){
     console.log("Está indo para o texto!!!!");
-    sendTextMessage(recipientId, textId);
+    sendTextMessage(recipientID, textId);
   }else{
     var messageData = {
       recipient: {
-        id: recipientId
+        id: recipientID
       },
       message: {
         attachment: {
@@ -294,7 +323,7 @@ function readTemporary(){
 function callSendAPI(messageData){
   request({
     uri: "https://graph.facebook.com/v2.6/me/messages",
-    qs:{access_token:'EAALOOKHQWHoBAEsLaDejLas5aR4romuTJTvqjUHkITUDULs9RV4FpQdHLKK9O26JaV3x9JRd89w5NUHyXzVVeeQ6H82aloOIHEtILTnu6xcoZCTqe2u9REGX5RZCJBdkoLwX0HhWuJHjSDMX6L92IccO8r7Twz48mtvRt33QP9hcjWR0P1GghSWtwjOAIZD'},
+    qs:{access_token:'EAAMbtaqvnr4BALnPBrkZAM86VNDHYKWdf5bw4byQZAg9hxPVFaNKoxgBjlICeFVjnyBabTNodzm5JidEJ1RV1soNIpnpbO9l3Qap9pcEK9ZAHjbKlnPPLZA6xZCU7ePDWKZCDdVFXHDlQ9UgampTwOmIGjkUIVAUBSoIbwVZBkj93J3bN8MPCJKkz70hcsdFOYZD'},
     method: 'POST',
     json: messageData
   }, function(error, response, body){

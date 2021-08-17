@@ -4,20 +4,111 @@
         "keyword":"Fim"
     },
     {
-        "text":"Certo, então você precisa agendar o cadastro do RG. Agora, preciso que escolha uma das unidades abaixo.",
-        "keyword":"cUnidades",        
-        "send":"cHorarios",
+        "text":"Certo, então você precisa agendar a emissaão do RG. Agora, preciso que escolha uma das unidades abaixo.",
+        "keyword":"c_UnidadesAgendamentoRg",        
+        "send":"c_HorariosAgendamentoRg",
+        "type":"selecao_unidades"
+    },
+    {
+        "text":"Certo, então você precisa agendar a correção do rg. Agora, preciso que escolha uma das unidades abaixo.",
+        "keyword":"c_UnidadesCorrecaoRg",        
+        "send":"c_HorariosCorrecaoRg",
+        "type":"selecao_unidades"
+    },
+    {
+        "text":"Certo, então você precisa agendar a entrega do rg. Agora, preciso que escolha uma das unidades abaixo.",
+        "keyword":"c_UnidadesEntregaRg",        
+        "send":"c_HorariosEntregaRg",
         "type":"selecao_unidades"
     },
     {
         "text": "Certo, agora escolha um dos horários disponíveis.",
-        "keyword":"cHorarios",         
-        "send":"cFimAtendimentoRg",
+        "keyword":"c_HorariosCorrecaoRg",         
+        "send":"c_InfCorrecaoRg",
         "type":"selecao_horarios"
     },
-    {   "text":"mensagem",
-        "keyword":"cFimAtendimentoRg",
-        "send":"texto_final",
+    {
+        "text": "Certo, agora escolha um dos horários disponíveis.",
+        "keyword":"c_HorariosEntregaRg",         
+        "send":"c_InfEntregaRg",
+        "type":"selecao_horarios"
+    },
+    {
+        "text": "Certo, agora escolha um dos horários disponíveis.",
+        "keyword":"c_HorariosAgendamentoRg",         
+        "send":"c_InfAgendamentoRg",
+        "type":"selecao_horarios"
+    },    
+    {
+        "text": "IMPORTANTE! DOCUMENTOS NECESSÁRIOS:\n Pessoa menor de 16 (dezesseis) anos:\n *2 fotos, tamanho 3x4 recentes, de frente, com fundo branco, impressas em papel fotográfico, não podendo ser feitas com qualquer espécie de cobertura de cabeça (lenço, chapéu, boné), nem com óculos de sol. Serão admissíveis as coberturas que compõem hábitos religiosos que façam parte do uso quotidiano do portador, ou em razão de motivos de saúde; *Certidão de nascimento (original ou cópia autenticada em Cartório de Notas). A certidão deverá estar legível, sem rasgos, emendas ou rasuras que comprometam a originalidade do documento. *O menor de 16 (dezesseis) anos deverá estar acompanhado pelo pai, mãe ou responsável legal, que apresentará documento oficial com foto que o(a) identifique; no caso de representante legal que não seja pai ou mãe, deverá ser também exibido o termo de guarda do menor (original e cópia). Na ausência dos pais ou do representante legal, somente o juiz competente poderá deferir o direito de representação para a prática do ato, conforme disposto no art. 33, § 2o, da Lei n° 8.069/90. Pessoa solteira maior de 16 (dezesseis) anos:\n *2 fotos, tamanho 3x4 recentes, de frente, com fundo branco, impressas em papel fotográfico, não podendo ser feitas com qualquer espécie de cobertura de cabeça (lenço, chapéu, boné), nem com óculos de sol. Serão admissíveis as coberturas que compõem hábitos religiosos que façam parte do uso quotidiano do portador, ou em razão de motivos de saúde; Para solteiros, levar Certidão de nascimento (original ou cópia autenticada em Cartório de Notas); Para casados, levar Certidão de casamento; Para divorciados, levar Certidão de casamento com averbação conforme estado civil atual.A certidão deverá estar legível, sem rasgos, emendas ou rasuras que comprometam a originalidade do documento.",
+        "keyword":"c_InfAgendamentoRg",         
+        "send":"fimAtendimento",
+        "type":"transicao"
+    },
+    {
+        "text": "IMPORTANTE!\n DOCUMENTOS NECESSÁRIOS:\n Próprio Requerente\n Deve apresentar a mesma certidão utilizada no momento do atendimento e o protocolo. \nMenores\n O documento do menor somente poderá ser retirado por um dos pais ou pelo responsável legal, mediante a apresentação da sua Carteira de Identidade e da Certidão de Nascimento do menor, além do protocolo. \nTerceiros\n Deverá apresentar uma procuração feita em uma folha à parte ou no próprio protocolo, autorizando a entrega (assinando ao final do pedido conforme a identidade que for buscar). Não há necessidade de autenticação em cartório. A pessoa que for buscar a identidade para outra deve levar a sua Carteira de Identidade.",
+        "keyword":"c_InfEntregaRg",         
+        "send":"fimAtendimento",
+        "type":"transicao"
+    },
+    {
+        "text": "IMPORTANTE!\n DOCUMENTOS NECESSÁRIOS: \nOriginal ou cópia autenticada do documento que comprove o dado incorreto, este documento deve ser idêntico ao apresentado no momento da solicitação. Original da Carteira de Identidade com incorreção.",
+        "keyword":"c_InfCorrecaoRg",         
+        "send":"fimAtendimento",
+        "type":"transicao"
+    },
+    {
+        "text":"Certo, então você precisa agendar a segunda via do rg. Agora, preciso que escolha uma das unidades abaixo.",
+        "keyword":"c_UnidadesSegundaViaRG",
+        "send":"c_HorariosSegundaViaRg",
+        "type":"selecao_unidades"
+    },
+    {
+        "text":"Certo, então você precisa agendar a segunda via do crlv. Agora, preciso que escolha uma das unidades abaixo.",
+        "keyword":"c_UnidadesSegundaViaCrlv",
+        "send":"c_HorariosSegundaViaCrlv",
+        "type":"selecao_unidades"
+    },
+    {
+        "text":"Certo, agora escolha um dos horários disponíveis.",
+        "keyword":"c_HorariosSegundaViaRg",
+        "send":"c_InfSegundaViaRg",
+        "type":"selecao_horarios"
+    },
+    {
+        "text":"Certo, agora escolha um dos horários disponíveis.",
+        "keyword":"c_HorariosSegundaViaCrlv",
+        "send":"c_InfSegundaViaCrlv",
+        "type":"selecao_horarios"
+    },
+    {
+        "text":"IMPORTANTE! DOCUMENTOS NECESSÁRIOS:\n 2 foto 3×4 original e recente;\n Certidão de nascimento original ou cópia simples;\n Certidão de casamento original ou cópia simples (caso você seja casado);\n Boletim de Ocorrência original ou cópia simples (em caso de roubo ou furto);\n CPF original ou comprovante de inscrição da Receita Federal – para pagamento da taxa de 2a via, ou caso você queira que o número apareça no RG;\n Cartão do Cidadão original – se você quiser que o número apareça no novo RG, podendo ser substituído por PIS ou PASEP.\n",
+        "keyword":"c_InfSegundaViaRg",
+        "send":"fimAtendimento",
+        "type":"transicao"
+    },
+    {
+        "text":"IMPORTANTE! DOCUMENTOS NECESSÁRIOS:\n Para emitir a 2° via do CRLV, você vai precisar apresentar: documento de identificação pessoal (RG), CPF, comprovante de pagamento, todos com original e cópia simples, ainda é necessário o decalque do chassi, CRV, vistoria e o boletim de ocorrência. O Departamento Estadual de Trânsito ou o Ciretran poderão exigir outros documentos como: decalque do motor e CNPJ. substituído por PIS ou PASEP.",
+        "keyword":"c_InfSegundaViaCrlv",
+        "send":"fimAtendimento",
+        "type":"transicao"
+    },
+    {
+        "text":"Certo, então você precisa agendar a segunda via do crv. Agora, preciso que escolha uma das unidades abaixo.",
+        "keyword":"c_UnidadesSegundaViaCrv",
+        "send":"c_HorariosSegundaViaCrv",
+        "type":"selecao_unidades"
+    },
+    {
+        "text":"Certo, agora escolha um dos horários disponíveis.",
+        "keyword":"c_HorariosSegundaViaCrv",
+        "send":"c_InfSegundaViaCrv",
+        "type":"selecao_horarios"
+    },
+    {
+        "text":"IMPORTANTE! DOCUMENTOS NECESSÁRIOS:\n O proprietário terá de apresentar documento de identificação (RG ou CNH), CPF, comprovante de endereço (com data de até 3 meses anteriores), laudo de vistoria de identificação veicular, formulário Renavam, comprovante de pagamento de débitos e decalque do chassi (deve-se entregar original e cópia simples de todos).",
+        "keyword":"c_InfSegundaViaCrv",
+        "send":"fimAtendimento",
         "type":"transicao"
     }
 

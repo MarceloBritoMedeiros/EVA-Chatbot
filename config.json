@@ -1,75 +1,6 @@
 [
     [
         {
-            "text":"Qual serviço você gostaria de acessar? ",
-            "id":"texto_inicial"
-        },
-        {
-            "type": "postback",
-            "title": "Documentos Pessoais",
-            "payload": "documentos_pessoais"
-        }, 
-        {
-            "type": "postback",
-            "title": "Emprego e trabalho",
-            "payload": "emprego_trabalho"
-        },
-        {
-            "type": "postback",
-            "title": "Veículos",
-            "payload": "veiculos"
-        }            
-    ],
-    [
-        {
-            "text":"Certo, você escolheu documentos pessoais. Qual documento você precisa consultar?",
-            "id":"documentos_pessoais"
-        },
-        {
-            "type": "postback",
-            "title": "RG",
-            "payload": "rg"
-        }, 
-        {
-            "type": "postback",
-            "title": "CNH",
-            "payload": "cnh"
-        },
-        {
-            "type": "postback",
-            "title": "Alistamento Militar",
-            "payload": "alistamento_militar"
-        }            
-    ],
-    [
-        {
-            "text": "Ok, o que podemos fazer em relação ao seu RG?",
-            "id": "rg"
-        },
-        {
-            "type": "postback",
-            "title": "Correção RG",
-            "payload": "consultar_rg"
-        },
-        {
-            "type": "postback",
-            "title": "Agendar Cadastro de RG",
-            "payload": "agendamento de rg"
-        },
-        {
-            "type": "postback",
-            "title": "Tirar Dúvidas sobre RG",
-            "payload": "duvidas_rg"
-        }
-    ],
-    [
-        {
-            "text": "cUnidades",
-            "id": "agendamento de rg"
-        }        
-    ],
-    [
-        {
             "text":"Agendamento Efetuado! Por favor comparecer ao local e horários selecionados com todos os documentos. ",
             "id":"texto_final"
         },
@@ -86,8 +17,308 @@
     ],
     [
         {
+            "text":"Qual serviço você gostaria de acessar? ",
+            "id":"texto_inicial"
+        },
+        {
+            "type": "postback",
+            "title": "Carteira de Identidade(RG)",
+            "payload": "carteira_identidade"
+        }, 
+        {
+            "type": "postback",
+            "title": "2º via de Documentos",
+            "payload": "via_documentos"
+        },
+        {
+            "type": "postback",
+            "title": "Outros",
+            "payload": "outros"
+        }            
+    ],    
+    [
+        {
+            "text": "Ok, o que podemos fazer em relação ao seu RG?",
+            "id": "carteira_identidade"
+        },
+        {
+            "type": "postback",
+            "title": "Entrega do RG",
+            "payload": "entrega do rg"
+        },
+        {
+            "type": "postback",
+            "title": "Emissão do RG",
+            "payload": "agendamento de rg"
+        },
+        {
+            "type": "postback",
+            "title": "Correção do RG",
+            "payload": "correcao do rg"
+        }
+    ],
+    [
+        {
+            "text": "c_UnidadesAgendamentoRg",
+            "id": "agendamento de rg"
+        }        
+    ],
+    [
+        {
+            "text": "c_UnidadesCorrecaoRg",
+            "id": "correcao do rg"
+        }        
+    ],
+    [
+        {
+            "text": "c_UnidadesEntregaRg",
+            "id": "entrega do rg"
+        }        
+    ],    
+    [
+        {
             "text":"Fim",
             "id":"fim"
+        }
+    ],
+    [
+        {
+            "text":"Beleza, então você precisa obter uma 2º via.Selecione uma das opções abaixo",
+            "id":"via_documentos"
+        },
+        {
+            "type":"postback",
+            "title":"2º via RG",
+            "payload":"segunda via rg"
+        },
+        {
+            "type":"postback",
+            "title":"2º via CRLV",
+            "payload":"segunda via crlv"
+        },
+        {
+            "type":"postback",
+            "title":"outros",
+            "payload":"outros_segunda_via"
+        }
+    ],
+    [
+        {
+            "text":"Aqui estão mais opções referentes a Segunda Via",
+            "id":"via_documentos"
+        },
+        {
+            "type":"postback",
+            "title":"2º via CNH",
+            "payload":"segunda via cnh"
+        },
+        {
+            "type":"postback",
+            "title":"2º via CRV",
+            "payload":"segunda via crv"
+        }
+    ],
+    [
+        {
+            "text": "c_UnidadesSegundaViaRG",
+            "id": "segunda via rg"
+        }        
+    ],
+    [
+        {
+            "text": "c_UnidadesSegundaViaCrlv",
+            "id": "segunda via crlv"
+        }        
+    ],
+    [
+        {
+            "text": "c_UnidadesSegundaViaCrv",
+            "id": "segunda via crv"
+        }        
+    ],
+    [
+        {
+            "text": "c_UnidadesSegundaViaCnh",
+            "id": "segunda via cnh"
+        }        
+    ],
+    [
+        {
+            "text":"Aqui estão mais opções.",
+            "id":"outros"
+        },
+        {
+            "type":"postback",
+            "title":"Licenciamento de Veículo",
+            "payload":"licenciamento de veiculo"
+        },
+        {
+            "type":"postback",
+            "title":"CNH",
+            "payload":"cnh"
+        },
+        {
+            "type":"postback",
+            "title":"Outros",
+            "payload":"segunda via crv"
+        }
+    ],
+    [
+        {
+            "text":"Abaixo estão todas as opções referentes a licenciamento de veículos",
+            "id":"licenciamento de veiculo"
+        },
+        {
+            "type":"postback",
+            "title":"Entrega CRLV",
+            "payload":"entrega crlv"
+        },
+        {
+            "type":"postback",
+            "title":"Emissão CRLV",
+            "payload":"p_emissao_crlv"
+        },
+        {
+            "type":"postback",
+            "title":"Outros",
+            "payload":"outros licenciamento de veiculo"
+        }        
+    ],
+    [
+        {
+            "text":"Excelente! Você será encaminhado ao link a seguir, lá fará o cadastro para o CRLV digital! https://www.detran.mg.gov.br/",
+            "id":"p_emissao_crlv"
+        }
+    ],
+    [
+        {
+            "text":"Abaixo estão todas as opções referentes a licenciamento de veículos",
+            "id":"outros licenciamento de veiculo"
+        },
+        {
+            "type":"postback",
+            "title":"Impressão 1º via CRLV",
+            "payload":"impressao primeira via da crlv"
+        },
+        {
+            "type":"postback",
+            "title":"Alteração Dados do Veículo",
+            "payload":"p_emissao_crlv"
+        },
+        {
+            "type":"postback",
+            "title":"Outros",
+            "payload":"outros 2 licenciamento de veiculo"
+        }
+    ],
+    [
+        {
+            "text":"Abaixo estão todas as opções referentes a licenciamento de veículos",
+            "id":"outros 2 licenciamento de veiculo"
+        },
+        {
+            "type":"postback",
+            "title":"Impressão 1º via CRLV",
+            "payload":"p_impressao_primeira_via_da_crlv"
+        },
+        {
+            "type":"postback",
+            "title":"Alteração Dados do Veículo",
+            "payload":"p_alteracao_dados_veiculo"
+        },
+        {
+            "type":"postback",
+            "title":"Outros",
+            "payload":"outros 3 licenciamento de veiculo"
+        }
+    ],
+    [
+        {
+            "text":"Acesse o formulário eletrônico abaixo e preencha a placa, renavam, CPF ou CNPJ e o CRV. Logo após o preenchimento o CRLV estará disponível para a impressão. ATENÇÃO! O usuário que se autenticar no site poderá imprimir o CRLV dos veículos de sua propriedade sem necessidade de informar o número do CRV.https://www.detran.mg.gov.br/",
+            "id":"p_impressao_primeira_via_da_crlv"
+        }
+    ],
+    [
+        {
+            "text":"Excelente! Você será encaminhado ao link a seguir, basta seguir passo á passo as instruções apresentadas.https://www.mg.gov.br/servico/realizar-transformacoes-no-veiculo",
+            "id":"p_alteracao_dados_veiculo"
+        }
+    ],
+    [
+        {
+            "text":"Abaixo estão mais opções referentes a licenciamento de veículos",
+            "id":"outros 3 licenciamento de veiculo"
+        },
+        {
+            "type":"postback",
+            "title":"Alteração do Endereço do Veículo",
+            "payload":"alteracao_endereco_veiculo"
+        },
+        {
+            "type":"postback",
+            "title":"Alteração do Endereço do Condutor",
+            "payload":"alteracao_endereco_condutor"
+        },
+        {
+            "type":"postback",
+            "title":"Outros",
+            "payload":"outros 4 licenciamento de veiculo"
+        }
+    ],
+    [
+        {
+            "text":"Abaixo estão opções referentes a alteracao do endereco do veículo",
+            "id":"alteracao_endereco_veiculo"
+        },
+        {
+            "type":"postback",
+            "title":"Para o mesmo município",
+            "payload":"p_para_mesmo_municipio_veiculo"
+        },
+        {
+            "type":"postback",
+            "title":"Para outro município",
+            "payload":"p_para_outro_municipio_veiculo"
+        }
+    ],
+    [
+        {
+            "text":"Agora basta acessar o link a seguir e preencher o formulário com as informações corretas que a atualização será realizada e armazenada no banco de dados do Detran.https://www.detran.mg.gov.br/veiculos/alteracoes/alteracao-de-endereco-dentro-do-municipio",
+            "id":"p_para_mesmo_municipio_veiculo"
+        }
+    ],
+    [
+        {
+            "text":"Será necessário realizar a vistoria do veículo em uma de nossas unidades. Acesse o link a seguir para agendar a vistoria.https://www.detran.mg.gov.br/veiculos/alteracoes/atendimento/agendamento-on-line/agendamento-on-line",
+            "id":"p_para_outro_municipio_veiculo"
+        }
+    ],
+    [
+        {
+            "text":"Abaixo estão opções referentes a alteração do endereco do condutor",
+            "id":"alteracao_endereco_condutor"
+        },
+        {
+            "type":"postback",
+            "title":"Para o mesmo município_veiculo",
+            "payload":"p_para_mesmo_condutor"
+        },
+        {
+            "type":"postback",
+            "title":"Para outro município_veiculo",
+            "payload":"p_para_outro_condutor"
+        }
+    ],
+    [
+        {
+            "text":"Agora basta acessar o link a seguir e preencher o formulário com as informações corretas que a atualização será realizada e armazenada no banco de dados do Detran.https://ssc.prodemge.gov.br/ssc-idp-frontend/",
+            "id":"p_para_mesmo_municipio_condutor"
+        }
+    ],
+    [
+        {
+            "text":"Se o município da nova residência for em Belo Horizonte, compareça à sede do Detran-MG. Se a nova residência for em outro município, compareça à Ciretran local com os documentos necessários para realizar a alteração. Para atendimento em alguns municípios é necessário fazer o Agendamento Online, acesse o link a seguir:https://www.detran.mg.gov.br/atendimento/agendamento-on-line",
+            "id":"p_para_outro_municipio_condutor"
         }
     ]
 
