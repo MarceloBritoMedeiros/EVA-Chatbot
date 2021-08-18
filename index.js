@@ -91,6 +91,7 @@ function trataMensagem(event){
   console.log("Mensagem recebida pelo usuário %d pela página %d", senderID, recipientID);
   var messageID = message.mid;
   var messageText = message.text;
+  messageText=messageText.toLowerCase();
   var attachments = message.attachments;
   if(messageText){
     if(_estados[senderID]){
@@ -102,7 +103,7 @@ function trataMensagem(event){
           console.log("sss");
       }
     }else{      
-        if(messageText=='start'){
+        if(messageText=="olá"||messageText=="ola"){
           var messageData = {
             recipient:{
               id:senderID
@@ -167,7 +168,7 @@ function sendList(recipientID, textId, i, userInput){
         cont++;
       }
       inputList.push(unidade);
-      console.log(`SELECT horario, dia FROM servicos_disponiveis WHERE unidade='${unidade} AND nome=${services}'`);      
+      console.log(`SELECT horario, dia FROM servicos_disponiveis WHERE unidade='${unidade}' AND nome='${services}'`);      
       database.query(`SELECT horario, dia FROM servicos_disponiveis WHERE unidade='${unidade}' AND nome='${services}'`,(err, rows, inf)=>{
         if(!err){          
           var cont=1;   
@@ -175,7 +176,7 @@ function sendList(recipientID, textId, i, userInput){
           console.log(rows)     
           for(var j of rows){          
             console.log(j.dia);
-            textId+="\n" + cont + ") " + j.horario + " " +dateFormat(j.dia, "dd/mm/yyyy");
+            textId+="\n" + cont + " - " + j.horario + " " +dateFormat(j.dia, "dd/mm/yyyy");
             horarios.push([j.horario,j.dia]);
             cont++;
           }

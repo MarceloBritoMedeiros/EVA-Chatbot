@@ -83,7 +83,7 @@
     ],
     [
         {
-            "text":"Beleza, então você precisa obter uma 2º via.Selecione uma das opções abaixo",
+            "text":"Beleza, então você precisa obter uma 2º via. Selecione uma das opções abaixo",
             "id":"via_documentos"
         },
         {
@@ -160,7 +160,7 @@
         {
             "type":"postback",
             "title":"Outros",
-            "payload":"segunda via crv"
+            "payload":"outros2"
         }
     ],
     [
@@ -319,6 +319,127 @@
         {
             "text":"Se o município da nova residência for em Belo Horizonte, compareça à sede do Detran-MG. Se a nova residência for em outro município, compareça à Ciretran local com os documentos necessários para realizar a alteração. Para atendimento em alguns municípios é necessário fazer o Agendamento Online, acesse o link a seguir:https://www.detran.mg.gov.br/atendimento/agendamento-on-line",
             "id":"p_para_outro_municipio_condutor"
+        }
+    ],
+    [
+        {
+            "text":"Aqui estão mais opções",
+            "id":"outros2"
+        },
+        {
+            "type":"postback",
+            "title":"Inscrição CPF",
+            "payload":"p_cpf"
+        },
+        {
+            "type":"postback",
+            "title":"Trabalho e Afins",
+            "payload":"trabalho_afins"
+        },
+        {
+            "type":"postback",
+            "title":"Serviços Penitenciários",
+            "payload":"p_para_outro_condutor"
+        }
+    ],
+    [
+        {
+            "text":"Você será encaminhado ao link a seguir, basta preencher o formulário para realizar a inscrição.https://servicos.receita.fazenda.gov.br/servicos/cpf/inscricaopublica/inscricao.asp",
+            "id":"p_cpf"
+        }
+    ],
+    [
+        {
+            "text":"Abaixo estão as opções referentes a trabalho.",
+            "id":"trabalho_afins"
+        },
+        {
+            "type":"postback",
+            "title":"Carteira de Trabalho",
+            "payload":"p_carteira_de_trabalho"
+        },
+        {
+            "type":"postback",
+            "title":"Entrega Carteira de Trabalho",
+            "payload":"p_entrega_carteira_de_trabalho"
+        },
+        {
+            "type":"postback",
+            "title":"Outros",
+            "payload":"outros_trabalhos_afins"
+        }
+    ],
+    [
+        {
+            "text":"Você será encaminhado ao link a seguir, basta realizar o login em sua conta gov.br para realizar o processo.https://servicos.mte.gov.br/#/loginfailed/redirect=trabalhador.carteira",
+            "id":"p_carteira_de_trabalho"
+        }
+    ],
+    [
+        {
+            "text":"Você será encaminhado ao link a seguir, basta preencher o formulário para realizar o agendamento. https://www.mg.gov.br/conteudo/agendamento-online/entrega-de-ctps",
+            "id":"p_entrega_carteira_de_trabalho"
+        }
+    ],
+    [
+        {
+            "text":"A seguir temos mais opções.",
+            "id":"outros_trabalhos_afins"
+        },
+        {
+            "type":"postback",
+            "title":"Seguro Desemprego",
+            "payload":"seguro_desemprego"
+        },
+        {
+            "type":"postback",
+            "title":"Recadastramento Inativo",
+            "payload":"p_recadastramento_inativo"
+        },
+        {
+            "type":"postback",
+            "title":"Intermediação Mão de Obra",
+            "payload":"p_intermediacao_mao_de_obra"
+        }
+    ],
+    [
+        {
+            "text":"Para realizar o recadastramento deverá ser enviados para o email a seguir os seguintes documentos: - Declaração de vida, escrita de próprio punho, devidamente datada e assinada pelo beneficiário e por duas testemunhas sem grau de parentesco (para o pensionista especial, é necessário declarar no mesmo documento o estado civil atual); - Cópia simples do RG do beneficiário e também das testemunhas; - Cópia simples do CPF do beneficiário; - Cópia simples do comprovante de residência. Em casos de curatelados ou tutelados, a declaração de vida deve ser escrita e assinada pelo curador/tutor e também assinada por duas testemunhas sem grau de parentesco com qualquer um deles. Deverá ser acrescentada aos demais documentos a cópia simples do termo de curatela/tutela. \nsuconrecadastramento@fazenda.mg.gov.br",
+            "id":"p_recadastramento_inativo"
+        }
+    ],
+    [
+        {
+            "text":"Você será encaminhado ao link a seguir, basta preencher o formulário para realizar o agendamento. https://www.mg.gov.br/conteudo/agendamento-online/intermediacao-de-mao-de-obra",
+            "id":"p_intermediacao_mao_de_obra"
+        }
+    ],
+    [
+        {
+            "text":"A seguir estão as opções referentes a seguro desemprego",
+            "id":"seguro_desemprego"
+        },
+        {
+            "type":"postback",
+            "title":"Solicitar Online",
+            "payload":"p_solicitar_online"
+        },
+        {
+            "type":"postback",
+            "title":"Atendimento Presencial",
+            "payload":"p_atendimento_presencial"
+        }
+    ],
+    [
+        {
+            "text":"Você será encaminhado ao link a seguir, basta realizar o login em sua conta gov.br para realizar o processo.https://servicos.mte.gov.br/#/loginfailed/redirect=",
+            "id":"p_solicitar_online"
+        }
+    ],
+    [
+        {
+            "text":"Você será encaminhado ao link a seguir, basta preencher o formulário para realizar o agendamento.\nhttps://www.mg.gov.br/conteudo/agendamento-online/solicitar-o-seguro-desemprego",
+            "id":"p_atendimento_presencial"
         }
     ]
 
