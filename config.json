@@ -1,7 +1,7 @@
 [
     [
         {
-            "text":"Agendamento Efetuado! Por favor comparecer ao local e horários selecionados com todos os documentos. ",
+            "text":"Eu poderia ajudar em mais alguma coisa?",
             "id":"texto_final"
         },
         {
@@ -161,6 +161,89 @@
             "type":"postback",
             "title":"Outros",
             "payload":"outros2"
+        }
+    ],
+    [
+        {
+            "text":"Ok, então você deseja informações ou serviços sobre cnh.",
+            "id":"cnh"
+        },
+        {
+            "type":"postback",
+            "title":"Entrega CNH",
+            "payload":"p_entrega_cnh"
+        },
+        {
+            "type":"postback",
+            "title":"Emissão CNH",
+            "payload":"p_emissao_cnh"
+        },
+        {
+            "type":"postback",
+            "title":"Outros",
+            "payload":"outros_cnh"
+        }
+    ],
+    [
+        {
+            "text":"Você será encaminhado ao link a seguir, basta preencher o formulário para realizar o agendamento. Todos os dias são liberados novos horários para agendamento. Por favor, tente mais tarde caso não encontre datas disponíveis.\nhttps://www.detran.mg.gov.br/habilitacao/1-habilitacao-quero-ser-condutor/como-obter-a-primeira-habilitacao-2",
+            "id":"p_entrega_cnh"
+        }
+    ],
+    [
+        {
+            "text":"Você será encaminhado ao link a seguir, basta seguir passo á passo as instruções apresentadas.\nhttps://www.detran.mg.gov.br/habilitacao/1-habilitacao-quero-ser-condutor/como-obter-a-primeira-habilitacao-2",
+            "id":"p_emissao_cnh"
+        }
+    ],
+    [
+        {
+            "text":"Abaixo temos mais opções referentes a cnh.",
+            "id":"outros_cnh"
+        },
+        {
+            "type":"postback",
+            "title":"Renovação CNH",
+            "payload":"p_renovacao_cnh"
+        },
+        {
+            "type":"postback",
+            "title":"Restituição CNH",
+            "payload":"restituicao_cnh"
+        },
+    ],
+    [
+        {
+            "text":"Você será encaminhado ao link a seguir, basta seguir passo á passo as instruções apresentadas.\nhttps://www.detran.mg.gov.br/habilitacao/renovacao-da-cnh-1/solicitar-renovacao-da-cnh",
+            "id":"p_renovacao_cnh"
+        }
+    ],
+    [
+        {
+            "text":"ORIENTAÇÕES: RESTITUIÇÃO DA CNH\n Compareça à Unidade de Atendimento do Detran-MG e informe que deseja a restituição de sua CNH; Caso a penalidade tenha sido cumprida, a CNH será restituída ao condutor. ATENÇÃO: CNHs recolhidas pela Polícia Militar nos municípios de Belo Horizonte, Nova Lima e Contagem estarão disponíveis para retirada na CICC, em Belo Horizonte. CNHs recolhidas nos demais municípios de Minas Gerais, estarão disponíveis na Ciretran da cidade.\n\nPara continuarmos o agendamento informe o local onde reside",
+            "id":"restituicao_cnh"
+        },
+        {
+            "type":"postback",
+            "title":"Belo Horizonte",
+            "payload":"b_HorariosRestituicaoCnh"
+        },
+        {
+            "type":"postback",
+            "title":"Interior de Minas",
+            "payload":"p_interior_minas_restituicao"
+        }
+    ],
+    [
+        {
+            "text":"Agora selecione a data e o horário em que deseja ser atendido através do link a seguir.\nhttps://www.detran.mg.gov.br/habilitacao/processo-administrativo-de-transito/atendimento/unidades-de-atendimento/lista-de-unidades",
+            "id":"restituicao_cnh"
+        }
+    ],
+    [
+        {
+            "text":"Agora selecione a data e o horário em que deseja ser atendido através do link a seguir.\nhttps://www.detran.mg.gov.br/habilitacao/processo-administrativo-de-transito/atendimento/unidades-de-atendimento/lista-de-unidades",
+            "id":"p_interior_minas"
         }
     ],
     [
@@ -339,9 +422,81 @@
         {
             "type":"postback",
             "title":"Serviços Penitenciários",
-            "payload":"p_para_outro_condutor"
+            "payload":"servicos_penitenciarios"
         }
     ],
+    [
+        {
+            "text":"Abaixo estão as opções referentes a Serviços Penitenciários.",
+            "id":"servicos_penitenciarios"
+        },
+        {
+            "type":"postback",
+            "title":"Cadastro Visita",
+            "payload":"p_cadastro_visita"
+        },
+        {
+            "type":"postback",
+            "title":"Cadastro Visita Íntima",
+            "payload":"p_cadastro_visita_intima"
+        },
+        {
+            "type":"postback",
+            "title":"Outros",
+            "payload":"outros_servicos_penitenciarios"
+        }
+    ],
+    [
+        {
+            "text":"Você será encaminhado ao link a seguir, basta preencher o formulário para realizar o agendamento.\nhttps://www.mg.gov.br/conteudo/agendamento-online/cadastro-visita-social",
+            "id":"p_cadastro_visita"
+        }
+    ],
+    [
+        {
+            "text":"Você será encaminhado ao link a seguir, basta seguir passo á passo as instruções apresentadas.\nhttps://www.mg.gov.br/servico/solicitar-cadastro-e-renovacao-de-visita-intima",
+            "id":"p_cadastro_visita_intima"
+        }
+    ],
+    [
+        {
+            "text":"Abaixo estão as opções referentes a Serviços Penitenciários.",
+            "id":"outros_servicos_penitenciarios"
+        },
+        {
+            "type":"postback",
+            "title":"Cadastro Visita Assistida",
+            "payload":"p_cadastro_visita_assistida"
+        },
+        {
+            "type":"postback",
+            "title":"Consulta Presídio",
+            "payload":"p_consulta_presidio"
+        },
+        {
+            "type":"postback",
+            "title":"Atestado Antecedente",
+            "payload":"p_atestado_antecedente"
+        }
+    ],
+    [
+        {
+            "text":"Você será encaminhado ao link a seguir, basta seguir passo á passo as instruções apresentadas.\nhttps://www.mg.gov.br/servico/solicitar-cadastro-e-renovacao-de-visita-assistida",
+            "id":"p_cadastro_visita_assistida"
+        }
+    ],
+    [
+        {
+            "text":"Você será encaminhado ao link a seguir, basta preencher os dados conforme as opções disponíveis.\nhttp://www.portalsigpri.mg.gov.br/servicos/pesquisar-individuo/",
+            "id":"p_consulta_presidio"
+        }
+    ],
+    [
+        {
+            "text":"Você será encaminhado ao link a seguir, basta preencher os dados para solicitar o documento.\nhttps://wwws.pc.mg.gov.br/atestado/solicitarsel.do?evento=x&fwPlc=s",
+            "id":"p_atestado_antecedente"
+        }
+    ]
     [
         {
             "text":"Você será encaminhado ao link a seguir, basta preencher o formulário para realizar a inscrição.https://servicos.receita.fazenda.gov.br/servicos/cpf/inscricaopublica/inscricao.asp",

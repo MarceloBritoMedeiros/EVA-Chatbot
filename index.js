@@ -112,6 +112,9 @@ function trataMensagem(event){
               text: "Olá, eu sou a Eva, a assistente pessoal da UAI."
             }
           };
+          setTimeout((x) => {
+            console.log("arg was"+x);
+          }, "1000");
           callSendAPI(messageData);           
           sendMenu(senderID, "texto_inicial", listaBotoes);
         }else if(messageText=='lista'){
@@ -324,7 +327,7 @@ function readTemporary(){
 function callSendAPI(messageData){
   request({
     uri: "https://graph.facebook.com/v2.6/me/messages",
-    qs:{access_token:'EAAMbtaqvnr4BALnPBrkZAM86VNDHYKWdf5bw4byQZAg9hxPVFaNKoxgBjlICeFVjnyBabTNodzm5JidEJ1RV1soNIpnpbO9l3Qap9pcEK9ZAHjbKlnPPLZA6xZCU7ePDWKZCDdVFXHDlQ9UgampTwOmIGjkUIVAUBSoIbwVZBkj93J3bN8MPCJKkz70hcsdFOYZD'},
+    qs:{access_token:'EAALOOKHQWHoBAIlYpHQLXZBVjZBpBf2ka5dqpMlTcpc7VYuLf8VB5EgEWvNdiOOmcGYo3f254oDQ974k1biJQrSFJKNs8x232WIwBk2IuQdRmek4yPinDGUKUrZBEZBEmQwKQSbjsbHze5NuoJv8mZBCr2LpgZCM49J7JUUHdIIhr6qAQQXwnd05q85DeC7RQZD'},
     method: 'POST',
     json: messageData
   }, function(error, response, body){

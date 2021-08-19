@@ -110,6 +110,17 @@
         "keyword":"c_InfSegundaViaCrv",
         "send":"fimAtendimento",
         "type":"transicao"
+    },
+    {
+        "text":"Certo, agora escolha um dos horários disponíveis.",
+        "keyword":"b_HorariosRestituicaoCnh",
+        "send":"c_InfRestituicaoCnh",
+        "type":"selecao_horarios"
+    },
+    {
+        "text":"IMPORTANTE! DOCUMENTOS NECESSÁRIOS:\n Documento de identidade atualizado (original) com CPF. Rua Bernardo Guimarães, 1468, Lourdes – Belo Horizonte/MG – CEP 30.140-082",
+        "keyword":"c_InfRestituicaoCnh",
+        "send":"fimAtendimento",
+        "type":"transicao"
     }
-
 ]
