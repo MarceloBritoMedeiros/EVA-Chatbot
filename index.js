@@ -5,8 +5,7 @@ const DbConnection = require('./dbConnection.js');
 let v = new DbConnection();
 v.setConnection();
 var database = v.getConnection();
-var servico,services,uInput;
-var inputList=[];
+var servico,services,unidade,uInput;
 var request = require('request');
 var _estados = [];
 var listaBotoes=require("./config.json"); 
@@ -158,19 +157,17 @@ function sendList(recipientID, textId, i, userInput){
       }else{
           console.log('Erro ao realizar a consulta');
       }          
-    });
-    inputList.push(services);
-    console.log(inputList);
-  }else if(i["type"]=="selecao_horarios"){ 
-      var unidade;      
+    });  
+  }else if(i["type"]=="selecao_horarios"){            
       var cont=1;
-      for(let j of readTemporary()){
-        if(cont==parseInt(userInput)){
-          unidade=j;
+      if(unidade!="Belo Horizonte"){
+        for(let j of readTemporary()){
+          if(cont==parseInt(userInput)){
+            unidade=j;
+          }
+          cont++;
         }
-        cont++;
-      }
-      inputList.push(unidade);
+      }      
       console.log(`SELECT horario, dia FROM servicos_disponiveis WHERE unidade='${unidade}' AND nome='${services}'`);      
       database.query(`SELECT horario, dia FROM servicos_disponiveis WHERE unidade='${unidade}' AND nome='${services}'`,(err, rows, inf)=>{
         if(!err){          
@@ -208,7 +205,7 @@ function sendList(recipientID, textId, i, userInput){
       }
       cont++;
     }    
-    database.query(`INSERT INTO agendamentos(nome, unidade, horario, dia) VALUES( '${inputList[0]}','${inputList[1]}','${horario}','${dia}')`,(err, rows, inf)=>{
+    database.query(`INSERT INTO agendamentos(nome, unidade, horario, dia) VALUES( '${services}','${unidade}','${horario}','${dia}')`,(err, rows, inf)=>{
       if(!err){          
         var messageData = {
           recipient:{
@@ -224,15 +221,14 @@ function sendList(recipientID, textId, i, userInput){
         console.log('Erro ao realizar a consulta');
       }               
     });
-    console.log(`DELETE FROM servicos_disponiveis WHERE nome='${inputList[0]}' AND unidade='${inputList[1]}' AND horario='${horario}' AND dia='${dia}'`);
-    database.query(`DELETE FROM servicos_disponiveis WHERE nome='${inputList[0]}' AND unidade='${inputList[1]}' AND horario='${horario}' AND dia='${dia}'`,(err, rows, inf)=>{
+    console.log(`DELETE FROM servicos_disponiveis WHERE nome='${services}' AND unidade='${unidade}' AND horario='${horario}' AND dia='${dia}'`);
+    database.query(`DELETE FROM servicos_disponiveis WHERE nome='${services}' AND unidade='${unidade}' AND horario='${horario}' AND dia='${dia}'`,(err, rows, inf)=>{
       if(!err){                   
         
       }else{
         console.log('Erro ao realizar a consulta');
       }               
     });    
-  console.log(inputList);  
   }
 servico=i["send"];
 }
@@ -250,9 +246,15 @@ function sendTextMessage(recipientID, userInput){
         sendList(recipientID, textId, i, userInput);
         keepGoing=false;
         break;
+      }else if(i["keyword"].slice(0,2)=="b_"){
+        unidade="Belo Horizonte";
+        console.log(unidade);
+        sendList(recipientID, textId, i, userInput);
+        keepGoing=false;                
+        break;
       }
-    }    
-  }   
+    }  
+  }  
   if(keepGoing==true){  
     var messageData = {
       recipient:{

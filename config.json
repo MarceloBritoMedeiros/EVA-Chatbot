@@ -211,6 +211,39 @@
             "title":"Restituição CNH",
             "payload":"restituicao_cnh"
         },
+        {
+            "type":"postback",
+            "title":"Recolhimento CNH",
+            "payload":"recolhimento_cnh"
+        }
+    ],
+    [
+        {
+            "text":"ORIENTAÇÕES: ENTREGA DA CNH Compareça à Unidade de Atendimento do Detran-MG e informe que deseja entregar sua CNH, para cumprir a penalidade; O auto de apreensão será lavrado e uma cópia será entregue ao condutor. Após essa etapa, o condutor poderá iniciar o curso de reciclagem.\n\nPara continuarmos o agendamento informe o local onde reside",
+            "id":"recolhimento_cnh"
+        },
+        {
+            "type":"postback",
+            "title":"Belo Horizonte",
+            "payload":"recolhimento cnh"
+        },
+        {
+            "type":"postback",
+            "title":"Interior de Minas",
+            "payload":"interior_minas_recolhimento"
+        }
+    ],
+    [
+        {
+            "text":"b_HorariosRecolhimentoCnh",
+            "id":"recolhimento cnh"
+        }
+    ],
+    [
+        {
+            "text":"Agora selecione a data e o horário em que deseja ser atendido através do link a seguir.\nhttps://www.detran.mg.gov.br/habilitacao/processo-administrativo-de-transito/atendimento/unidades-de-atendimento/lista-de-unidades",
+            "id":"interior_minas_recolhimento"
+        }
     ],
     [
         {
@@ -226,7 +259,7 @@
         {
             "type":"postback",
             "title":"Belo Horizonte",
-            "payload":"b_HorariosRestituicaoCnh"
+            "payload":"restituicao cnh"
         },
         {
             "type":"postback",
@@ -236,8 +269,14 @@
     ],
     [
         {
+            "text":"b_HorariosRestituicaoCnh",
+            "id":"restituicao cnh"
+        }
+    ],
+    [
+        {
             "text":"Agora selecione a data e o horário em que deseja ser atendido através do link a seguir.\nhttps://www.detran.mg.gov.br/habilitacao/processo-administrativo-de-transito/atendimento/unidades-de-atendimento/lista-de-unidades",
-            "id":"restituicao_cnh"
+            "id":"p_interior_minas_restituicao"
         }
     ],
     [
@@ -496,7 +535,7 @@
             "text":"Você será encaminhado ao link a seguir, basta preencher os dados para solicitar o documento.\nhttps://wwws.pc.mg.gov.br/atestado/solicitarsel.do?evento=x&fwPlc=s",
             "id":"p_atestado_antecedente"
         }
-    ]
+    ],
     [
         {
             "text":"Você será encaminhado ao link a seguir, basta preencher o formulário para realizar a inscrição.https://servicos.receita.fazenda.gov.br/servicos/cpf/inscricaopublica/inscricao.asp",
