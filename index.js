@@ -5,7 +5,7 @@ const DbConnection = require('./dbConnection.js');
 let v = new DbConnection();
 v.setConnection();
 var database = v.getConnection();
-var servico,services,unidade,uInput;
+var servico,services,unidade, cpf="",dNascimento, uInput;
 var request = require('request');
 var _estados = [];
 var listaBotoes=require("./config.json"); 
@@ -103,6 +103,7 @@ function trataMensagem(event){
       }
     }else{      
         if(messageText=="olá"||messageText=="ola"){
+          services="verificação";
           var messageData = {
             recipient:{
               id:senderID
@@ -110,22 +111,60 @@ function trataMensagem(event){
             message: {
               text: "Olá, eu sou a Eva, a assistente pessoal da UAI."
             }
+          };          
+          callSendAPI(messageData);      
+          messageData = {
+            recipient:{
+              id:senderID
+            },
+            message: {
+              text: "Para começarmos, digite o seu CPF."
+            }
           };
-          setTimeout((x) => {
-            console.log("arg was"+x);
-          }, "1000");
-          callSendAPI(messageData);           
-          sendMenu(senderID, "texto_inicial", listaBotoes);
-        }else if(messageText=='lista'){
-          sendListOfButtons(senderID);
-        }
-        else{
+          callSendAPI(messageData);         
+        }else if(services=="verificação"){
+          if(cpf==""){
+            cpf=messageText;  
+            var messageData = {
+              recipient:{
+                id:senderID
+              },
+              message: {
+                text: "Agora, digite a sua data de nascimento.(DD-MM-AAAA)"
+              }
+            };
+            callSendAPI(messageData);                       
+          }else if(dNascimento==null){
+            var tt=messageText.split('-');
+            var s="";
+            for(var i=tt.length-1;i>=0;i--){
+              s+=tt[i]+"-"
+            }  
+            s=s.slice(0,-1);
+            console.log(s);             
+            var dd=new Date(s+'T10:20:30Z')
+            dNascimento=dateFormat(Date.parse(dd),"yyyy-mm-dd");
+            console.log(dNascimento);
+            verificaUsuario();
+            sendMenu(senderID, "texto_inicial", listaBotoes);
+          }
+        }else{
           sendTextMessage(senderID, messageText);
         }
     }    
   }
 }
 
+function verificaUsuario(){
+  console.log(`SELECT id_usuario FROM usuario WHERE cpf='${cpf}' AND data_nascimento='${dNascimento}'`);
+  database.query(`SELECT id_usuario FROM usuario WHERE cpf='${cpf}' AND data_nascimento='${dNascimento}'`, (err, rows, inf)=>{
+    if(!err){
+      writeTemporary(rows, "temporaryUser.json");
+    }else{
+      console.log("Não foi possível fazer a consulta de usuário")
+    }
+  })
+}
 function sendList(recipientID, textId, i, userInput){  
   if(i["type"]=="selecao_unidades"){
     console.log(`SELECT UNIDADE FROM servicos_disponiveis WHERE nome='${services}'`);
@@ -133,8 +172,7 @@ function sendList(recipientID, textId, i, userInput){
       var cont=1;
       var lset=[];
       if(!err){
-        var mySet=new Set();        
-        console.log(rows);
+        var mySet=new Set();   
         for(var j of rows){
           mySet.add(j.UNIDADE);             
         } 
@@ -142,8 +180,7 @@ function sendList(recipientID, textId, i, userInput){
           textId+="\n"+cont+") "+j;
           lset.push(j);
           cont++;
-        }
-        console.log(lset);
+        }        
         writeTemporary(lset, './temporary.json');
         var messageData = {
           recipient:{
@@ -161,7 +198,7 @@ function sendList(recipientID, textId, i, userInput){
   }else if(i["type"]=="selecao_horarios"){            
       var cont=1;
       if(unidade!="Belo Horizonte"){
-        for(let j of readTemporary()){
+        for(let j of readTemporary('./temporary.json')){
           if(cont==parseInt(userInput)){
             unidade=j;
           }
@@ -172,10 +209,8 @@ function sendList(recipientID, textId, i, userInput){
       database.query(`SELECT horario, dia FROM servicos_disponiveis WHERE unidade='${unidade}' AND nome='${services}'`,(err, rows, inf)=>{
         if(!err){          
           var cont=1;   
-          var horarios=[]
-          console.log(rows)     
-          for(var j of rows){          
-            console.log(j.dia);
+          var horarios=[]              
+          for(var j of rows){                
             textId+="\n" + cont + " - " + j.horario + " " +dateFormat(j.dia, "dd/mm/yyyy");
             horarios.push([j.horario,j.dia]);
             cont++;
@@ -205,7 +240,9 @@ function sendList(recipientID, textId, i, userInput){
       }
       cont++;
     }    
-    database.query(`INSERT INTO agendamentos(nome, unidade, horario, dia) VALUES( '${services}','${unidade}','${horario}','${dia}')`,(err, rows, inf)=>{
+    var idUser=readTemporary('./temporaryUser.json');
+    console.log(`INSERT INTO agendamentos(nome, unidade, horario, dia, id_usuario) VALUES( '${services}','${unidade}','${horario}','${dia}','${idUser[0]["id_usuario"]}')`)
+    database.query(`INSERT INTO agendamentos(nome, unidade, horario, dia, id_usuario) VALUES( '${services}','${unidade}','${horario}','${dia}','${idUser[0]["id_usuario"]}')`,(err, rows, inf)=>{
       if(!err){          
         var messageData = {
           recipient:{
@@ -239,16 +276,13 @@ function sendTextMessage(recipientID, userInput){
   var keepGoing=true;
   for(var i of listaTexto){
     if(userInput==i["keyword"] || servico==i["keyword"]){
-      textId=i["text"];
-      console.log(i["keyword"].slice(0,1));
-      console.log(i["keyword"]);
+      textId=i["text"];      
       if(i["keyword"].slice(0,2)=="c_"){
         sendList(recipientID, textId, i, userInput);
         keepGoing=false;
         break;
       }else if(i["keyword"].slice(0,2)=="b_"){
-        unidade="Belo Horizonte";
-        console.log(unidade);
+        unidade="Belo Horizonte";        
         sendList(recipientID, textId, i, userInput);
         keepGoing=false;                
         break;
@@ -277,8 +311,7 @@ function sendMenu(recipientID, payloader, listId){
       textId=i[0]["text"];
       break; 
     }
-  }
-  console.log(payloader.slice(0,1));
+  }  
   if(payloader.slice(0,2)=="p_"){
     var messageData = {
       recipient:{
@@ -290,8 +323,7 @@ function sendMenu(recipientID, payloader, listId){
     };
     callSendAPI(messageData); 
     sendMenu(recipientID, "texto_final", listId);
-  }else if (li.length==0){
-    console.log("Está indo para o texto!!!!");
+  }else if (li.length==0){    
     sendTextMessage(recipientID, textId);
   }else{
     var messageData = {
@@ -321,8 +353,8 @@ function writeTemporary(x, path){
   });
 }
 
-function readTemporary(){
-  var x = require("./temporary.json")
+function readTemporary(path){
+  var x = require(path)
   return x;
 }
 
