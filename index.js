@@ -5,7 +5,7 @@ const DbConnection = require('./dbConnection.js');
 let v = new DbConnection();
 v.setConnection();
 var database = v.getConnection();
-var servico,services,unidade, cpf="",dNascimento, uInput;
+var servico,services="",unidade, cpf="",dNascimento, uInput;
 var request = require('request');
 var _estados = [];
 var listaBotoes=require("./config.json"); 
@@ -102,68 +102,79 @@ function trataMensagem(event){
           console.log("sss");
       }
     }else{      
-        if(messageText=="olá"||messageText=="ola"){
-          services="verificação";
-          var messageData = {
-            recipient:{
-              id:senderID
-            },
-            message: {
-              text: "Olá, eu sou a Eva, a assistente pessoal da UAI."
-            }
-          };          
-          callSendAPI(messageData);      
-          messageData = {
-            recipient:{
-              id:senderID
-            },
-            message: {
-              text: "Para começarmos, digite o seu CPF."
-            }
-          };
-          callSendAPI(messageData);         
-        }else if(services=="verificação"){
-          if(cpf==""){
-            cpf=messageText;  
-            var messageData = {
-              recipient:{
-                id:senderID
-              },
-              message: {
-                text: "Agora, digite a sua data de nascimento.(DD-MM-AAAA)"
-              }
-            };
-            callSendAPI(messageData);                       
-          }else if(dNascimento==null){
-            var tt=messageText.split('-');
-            var s="";
-            for(var i=tt.length-1;i>=0;i--){
-              s+=tt[i]+"-"
-            }  
-            s=s.slice(0,-1);
-            console.log(s);             
-            var dd=new Date(s+'T10:20:30Z')
-            dNascimento=dateFormat(Date.parse(dd),"yyyy-mm-dd");
-            console.log(dNascimento);
-            verificaUsuario();
-            sendMenu(senderID, "texto_inicial", listaBotoes);
-          }
+        if(messageText=="olá"||messageText=="ola"){    
+          sendSimpleMessage(senderID, "Olá, eu sou a Eva, a assistente pessoal da UAI.");           
+          setTimeout(() => {
+            perguntaUsuario(senderID, messageText); 
+          }, 1000);                
         }else{
+          if(services=="verificação"){
+            perguntaUsuario(senderID, messageText);
+          }
           sendTextMessage(senderID, messageText);
         }
     }    
   }
 }
-
+function perguntaUsuario(sender, messageText){
+  if(services==""){
+    services="verificação";
+    sendSimpleMessage(sender,"Para começarmos o atendimento, digite o seu CPF.");       
+  }else if(cpf==""){
+    cpf=messageText;
+    sendSimpleMessage(sender,"Agora, digite a sua data de nascimento.(DD-MM-AAAA)");    
+  }else if(dNascimento==null){
+    var tt=messageText.split('-');
+    var s="";
+    var uData;
+    for(var i=tt.length-1;i>=0;i--){
+      s+=tt[i]+"-"
+    }  
+    s=s.slice(0,-1);
+    console.log(s);             
+    var dd=new Date(s+'T10:20:30Z')
+    dNascimento=dateFormat(Date.parse(dd),"yyyy-mm-dd");
+    console.log(dNascimento);
+    verificaUsuario();
+    uData=readTemporary("./temporaryUser.json");    
+    console.log(uData.length);
+    if(uData.length!=0){
+      sendSimpleMessage(sender, `Seja bem vindo, ${uData[0]["nome"]}!`)
+      setTimeout(() => {
+        sendMenu(sender, "texto_inicial", listaBotoes);
+      }, 1000);      
+    }else{
+      sendSimpleMessage(sender, "CPF ou data de nascimento incorretos");
+      services="";
+      cpf="";
+      dNascimento=null;
+      setTimeout(() => {
+        perguntaUsuario(sender);
+      }, 1000);      
+    }            
+  }
+}
 function verificaUsuario(){
-  console.log(`SELECT id_usuario FROM usuario WHERE cpf='${cpf}' AND data_nascimento='${dNascimento}'`);
-  database.query(`SELECT id_usuario FROM usuario WHERE cpf='${cpf}' AND data_nascimento='${dNascimento}'`, (err, rows, inf)=>{
+  console.log(`SELECT id_usuario, nome FROM usuario WHERE cpf='${cpf}' AND data_nascimento='${dNascimento}'`);
+  database.query(`SELECT id_usuario, nome FROM usuario WHERE cpf='${cpf}' AND data_nascimento='${dNascimento}'`, (err, rows, inf)=>{
     if(!err){
-      writeTemporary(rows, "temporaryUser.json");
+      writeTemporary(rows, "temporaryUser.json");       
     }else{
       console.log("Não foi possível fazer a consulta de usuário")
     }
   })
+}
+
+function sendSimpleMessage(sender, message){
+  var messageData = {
+    recipient:{
+      id:sender
+    },
+    message: {
+      text: message
+    }
+  };
+  callSendAPI(messageData); 
 }
 function sendList(recipientID, textId, i, userInput){  
   if(i["type"]=="selecao_unidades"){
@@ -243,17 +254,12 @@ function sendList(recipientID, textId, i, userInput){
     var idUser=readTemporary('./temporaryUser.json');
     console.log(`INSERT INTO agendamentos(nome, unidade, horario, dia, id_usuario) VALUES( '${services}','${unidade}','${horario}','${dia}','${idUser[0]["id_usuario"]}')`)
     database.query(`INSERT INTO agendamentos(nome, unidade, horario, dia, id_usuario) VALUES( '${services}','${unidade}','${horario}','${dia}','${idUser[0]["id_usuario"]}')`,(err, rows, inf)=>{
-      if(!err){          
-        var messageData = {
-          recipient:{
-            id:recipientID
-          },
-          message: {
-            text: textId
-          }
-        };
-        callSendAPI(messageData);    
-        sendMenu(recipientID, "texto_final", listaBotoes);
+      if(!err){         
+        sendSimpleMessage(recipientID, textId);
+         setTimeout(() => {
+          sendMenu(recipientID, "texto_final", listaBotoes);
+         }, 1000);
+        
       }else{
         console.log('Erro ao realizar a consulta');
       }               
@@ -303,7 +309,7 @@ function sendTextMessage(recipientID, userInput){
 }
 
 function sendMenu(recipientID, payloader, listId){  
-  var li,textId;
+  var li=[],textId;
   services=payloader;  
   for(var i of listId){       
     if(i[0]["id"]==payloader){
