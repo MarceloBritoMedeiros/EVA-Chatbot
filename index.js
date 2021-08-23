@@ -158,7 +158,7 @@ function verificaUsuario(){
   console.log(`SELECT id_usuario, nome FROM usuario WHERE cpf='${cpf}' AND data_nascimento='${dNascimento}'`);
   database.query(`SELECT id_usuario, nome FROM usuario WHERE cpf='${cpf}' AND data_nascimento='${dNascimento}'`, (err, rows, inf)=>{
     if(!err){
-      writeTemporary(rows, "temporaryUser.json");       
+      writeTemporary(rows, "./temporaryUser.json");       
     }else{
       console.log("Não foi possível fazer a consulta de usuário")
     }
@@ -188,20 +188,12 @@ function sendList(recipientID, textId, i, userInput){
           mySet.add(j.UNIDADE);             
         } 
         for(var j of mySet){            
-          textId+="\n"+cont+") "+j;
+          textId+="\n"+cont+" - "+j;
           lset.push(j);
           cont++;
         }        
-        writeTemporary(lset, './temporary.json');
-        var messageData = {
-          recipient:{
-            id:recipientID
-          },
-          message: {
-            text: textId
-          }
-        };          
-        callSendAPI(messageData);
+        writeTemporary(lset, './temporary.json');                
+        sendSimpleMessage(recipientID, textId);        
       }else{
           console.log('Erro ao realizar a consulta');
       }          
@@ -226,16 +218,9 @@ function sendList(recipientID, textId, i, userInput){
             horarios.push([j.horario,j.dia]);
             cont++;
           }
-          writeTemporary(horarios, './temporary2.json');
-          var messageData = {
-              recipient:{
-                id:recipientID
-              },
-              message: {
-                text: textId
-              }
-            };
-            callSendAPI(messageData);
+          writeTemporary(horarios, './temporary2.json');          
+          sendSimpleMessage(recipientID, textId);
+            
         }else{
             console.log('Erro ao realizar a consulta');
         }               
@@ -295,16 +280,8 @@ function sendTextMessage(recipientID, userInput){
       }
     }  
   }  
-  if(keepGoing==true){  
-    var messageData = {
-      recipient:{
-        id:recipientID
-      },
-      message: {
-        text: textId
-      }
-    };
-    callSendAPI(messageData);
+  if(keepGoing==true){      
+    sendSimpleMessage(recipientID, textId);    
   }
 }
 
@@ -318,17 +295,11 @@ function sendMenu(recipientID, payloader, listId){
       break; 
     }
   }  
-  if(payloader.slice(0,2)=="p_"){
-    var messageData = {
-      recipient:{
-        id:recipientID
-      },
-      message: {
-        text: textId
-      }
-    };
-    callSendAPI(messageData); 
-    sendMenu(recipientID, "texto_final", listId);
+  if(payloader.slice(0,2)=="p_"){    
+    sendSimpleMessage(recipientID, textId); 
+    setTimeout(() => {
+      sendMenu(recipientID, "texto_final", listId);
+    }, 1000);    
   }else if (li.length==0){    
     sendTextMessage(recipientID, textId);
   }else{
