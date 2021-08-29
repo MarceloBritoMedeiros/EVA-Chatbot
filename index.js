@@ -92,32 +92,22 @@ function trataMensagem(event){
   var messageText = message.text;
   messageText=messageText.toLowerCase();
   var attachments = message.attachments;
-  if(messageText){
-    if(_estados[senderID]){
-      switch(_estados[senderID]){
-        case "sim":
-          console.log("Tenho que enviar o menos para essa pessoa")
-          break;
-        case "não":
-          console.log("sss");
+  if(messageText){         
+    if(messageText=="olá"||messageText=="ola"){    
+      sendSimpleMessage(senderID, "Olá, eu sou a Eva, a assistente pessoal da UAI."); 
+      setTimeout(() => {
+        sendMenu(senderID, "saudacao", listaBotoes);        
+      }, 1000);                
+    }else{
+      if(services=="verificação"){
+        perguntaUsuario(senderID, messageText);
       }
-    }else{      
-        if(messageText=="olá"||messageText=="ola"){    
-          sendSimpleMessage(senderID, "Olá, eu sou a Eva, a assistente pessoal da UAI.");           
-          setTimeout(() => {
-            perguntaUsuario(senderID, messageText); 
-          }, 1000);                
-        }else{
-          if(services=="verificação"){
-            perguntaUsuario(senderID, messageText);
-          }
-          sendTextMessage(senderID, messageText);
-        }
-    }    
+      sendTextMessage(senderID, messageText);
+    }       
   }
 }
 function perguntaUsuario(sender, messageText){
-  if(services==""){
+  if(services=="cadastrado"){
     services="verificação";
     sendSimpleMessage(sender,"Para começarmos o atendimento, digite o seu CPF.");       
   }else if(cpf==""){
@@ -160,7 +150,7 @@ function verificaUsuario(){
     if(!err){
       writeTemporary(rows, "./temporaryUser.json");       
     }else{
-      console.log("Não foi possível fazer a consulta de usuário")
+      console.log("Não foi possível fazer a consulta de usuário");
     }
   })
 }
@@ -287,7 +277,10 @@ function sendTextMessage(recipientID, userInput){
 
 function sendMenu(recipientID, payloader, listId){  
   var li=[],textId;
-  services=payloader;  
+  services=payloader; 
+  if(payloader=="cadastrado"){
+    perguntaUsuario(recipientID, "");
+  } 
   for(var i of listId){       
     if(i[0]["id"]==payloader){
       li=i.slice(1);

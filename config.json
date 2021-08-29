@@ -1,6 +1,22 @@
 [
     [
         {
+            "text":"Escolha uma das opções abaixo para iniciarmos o atendimento",
+            "id":"saudacao"
+        },
+        {
+            "type":"postback",
+            "title":"Já sou cadastrado",
+            "payload":"cadastrado"
+        },
+        {
+            "type":"postback",
+            "title":"Não sou cadastrado",
+            "payload":"p_nao_cadastrado"
+        }
+    ],
+    [
+        {
             "text":"Eu poderia ajudar em mais alguma coisa?",
             "id":"texto_final"
         },
