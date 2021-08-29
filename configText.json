@@ -4,7 +4,13 @@
         "keyword":"Fim"
     },
     {
-        "text":"Certo, então você precisa agendar a emissaão do RG. Agora, preciso que escolha uma das unidades abaixo.",
+        "text":"Consulta Cancelada!",
+        "keyword":"c_CancelaConsulta",        
+        "send":"fimAtendimento",
+        "type":"cancelamento"
+    },
+    {
+        "text":"Certo, então você precisa agendar a emissão do RG. Agora, preciso que escolha uma das unidades abaixo.",
         "keyword":"c_UnidadesAgendamentoRg",        
         "send":"c_HorariosAgendamentoRg",
         "type":"selecao_unidades"

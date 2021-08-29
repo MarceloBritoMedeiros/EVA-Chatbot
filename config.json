@@ -17,6 +17,18 @@
     ],
     [
         {
+            "text":"c_CancelaConsulta",
+            "id":"nao_confirmo"
+        }
+    ],
+    [
+        {
+            "text":"Ok, agendamento confirmado! Esperamos por você amanhã.",
+            "id":"p_sim_confirmo"
+        }
+    ], 
+    [
+        {
             "text":"Eu poderia ajudar em mais alguma coisa?",
             "id":"texto_final"
         },

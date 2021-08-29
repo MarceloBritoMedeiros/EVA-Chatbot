@@ -7,7 +7,7 @@ v.setConnection();
 var database = v.getConnection();
 var servico,services="",unidade, cpf="",dNascimento, uInput;
 var request = require('request');
-var _estados = [];
+var historico=[];
 var listaBotoes=require("./config.json"); 
 var listaTexto=require("./configText.json");
 const fs = require('fs');
@@ -121,15 +121,15 @@ function perguntaUsuario(sender, messageText){
       s+=tt[i]+"-"
     }  
     s=s.slice(0,-1);
-    console.log(s);             
-    var dd=new Date(s+'T10:20:30Z')
+    console.log(s);
+    var dd=new Date(s+'T10:20:30Z');
     dNascimento=dateFormat(Date.parse(dd),"yyyy-mm-dd");
     console.log(dNascimento);
     verificaUsuario();
-    uData=readTemporary("./temporaryUser.json");    
+    uData=readTemporary("./temporaryUser.json");
     console.log(uData.length);
     if(uData.length!=0){
-      sendSimpleMessage(sender, `Seja bem vindo, ${uData[0]["nome"]}!`)
+      sendSimpleMessage(sender, `Seja bem vindo, ${uData[0]["nome"]}!`);
       setTimeout(() => {
         sendMenu(sender, "texto_inicial", listaBotoes);
       }, 1000);      
@@ -150,7 +150,7 @@ function verificaUsuario(){
     if(!err){
       writeTemporary(rows, "./temporaryUser.json");       
     }else{
-      console.log("Não foi possível fazer a consulta de usuário");
+      console.log("Não foi possível fazer a consulta de usuário")
     }
   })
 }
@@ -226,6 +226,7 @@ function sendList(recipientID, textId, i, userInput){
       }
       cont++;
     }    
+    schedule(recipientID, dia, horario);
     var idUser=readTemporary('./temporaryUser.json');
     console.log(`INSERT INTO agendamentos(nome, unidade, horario, dia, id_usuario) VALUES( '${services}','${unidade}','${horario}','${dia}','${idUser[0]["id_usuario"]}')`)
     database.query(`INSERT INTO agendamentos(nome, unidade, horario, dia, id_usuario) VALUES( '${services}','${unidade}','${horario}','${dia}','${idUser[0]["id_usuario"]}')`,(err, rows, inf)=>{
@@ -241,12 +242,19 @@ function sendList(recipientID, textId, i, userInput){
     });
     console.log(`DELETE FROM servicos_disponiveis WHERE nome='${services}' AND unidade='${unidade}' AND horario='${horario}' AND dia='${dia}'`);
     database.query(`DELETE FROM servicos_disponiveis WHERE nome='${services}' AND unidade='${unidade}' AND horario='${horario}' AND dia='${dia}'`,(err, rows, inf)=>{
-      if(!err){                   
-        
-      }else{
+      if(err){     
         console.log('Erro ao realizar a consulta');
       }               
     });    
+  }else if(i["type"]=="cancelamento"){
+    var idUser=readTemporary('./temporaryUser.json');
+    database.query(`SELECT * FROM agendamentos WHERE id_usuario='${idUser[0]["id_usuario"]}'`,(err, rows, inf)=>{
+      if(!err){              
+        console.log(rows);
+      }else{
+        console.log('Erro ao realizar a consulta');
+      }               
+    });
   }
 servico=i["send"];
 }
@@ -277,6 +285,8 @@ function sendTextMessage(recipientID, userInput){
 
 function sendMenu(recipientID, payloader, listId){  
   var li=[],textId;
+  historico.push(payloader);
+  console.log(payloader);
   services=payloader; 
   if(payloader=="cadastrado"){
     perguntaUsuario(recipientID, "");
@@ -326,6 +336,44 @@ function writeTemporary(x, path){
 function readTemporary(path){
   var x = require(path)
   return x;
+}
+
+function schedule(recipientID, x,y){
+  var schedule = require('node-schedule');
+  var date = new Date(2021, 7, 29, 16, 50, 0);
+  console.log(date+"AAAAAAAAAAAAA");
+  //var date = new Date(x.getFullYear(),x.getMonth(), x.getDay()-1, x.getHours(), x.getMinutes(),0);
+  var j = schedule.scheduleJob(date, function(){
+    var messageData = {
+      recipient: {
+        id: recipientID
+      },
+      message: {
+        attachment: {
+          type: "template",
+          payload: {
+            template_type: "button",
+            text: "Olá, estou passando para lembrar do "+services+" agendado para amanhã às 15 horas. Você confima o agendamento?",
+            buttons: 
+            [
+              {
+                type:"postback",
+                title:"Sim, confirmo",
+                payload:"p_sim_confirmo"
+              },
+              {
+                  type:"postback",
+                  title:"Não poderei comparecer",
+                  payload:"nao_confirmo"
+              }
+            ]
+          }
+        }
+      }
+    }
+    callSendAPI(messageData);
+  });
+  console.log(j);  
 }
 
 function callSendAPI(messageData){
