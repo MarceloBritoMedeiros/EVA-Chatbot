@@ -7,7 +7,7 @@ class DbConection{
             user :'root',
             password:'28150_NNMM',
             database: 'uai'
-        });
+        });        
     }    
 
     setConnection(){

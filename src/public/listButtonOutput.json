@@ -1,18 +1,24 @@
 [
     [
         {
-            "text":"Escolha uma das opções abaixo para iniciarmos o atendimento",
+            "text":"Escolha uma das opções abaixo para iniciarmos o atendimento\n👇",
             "id":"saudacao"
         },
         {
             "type":"postback",
-            "title":"Já sou cadastrado",
+            "title":"Já sou cadastrado😀",
             "payload":"cadastrado"
         },
         {
             "type":"postback",
-            "title":"Não sou cadastrado",
+            "title":"Não sou cadastrado🙁",
             "payload":"p_nao_cadastrado"
+        }
+    ],
+    [
+        {
+            "text":"Ok, entre no link abaixo para efetuar o cadastro. Depois de se cadastrar, pode voltar aqui e dizer um Olá novamente.(y) 👍",
+            "id":"p_nao_cadastrado"            
         }
     ],
     [
