@@ -179,7 +179,7 @@
     [
         {
             "text":"Aqui estão mais opções.",
-            "id":"outros"
+            "id":"Outros"
         },
         {
             "type":"postback",

@@ -1,20 +1,20 @@
 class Stats{
     constructor(){
-        this._servico="";
-        this._services="";
-        this._unidade=""; 
-        this._cpf="";
+        this._recipient = "";
+        this._services = "";
+        this._unidade = ""; 
+        this._cpf = "";
         this._dNascimento;     
         this._horario;
         this._dia;   
     }
 
-    getServico(){
-        return this._servico;
+    getRecipient(){
+        return this._recipient;
     }
 
-    setServico(servico){
-        this._servico=servico;
+    setRecipient(recipient){
+        this._recipient = recipient;
     }
     getServices(){
         return this._services;

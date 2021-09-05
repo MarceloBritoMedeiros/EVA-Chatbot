@@ -1,8 +1,6 @@
-const CertificaUsuario = require("./CertificaUsuario");
-const MessageSender = require("./MessageSender");
 
 class RecebeMensagem{
-    constructor(stats, database, messageSender, certificaUsuario, queriesSender){
+    constructor(stats, messageSender, certificaUsuario){
         this._stats = stats;
         this._messageSender = messageSender; 
         this._certificaUsuario = certificaUsuario;       

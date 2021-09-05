@@ -1,8 +1,7 @@
-const CertificaUsuario = require("./CertificaUsuario");
-const QueriesSender = require("./QueriesSender");
+
 var request = require('request');
 class MessageSender{
-    constructor(stats, database){
+    constructor(stats){
         this._listaTexto=require("C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/public/listTextOutput.json");
         this._listaBotoes=require("C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/public/listButtonOutput.json");
         this._certificaUsuario;
@@ -34,7 +33,7 @@ class MessageSender{
         var textId;        
         var keepGoing=true;
         for(var i of this._listaTexto){
-          if(userInput==i["keyword"] || this._stats.getServico()==i["keyword"]){
+          if(userInput==i["keyword"] || this._stats.getRecipient()==i["keyword"]){
             textId=i["text"];      
             if(i["keyword"].slice(0,2)=="c_"){
               this._queriesSender.sendList(recipientID, textId, i, userInput);

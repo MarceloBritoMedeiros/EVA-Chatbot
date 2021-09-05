@@ -15,27 +15,25 @@ class QueriesSender{
 
   sendList(recipientID, textId, i, userInput){
       if(i["type"]=="selecao_unidades"){
-        console.log(`SELECT UNIDADE FROM servicos_disponiveis WHERE nome='${this._stats.getServices()}'`);
-        this._database.query(`SELECT UNIDADE FROM servicos_disponiveis WHERE nome='${this._stats.getServices()}'`, (err, rows, inf)=>{       
-          var cont=1;
-          var lset=[];
+        console.log(`SELECT UNIDADE FROM servicos_disponiveis WHERE nome='${this._stats.getServices()}' ORDER BY nome`);
+        this._database.query(`SELECT UNIDADE FROM servicos_disponiveis WHERE nome='${this._stats.getServices()}' ORDER BY nome`, (err, rows, inf)=>{       
+          var cont=1;          
           if(!err){
             var mySet=new Set();   
             for(var j of rows){
               mySet.add(j.UNIDADE);             
             } 
             for(var j of mySet){            
-              textId+="\n"+cont+" - "+j;
-              lset.push(j);
+              textId+="\n*"+cont+"* - "+j;              
               cont++;
             }        
-            FileOperations.writeTemporary(lset, './src/public/temporary.json');                
+            FileOperations.writeTemporary(Array.from(mySet), './src/public/temporary.json');                
             this._messageSender.sendSimpleMessage(recipientID, textId);        
           }else{
               console.log('Erro ao realizar a consulta');
           }          
         });  
-      }else if(i["type"]=="selecao_horarios"){            
+      }else if(i["type"]=="selecao_dias"){            
           var cont=1;
           if(this._stats.getUnidade()!="Belo Horizonte"){
             for(let j of FileOperations.readTemporary('./src/public/temporary.json')){
@@ -45,30 +43,58 @@ class QueriesSender{
               cont++;
             }
           }      
-          console.log(`SELECT horario, dia FROM servicos_disponiveis WHERE unidade='${this._stats.getUnidade()}' AND nome='${this._stats.getServices()}'`);      
-          this._database.query(`SELECT horario, dia FROM servicos_disponiveis WHERE unidade='${this._stats.getUnidade()}' AND nome='${this._stats.getServices()}'`,(err, rows, inf)=>{
+          console.log(`SELECT dia FROM servicos_disponiveis WHERE unidade='${this._stats.getUnidade()}' AND nome='${this._stats.getServices()}' ORDER BY dia`);      
+          this._database.query(`SELECT dia FROM servicos_disponiveis WHERE unidade='${this._stats.getUnidade()}' AND nome='${this._stats.getServices()}' ORDER BY dia`,(err, rows, inf)=>{
             if(!err){          
-              var cont=1;   
-              var horarios=[]              
-              for(var j of rows){                
-                textId+="\n" + cont + " - " + j.horario + " " +dateFormat(j.dia, "dd/mm/yyyy");
-                horarios.push([j.horario,j.dia]);
+              var cont=1;              
+              var mySet=new Set();    
+              var dias = new Set();
+              for(let inf of rows){               
+                mySet.add(dateFormat(inf.dia, "yyyy-mm-dd"));       
+                dias.add(dateFormat(inf.dia, "dd/mm/yyyy"));         
+              }
+              for(let inf of dias){
+                textId+="\n*" + cont + "* - " + inf;                
                 cont++;
               }
-              FileOperations.writeTemporary(horarios, './src/public/temporary2.json');          
+              FileOperations.writeTemporary(Array.from(mySet), './src/public/temporary2.json');          
               this._messageSender.sendSimpleMessage(recipientID, textId);
                 
             }else{
                 console.log('Erro ao realizar a consulta');
             }               
-          });    
+          });   
+      }else if(i["type"]=="selecao_horarios"){            
+        var cont=1;        
+        for(let inf of FileOperations.readTemporary('./src/public/temporary2.json')){
+          if(cont==parseInt(userInput)){
+            this._stats.setDia(inf);
+          }
+          cont++;
+        }            
+        console.log(`SELECT horario FROM servicos_disponiveis WHERE unidade='${this._stats.getUnidade()}' AND nome='${this._stats.getServices()}' AND dia='${this._stats.getDia()}' ORDER BY horario`);      
+        this._database.query(`SELECT horario FROM servicos_disponiveis WHERE unidade='${this._stats.getUnidade()}' AND nome='${this._stats.getServices()}' AND dia='${this._stats.getDia()}' ORDER BY horario`,(err, rows, inf)=>{
+          if(!err){          
+            var cont=1;      
+            var horarios=[];
+            for(var inf of rows){                
+              textId+="\n*" + cont + "* - " + inf.horario;      
+              horarios.push(inf.horario);          
+              cont++;
+            }
+            FileOperations.writeTemporary(horarios, './src/public/temporary3.json');          
+            this._messageSender.sendSimpleMessage(recipientID, textId);
+              
+          }else{
+              console.log('Erro ao realizar a consulta');
+          }               
+        }); 
       }else if(i["type"]=="transicao"){        
         cont=1;
-        console.log(require('./src/public/temporary2.json'));
-        for(let j of require('./src/public/temporary2.json')){      
+        console.log(require('./src/public/temporary3.json'));
+        for(let inf of require('./src/public/temporary3.json')){      
           if(cont==parseInt(userInput)){
-            this._stats.setHorario(j[0]);
-            this._stats.setDia(dateFormat(j[1],"yyyy-mm-dd"));
+            this._stats.setHorario(inf);            
           }
           cont++;
         }    
@@ -102,7 +128,7 @@ class QueriesSender{
           }               
         });
       }
-      this._stats.setServico(i["send"]);
+      this._stats.setRecipient(i["send"]);
     }
 }
 

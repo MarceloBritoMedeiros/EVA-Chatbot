@@ -12,20 +12,38 @@
     {
         "text":"Certo, então você precisa agendar a emissão do RG. Agora, preciso que escolha uma das unidades abaixo.",
         "keyword":"c_UnidadesAgendamentoRg",        
-        "send":"c_HorariosAgendamentoRg",
+        "send":"c_DiasAgendamentoRg",
         "type":"selecao_unidades"
     },
     {
         "text":"Certo, então você precisa agendar a correção do rg. Agora, preciso que escolha uma das unidades abaixo.",
         "keyword":"c_UnidadesCorrecaoRg",        
-        "send":"c_HorariosCorrecaoRg",
+        "send":"c_DiasCorrecaoRg",
         "type":"selecao_unidades"
     },
     {
         "text":"Certo, então você precisa agendar a entrega do rg. Agora, preciso que escolha uma das unidades abaixo.",
         "keyword":"c_UnidadesEntregaRg",        
-        "send":"c_HorariosEntregaRg",
+        "send":"c_DiasEntregaRg",
         "type":"selecao_unidades"
+    },
+    {
+        "text":"Ok, abaixo estão os dias disponíveis para essa unidade.",
+        "keyword":"c_DiasAgendamentoRg",        
+        "send":"c_HorariosAgendamentoRg",
+        "type":"selecao_dias"
+    },
+    {
+        "text":"Ok, abaixo estão os dias disponíveis para essa unidade.",
+        "keyword":"c_DiasCorrecaoRg",        
+        "send":"c_HorariosCorrecaoRg",
+        "type":"selecao_dias"
+    },
+    {
+        "text":"Ok, abaixo estão os dias disponíveis para essa unidade.",
+        "keyword":"c_DiasEntregaRg",        
+        "send":"c_HorariosEntregaRg",
+        "type":"selecao_dias"
     },
     {
         "text": "Certo, agora escolha um dos horários disponíveis.",
