@@ -1,17 +1,23 @@
 const DbConnection = require('./dbConnection.js');
 const RecebeMensagem = require('./RecebeMensagem.js');
+const MessageSender = require('./MessageSender.js');
+const CertificaUsuario = require('./CertificaUsuario.js');
+const QueriesSender = require('./QueriesSender.js');
 const Stats = require('./Stats.js');
 const listaBotoes=require("./src/public/listButtonOutput.json"); 
 let connection = new DbConnection();
 connection.setConnection();
 let stats = new Stats(); 
 let database = connection.getConnection();
-
-let recebeMensagem = new RecebeMensagem(stats, database);
 let messageSender = new MessageSender(stats, database);
+let certificaUsuario = new CertificaUsuario(stats,database, messageSender);
+let queriesSender = new QueriesSender(stats, database, messageSender);
+messageSender.setCertificaUsuario(certificaUsuario);
+messageSender.setQueriesSender(queriesSender);
+let recebeMensagem = new RecebeMensagem(stats, database, messageSender, certificaUsuario, queriesSender);
 //var servico,services="",unidade, cpf="",dNascimento, uInput;
-var request = require('request');
-const MessageSender = require('./MessageSender.js');
+
+
 
 
 
@@ -38,7 +44,7 @@ app.post('/webhook', (req, res) => {
       // Gets the message. entry.messaging is an array, but 
       // will only ever contain one message, so we get index 0
       entry.messaging.forEach(function(event){
-        if(event.message){
+        if(event.message){          
           recebeMensagem.trataMensagem(event);
         }else{
           if(event.postback && event.postback.payload){                

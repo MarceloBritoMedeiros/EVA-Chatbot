@@ -1,14 +1,23 @@
 const CertificaUsuario = require("./CertificaUsuario");
 const QueriesSender = require("./QueriesSender");
-
+var request = require('request');
 class MessageSender{
     constructor(stats, database){
         this._listaTexto=require("C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/public/listTextOutput.json");
         this._listaBotoes=require("C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/public/listButtonOutput.json");
-        this._certificaUsuario = new CertificaUsuario(stats,database);
-        this._queriesSender=new QueriesSender(stats,database);
+        this._certificaUsuario;
+        this._queriesSender;
         this._stats = stats;
     }
+
+    setCertificaUsuario(certificaUsuario){
+      this._certificaUsuario=certificaUsuario;
+    }
+
+    setQueriesSender(queriesSender){
+      this._queriesSender=queriesSender;
+    }
+
     sendSimpleMessage(sender, message){
         var messageData = {
           recipient:{
@@ -46,11 +55,11 @@ class MessageSender{
 
     sendMenu(recipientID, payloader){
         var li=[],textId;
-        historico.push(payloader);
+        //historico.push(payloader);
         console.log(payloader);
         this._stats.setServices(payloader);
         if(payloader=="cadastrado"){
-          this._certificaUsuario.perguntaUsuario(recipientID, "", this._services, cpf, dNascimento);
+          this._certificaUsuario.perguntaUsuario(recipientID, "");
         }
         for(var i of this._listaBotoes){       
           if(i[0]["id"]==payloader){
@@ -62,7 +71,7 @@ class MessageSender{
         if(payloader.slice(0,2)=="p_"){    
           this.sendSimpleMessage(recipientID, textId); 
           setTimeout(() => {
-            this.sendMenu(recipientID, "texto_final", this._listaBotoes);
+            this.sendMenu(recipientID, "texto_final");
           }, 1000);    
         }else if (li.length==0){    
           this.sendTextMessage(recipientID, textId);

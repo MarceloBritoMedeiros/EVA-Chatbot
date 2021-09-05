@@ -1,10 +1,8 @@
-class FileOperations{
-    constructor(){
-        this.fs = require('fs');
-    }
+const fs = require('fs');
+class FileOperations{    
     static writeTemporary(x, path){
         let data = JSON.stringify(x, null, 2);
-        this.fs.writeFile(path, data, (err) => {
+        fs.writeFile(path, data, (err) => {
             if (err) throw err;
             console.log('Data written to file');
         });

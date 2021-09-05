@@ -3,13 +3,13 @@ const MessageSender = require('./MessageSender');
 dateFormat = require('dateformat');
 
 class QueriesSender{  
-  constructor(stats,database){
+  constructor(stats,database, messageSender){
       this._recipientID;
       this._textID;
       this._userInput;
       this._stats = stats;
       this._database=database;
-      this._messageSender = new MessageSender(stats,database);        
+      this._messageSender = messageSender;        
       //this._notificationSender = new NotificationSender();      
   }    
 
@@ -29,7 +29,7 @@ class QueriesSender{
               lset.push(j);
               cont++;
             }        
-            this._fileOperations.writeTemporary(lset, './src/public/temporary.json');                
+            FileOperations.writeTemporary(lset, './src/public/temporary.json');                
             this._messageSender.sendSimpleMessage(recipientID, textId);        
           }else{
               console.log('Erro ao realizar a consulta');
@@ -55,7 +55,7 @@ class QueriesSender{
                 horarios.push([j.horario,j.dia]);
                 cont++;
               }
-              this._fileOperations.writeTemporary(horarios, './src/public/temporary2.json');          
+              FileOperations.writeTemporary(horarios, './src/public/temporary2.json');          
               this._messageSender.sendSimpleMessage(recipientID, textId);
                 
             }else{
@@ -64,8 +64,8 @@ class QueriesSender{
           });    
       }else if(i["type"]=="transicao"){        
         cont=1;
-        console.log(require("./temporary2.json"));
-        for(let j of require("./temporary2.json")){      
+        console.log(require('./src/public/temporary2.json'));
+        for(let j of require('./src/public/temporary2.json')){      
           if(cont==parseInt(userInput)){
             this._stats.setHorario(j[0]);
             this._stats.setDia(dateFormat(j[1],"yyyy-mm-dd"));
@@ -79,7 +79,7 @@ class QueriesSender{
           if(!err){         
             this._messageSender.sendSimpleMessage(recipientID, textId);
               setTimeout(() => {
-              this._messageSender.sendMenu(recipientID, "texto_final", listaBotoes);
+              this._messageSender.sendMenu(recipientID, "texto_final");
               }, 1000);
             
           }else{

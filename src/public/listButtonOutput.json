@@ -264,7 +264,7 @@
         {
             "type":"postback",
             "title":"Interior de Minas",
-            "payload":"interior_minas_recolhimento"
+            "payload":"p_interior_minas_recolhimento"
         }
     ],
     [
@@ -276,7 +276,7 @@
     [
         {
             "text":"Agora selecione a data e o horário em que deseja ser atendido através do link a seguir.\nhttps://www.detran.mg.gov.br/habilitacao/processo-administrativo-de-transito/atendimento/unidades-de-atendimento/lista-de-unidades",
-            "id":"interior_minas_recolhimento"
+            "id":"p_interior_minas_recolhimento"
         }
     ],
     [
