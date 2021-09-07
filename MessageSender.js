@@ -32,19 +32,16 @@ class MessageSender{
     sendTextMessage(recipientID, userInput){
         var textId;
         var keepGoing=true;
-        console.log(this._stats.getHistorico())
-        for(var i of this._listaTexto){
-          if(userInput=="0"){            
+        console.log(this._stats.getHistorico());
+        for(var i of this._listaTexto){/*       
+          if(userInput=="0" && this._stats.getHistorico().length!=0 || this._stats.getHistorico().length==1 && this._stats.getHistorico()[0][0]["type"]=="selecao_horarios"){            
             this._stats.delHistorico();
             var v=this._stats.getHistorico()[this._stats.getHistorico().length-1];
             this._stats.setRecipient(v[0]["keyword"]);            
             userInput=v[1];
             this._stats.delHistorico();
-          }
-          if(userInput==i["keyword"] || this._stats.getRecipient()==i["keyword"]){
-            /*if(i["type"]=="selecao_unidades"){
-              this._stats.setListaUnidades(i["keyword"]);
-            }*/
+          }*/
+          if(userInput==i["keyword"] || this._stats.getRecipient()==i["keyword"]){            
             textId=i["text"];
             if(i["keyword"].slice(0,2)=="c_"){
               this._stats.addHistorico([i, userInput]);

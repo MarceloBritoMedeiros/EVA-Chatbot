@@ -2,7 +2,7 @@ const FileOperations = require('./FileOperations');
 const MessageSender = require('./MessageSender');
 dateFormat = require('dateformat');
 
-class QueriesSender{  
+class QueriesSender{
   constructor(stats,database, messageSender){
       this._recipientID;
       this._textID;      
@@ -11,7 +11,7 @@ class QueriesSender{
       this._messageSender = messageSender;     
       this.kp;   
       //this._notificationSender = new NotificationSender();      
-  }    
+  }
 
   _selecaoUnidades(recipientID, textId, i){
     console.log(`SELECT UNIDADE FROM servicos_disponiveis WHERE nome='${this._stats.getServices()}' ORDER BY nome`);
@@ -162,6 +162,7 @@ class QueriesSender{
           console.log('Erro ao realizar a consulta');
         }               
       });
+      this._stats.setHistorico([]);
       this._stats.setRecipient(i["send"]);          
     }
   }
