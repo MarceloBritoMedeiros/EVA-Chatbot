@@ -1,14 +1,16 @@
+
 class Stats{
     constructor(){
         this._recipient = "";
         this._services = "";
         this._unidade = ""; 
         this._cpf = "";
-        this._dNascimento;     
+        this._dNascimento;
         this._horario;
         this._dia;   
+        this._historico=[];
     }
-
+    
     getRecipient(){
         return this._recipient;
     }
@@ -57,6 +59,18 @@ class Stats{
 
     setHorario(horario){
         this._horario=horario;
+    }
+    getHistorico(){
+        return this._historico;
+    }
+    setHistorico(historico, i){
+        this._historico[i]=historico;
+    }
+    delHistorico(){
+        this._historico.pop();
+    }
+    addHistorico(historico){
+        this._historico.push(historico);
     }
 
 }

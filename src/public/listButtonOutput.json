@@ -132,7 +132,7 @@
         },
         {
             "type":"postback",
-            "title":"outros",
+            "title":"Outros",
             "payload":"outros_segunda_via"
         }
     ],
@@ -179,7 +179,7 @@
     [
         {
             "text":"Aqui estão mais opções.",
-            "id":"Outros"
+            "id":"outros"
         },
         {
             "type":"postback",

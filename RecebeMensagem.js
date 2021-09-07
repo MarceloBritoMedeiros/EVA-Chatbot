@@ -20,7 +20,8 @@ class RecebeMensagem{
           if(messageText=="olá"||messageText=="ola" || messageText=="👍"){
             this._messageSender.sendSimpleMessage(senderID, "Olá, eu sou a Eva, a assistente pessoal da UAI."); 
             setTimeout(() => {
-                this._messageSender.sendMenu(senderID, "saudacao");        
+                //this._messageSender.sendMenu(senderID, "saudacao");       
+                this._messageSender.sendMenu(senderID, "texto_inicial");    
             }, 1000);
           }else{      
             console.log(this._stats.getServices());      

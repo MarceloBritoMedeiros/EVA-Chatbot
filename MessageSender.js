@@ -30,19 +30,20 @@ class MessageSender{
     }
 
     sendTextMessage(recipientID, userInput){
-        var textId;        
+        var textId;
         var keepGoing=true;
         for(var i of this._listaTexto){
           if(userInput==i["keyword"] || this._stats.getRecipient()==i["keyword"]){
-            textId=i["text"];      
+            textId=i["text"];
             if(i["keyword"].slice(0,2)=="c_"){
+              this._stats.addHistorico([i, userInput, recipientID]);
               this._queriesSender.sendList(recipientID, textId, i, userInput);
               keepGoing=false;
               break;
             }else if(i["keyword"].slice(0,2)=="b_"){
-              this._stats.setUnidade("Belo Horizonte");  
+              this._stats.setUnidade("Belo Horizonte");
               this._queriesSender.sendList(recipientID, textId, i, userInput);
-              keepGoing=false;              
+              keepGoing=false;
               break;
             }
           }  
@@ -97,7 +98,7 @@ class MessageSender{
     callSendAPI(messageData){
         request({
           uri: "https://graph.facebook.com/v2.6/me/messages",
-          qs:{access_token:'EAALOOKHQWHoBAIlYpHQLXZBVjZBpBf2ka5dqpMlTcpc7VYuLf8VB5EgEWvNdiOOmcGYo3f254oDQ974k1biJQrSFJKNs8x232WIwBk2IuQdRmek4yPinDGUKUrZBEZBEmQwKQSbjsbHze5NuoJv8mZBCr2LpgZCM49J7JUUHdIIhr6qAQQXwnd05q85DeC7RQZD'},
+          qs:{access_token:'EAAMbtaqvnr4BALnPBrkZAM86VNDHYKWdf5bw4byQZAg9hxPVFaNKoxgBjlICeFVjnyBabTNodzm5JidEJ1RV1soNIpnpbO9l3Qap9pcEK9ZAHjbKlnPPLZA6xZCU7ePDWKZCDdVFXHDlQ9UgampTwOmIGjkUIVAUBSoIbwVZBkj93J3bN8MPCJKkz70hcsdFOYZD'},
           method: 'POST',
           json: messageData
         }, function(error, response, body){
