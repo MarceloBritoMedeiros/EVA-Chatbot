@@ -70,6 +70,7 @@ class QueriesSender{
             textId+="\n*" + cont + "* - " + inf;                
             cont++;
           }
+          textId+="\n*0* - Voltar";
           FileOperations.writeTemporary(Array.from(mySet), './src/public/temporary2.json');          
           this._messageSender.sendSimpleMessage(recipientID, textId);            
         }else{
@@ -108,7 +109,8 @@ class QueriesSender{
             textId+="\n*" + cont + "* - " + inf.horario;      
             horarios.push(inf.horario);          
             cont++;
-          }          
+          }     
+          textId+="\n*0* - Voltar";     
           FileOperations.writeTemporary(horarios, './src/public/temporary3.json');          
           this._messageSender.sendSimpleMessage(recipientID, textId);
             
