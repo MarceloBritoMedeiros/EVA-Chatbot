@@ -54,7 +54,7 @@ class QueriesSender{
       this._stats.delHistorico();
       var v=this._stats.getHistorico()[this._stats.getHistorico().length-1];
       console.log(v);
-      this.sendList(v[2], v[0]["text"], v[0], v[1]);      
+      this.sendList(recipientID, v[0]["text"], v[0], v[1]);      
     }else{   
       console.log(`SELECT dia FROM servicos_disponiveis WHERE unidade='${this._stats.getUnidade()}' AND nome='${this._stats.getServices()}' ORDER BY dia`);      
       this._database.query(`SELECT dia FROM servicos_disponiveis WHERE unidade='${this._stats.getUnidade()}' AND nome='${this._stats.getServices()}' ORDER BY dia`,(err, rows, inf)=>{
@@ -97,7 +97,7 @@ class QueriesSender{
       this._stats.delHistorico();
       var v=this._stats.getHistorico()[this._stats.getHistorico().length-1];
       console.log(v);
-      this.sendList(v[2], v[0]["text"], v[0], v[1]);      
+      this.sendList(recipientID, v[0]["text"], v[0], v[1]);      
     }else{
       console.log(`SELECT horario FROM servicos_disponiveis WHERE unidade='${this._stats.getUnidade()}' AND nome='${this._stats.getServices()}' AND dia='${this._stats.getDia()}' ORDER BY horario`);      
       this._database.query(`SELECT horario FROM servicos_disponiveis WHERE unidade='${this._stats.getUnidade()}' AND nome='${this._stats.getServices()}' AND dia='${this._stats.getDia()}' ORDER BY horario`,(err, rows, inf)=>{
@@ -108,7 +108,7 @@ class QueriesSender{
             textId+="\n*" + cont + "* - " + inf.horario;      
             horarios.push(inf.horario);          
             cont++;
-          }
+          }          
           FileOperations.writeTemporary(horarios, './src/public/temporary3.json');          
           this._messageSender.sendSimpleMessage(recipientID, textId);
             
@@ -139,7 +139,7 @@ class QueriesSender{
       this._stats.delHistorico();
       var v=this._stats.getHistorico()[this._stats.getHistorico().length-1];
       console.log(v);
-      this.sendList(v[2], v[0]["text"], v[0], v[1]);      
+      this.sendList(recipientID, v[0]["text"], v[0], v[1]);      
     }else{
       //var idUser=FileOperations.readTemporary('./src/public/temporaryUser.json');
       console.log(`INSERT INTO agendamentos(nome, unidade, horario, dia, id_usuario) VALUES( '${this._stats.getServices()}','${this._stats.getUnidade()}','${this._stats.getHorario()}','${this._stats.getDia()}','${1}')`)//idUser[0]["id_usuario"]

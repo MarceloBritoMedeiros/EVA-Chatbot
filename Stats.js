@@ -9,8 +9,9 @@ class Stats{
         this._horario;
         this._dia;   
         this._historico=[];
-    }
-    
+        this._listaUnidades;
+    }   
+
     getRecipient(){
         return this._recipient;
     }
@@ -71,6 +72,13 @@ class Stats{
     }
     addHistorico(historico){
         this._historico.push(historico);
+    }
+    getListaUnidades(){
+        return this._listaUnidades;
+    }
+
+    setListaUnidades(listaUnidades){
+        this._listaUnidades = listaUnidades;
     }
 
 }

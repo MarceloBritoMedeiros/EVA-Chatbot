@@ -33,10 +33,16 @@ class MessageSender{
         var textId;
         var keepGoing=true;
         for(var i of this._listaTexto){
+          if(userInput=="0"){            
+            this._stats.setRecipient(this._stats.getListaUnidades());
+          }
           if(userInput==i["keyword"] || this._stats.getRecipient()==i["keyword"]){
+            if(i["type"]=="selecao_unidades"){
+              this._stats.setListaUnidades(i["keyword"]);
+            }
             textId=i["text"];
             if(i["keyword"].slice(0,2)=="c_"){
-              this._stats.addHistorico([i, userInput, recipientID]);
+              this._stats.addHistorico([i, userInput]);
               this._queriesSender.sendList(recipientID, textId, i, userInput);
               keepGoing=false;
               break;
