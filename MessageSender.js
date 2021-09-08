@@ -1,9 +1,9 @@
 
-var request = require('request');
+const request = require('request');
 class MessageSender{
     constructor(stats){
-        this._listaTexto=require("C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/public/listTextOutput.json");
-        this._listaBotoes=require("C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/public/listButtonOutput.json");
+        this._listaTexto = require("C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/public/listTextOutput.json");
+        this._listaBotoes = require("C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/public/listButtonOutput.json");
         this._certificaUsuario;
         this._queriesSender;
         this._stats = stats;
@@ -32,16 +32,23 @@ class MessageSender{
     sendTextMessage(recipientID, userInput){
         var textId;
         var keepGoing=true;
+        var stopSearch=false;
         console.log(this._stats.getHistorico());
-        for(var i of this._listaTexto){/*       
-          if(userInput=="0" && this._stats.getHistorico().length!=0 || this._stats.getHistorico().length==1 && this._stats.getHistorico()[0][0]["type"]=="selecao_horarios"){            
-            this._stats.delHistorico();
-            var v=this._stats.getHistorico()[this._stats.getHistorico().length-1];
-            this._stats.setRecipient(v[0]["keyword"]);            
-            userInput=v[1];
-            this._stats.delHistorico();
-          }*/
-          if(userInput==i["keyword"] || this._stats.getRecipient()==i["keyword"]){            
+        
+        if(userInput=="0" && this._stats.getHistorico()[this._stats.getHistorico().length-2][1]=="menu"){          
+          this._stats.delHistorico();
+          this.sendMenu(recipientID, this._stats.getHistorico()[this._stats.getHistorico().length-2][0][0]["id"]);
+          stopSearch=true;
+        }else if(userInput=="0"// && this._stats.getHistorico().length!=0 || this._stats.getHistorico().length==1 && this._stats.getHistorico()[0][0]["type"]=="selecao_horarios" && userInput=="0"
+        ){      
+          this._stats.delHistorico();
+          var v=this._stats.getHistorico()[this._stats.getHistorico().length-1];
+          this._stats.setRecipient(v[0]["keyword"]);            
+          userInput=v[1];
+          this._stats.delHistorico();
+        } 
+        for(var i of this._listaTexto){                   
+          if((userInput==i["keyword"] || this._stats.getRecipient()==i["keyword"]) && stopSearch==false){            
             textId=i["text"];
             if(i["keyword"].slice(0,2)=="c_"){
               this._stats.addHistorico([i, userInput]);
@@ -54,23 +61,25 @@ class MessageSender{
               keepGoing=false;
               break;
             }
-          }  
-        }  
+          }else{
+            keepGoing=false;
+          }
+        }
         if(keepGoing==true){      
           this.sendSimpleMessage(recipientID, textId);    
         }
     }
 
-    sendMenu(recipientID, payloader){
-        var li=[],textId;
-        //historico.push(payloader);
+    sendMenu(recipientID, payloader, tt=""){
+        var li=[],textId;        
         console.log(payloader);
         this._stats.setServices(payloader);
         if(payloader=="cadastrado"){
           this._certificaUsuario.perguntaUsuario(recipientID, "");
         }
-        for(var i of this._listaBotoes){       
+        for(var i of this._listaBotoes){          
           if(i[0]["id"]==payloader){
+            this._stats.addHistorico([i, "menu"]);   
             li=i.slice(1);
             textId=i[0]["text"];
             break; 
@@ -83,7 +92,10 @@ class MessageSender{
           }, 1000);    
         }else if (li.length==0){    
           this.sendTextMessage(recipientID, textId);
-        }else{
+        }else{          
+          if(textId==""){
+            textId=tt;
+          }
           var messageData = {
             recipient: {
               id: recipientID

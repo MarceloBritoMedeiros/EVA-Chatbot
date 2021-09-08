@@ -48,6 +48,7 @@ app.post('/webhook', (req, res) => {
       // will only ever contain one message, so we get index 0
       entry.messaging.forEach(function(event){
         if(event.message){
+          console.log("HHHHHHHHH"+event.sender.id);
           recebeMensagem.trataMensagem(event);
         }else{
           if(event.postback && event.postback.payload){                

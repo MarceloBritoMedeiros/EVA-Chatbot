@@ -1,5 +1,4 @@
 const FileOperations = require('./FileOperations');
-const MessageSender = require('./MessageSender');
 dateFormat = require('dateformat');
 
 class QueriesSender{
@@ -8,8 +7,7 @@ class QueriesSender{
       this._textID;      
       this._stats = stats;
       this._database=database;
-      this._messageSender = messageSender;     
-      this.kp;   
+      this._messageSender = messageSender;    
       //this._notificationSender = new NotificationSender();      
   }
 
@@ -20,12 +18,13 @@ class QueriesSender{
       if(!err){
         var mySet=new Set();   
         for(var j of rows){
-          mySet.add(j.UNIDADE);             
-        } 
+          mySet.add(j.UNIDADE);
+        }
         for(var j of mySet){            
           textId+="\n*"+cont+"* - "+j;              
           cont++;
-        }        
+        }
+        textId+="\n*0* - Voltar";  
         FileOperations.writeTemporary(Array.from(mySet), './src/public/temporary.json');                
         this._messageSender.sendSimpleMessage(recipientID, textId);        
       }else{
@@ -43,13 +42,11 @@ class QueriesSender{
         if(cont==parseInt(userInput)){
           this._stats.setUnidade(j);
           keepGoing=true;
-          this.kp=true;
         }
         cont++;
       }
     }   
     if(keepGoing==false){
-      this.kp=false;
       this._messageSender.sendSimpleMessage(recipientID, "VALOR INVÁLIDO! DIGITE UM DOS NÚMEROS DO MENU.");
       this._stats.delHistorico();
       var v=this._stats.getHistorico()[this._stats.getHistorico().length-1];
@@ -88,12 +85,10 @@ class QueriesSender{
       if(cont==parseInt(userInput)){
         this._stats.setDia(inf);
         keepGoing = true;
-        this.kp=true;
       }
       cont++;
     }            
     if(keepGoing==false){
-      this.kp=false;
       this._messageSender.sendSimpleMessage(recipientID, "VALOR INVÁLIDO! DIGITE UM DOS NÚMEROS DO MENU.");
       this._stats.delHistorico();
       var v=this._stats.getHistorico()[this._stats.getHistorico().length-1];
@@ -128,15 +123,13 @@ class QueriesSender{
     console.log(require('./src/public/temporary3.json'));
     for(let inf of require('./src/public/temporary3.json')){      
       if(cont==parseInt(userInput)){
-        this._stats.setHorario(inf);   
-        this.kp=true;        
+        this._stats.setHorario(inf);        
         keepGoing = true; 
       }
       cont++;
     }    
     //NotificationSender.schedule(recipientID, dia, horario);
     if(keepGoing==false){
-      this.kp=false;
       this._messageSender.sendSimpleMessage(recipientID, "VALOR INVÁLIDO! DIGITE UM DOS NÚMEROS DO MENU.");
       this._stats.delHistorico();
       var v=this._stats.getHistorico()[this._stats.getHistorico().length-1];
@@ -145,7 +138,7 @@ class QueriesSender{
     }else{
       //var idUser=FileOperations.readTemporary('./src/public/temporaryUser.json');
       console.log(`INSERT INTO agendamentos(nome, unidade, horario, dia, id_usuario) VALUES( '${this._stats.getServices()}','${this._stats.getUnidade()}','${this._stats.getHorario()}','${this._stats.getDia()}','${1}')`)//idUser[0]["id_usuario"]
-      this._database.query(`INSERT INTO agendamentos(nome, unidade, horario, dia, id_usuario) VALUES( '${this._stats.getServices()}','${this._stats.getUnidade()}','${this._stats.getHorario()}','${this._stats.getDia()}','${1}')`,(err, rows, inf)=>{
+      this._database.query(`INSERT INTO agendamentos(nome, unidade, horario, dia, id_usuario, senderToken) VALUES( '${this._stats.getServices()}','${this._stats.getUnidade()}','${this._stats.getHorario()}','${this._stats.getDia()}','${1}','${recipientID}')`,(err, rows, inf)=>{
         if(!err){
           this._messageSender.sendSimpleMessage(recipientID, textId);
             setTimeout(() => {
@@ -161,16 +154,16 @@ class QueriesSender{
         if(err){     
           console.log('Erro ao realizar a consulta');
         }               
-      });
-      this._stats.setHistorico([]);
+      });      
+      this._stats.setHistorico([]);      
       this._stats.setRecipient(i["send"]);          
     }
   }
 
   _cancelamento(){
     var idUser=FileOperations.readTemporary('./src/public/temporaryUser.json');
-    this._database.query(`SELECT * FROM agendamentos WHERE id_usuario='${idUser[0]["id_usuario"]}'`,(err, rows, inf)=>{
-      if(!err){              
+    this._database.query(`DELETE FROM agendamentos WHERE id_usuario='${idUser[0]["id_usuario"]}'`,(err, rows, inf)=>{
+      if(!err){
         console.log(rows);
       }else{
         console.log('Erro ao realizar a consulta');

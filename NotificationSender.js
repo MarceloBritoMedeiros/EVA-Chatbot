@@ -1,9 +1,9 @@
 class NotificationSender{    
-    static schedule(recipientID, x,y){
+    static schedule(recipientID, x,y, z){
         var schedule = require('node-schedule');
-        var date = new Date(2021, 7, 29, 16, 50, 0);
+        //var date = new Date(2021, 7, 29, 16, 50, 0);
         console.log(date+"AAAAAAAAAAAAA");
-        //var date = new Date(x.getFullYear(),x.getMonth(), x.getDay()-1, x.getHours(), x.getMinutes(),0);
+        var date = new Date(x.getFullYear(),x.getMonth(), x.getDay()-1, y.getHours(), y.getMinutes(),0);
         var j = schedule.scheduleJob(date, function(){
           var messageData = {
             recipient: {
@@ -14,7 +14,7 @@ class NotificationSender{
                 type: "template",
                 payload: {
                   template_type: "button",
-                  text: "Olá, estou passando para lembrar do "+services+" agendado para amanhã às 15 horas. Você confima o agendamento?",
+                  text: "Olá, estou passando para lembrar do "+z+" agendado para amanhã às 15 horas. Você confima o agendamento?",
                   buttons: 
                   [
                     {

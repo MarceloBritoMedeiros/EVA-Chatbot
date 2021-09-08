@@ -20,18 +20,6 @@
             "text":"Ok, entre no link abaixo para efetuar o cadastro. Depois de se cadastrar, pode voltar aqui e dizer um Olá novamente.(y) 👍",
             "id":"p_nao_cadastrado"            
         }
-    ],
-    [
-        {
-            "text":"c_CancelaConsulta",
-            "id":"nao_confirmo"
-        }
-    ],
-    [
-        {
-            "text":"Ok, agendamento confirmado! Esperamos por você amanhã.",
-            "id":"p_sim_confirmo"
-        }
     ], 
     [
         {
@@ -668,6 +656,22 @@
         {
             "text":"Você será encaminhado ao link a seguir, basta preencher o formulário para realizar o agendamento.\nhttps://www.mg.gov.br/conteudo/agendamento-online/solicitar-o-seguro-desemprego",
             "id":"p_atendimento_presencial"
+        }
+    ],
+    [
+        {
+            "text":"",
+            "id":"notificacao"
+        },
+        {
+            "type":"postback",
+            "title":"Confirmo minha presença",
+            "payload":"confirma_presenca"
+        },
+        {
+            "type":"postback",
+            "title":"Não vou comparecer",
+            "payload":"nao_confima_presenca"
         }
     ]
 
