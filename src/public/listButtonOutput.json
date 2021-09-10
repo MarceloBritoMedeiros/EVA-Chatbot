@@ -12,13 +12,13 @@
         {
             "type":"postback",
             "title":"Não sou cadastrado🙁",
-            "payload":"p_nao_cadastrado"
+            "payload":"nao_cadastrado"
         }
     ],
     [
         {
             "text":"Ok, entre no link abaixo para efetuar o cadastro. Depois de se cadastrar, pode voltar aqui e dizer um Olá novamente.(y) 👍",
-            "id":"p_nao_cadastrado"            
+            "id":"nao_cadastrado"            
         }
     ], 
     [
@@ -672,6 +672,22 @@
             "type":"postback",
             "title":"Não vou comparecer",
             "payload":"nao_confima_presenca"
+        }
+    ],
+    [
+        {
+            "text":"",
+            "id":"pergunta_final"
+        },
+        {
+            "type":"postback",
+            "title":"Tudo ok",
+            "payload":"texto_finalS"
+        },
+        {
+            "type":"postback",
+            "title":"Não, voltar",
+            "payload":"0"
         }
     ]
 

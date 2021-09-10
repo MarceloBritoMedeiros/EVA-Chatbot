@@ -28,25 +28,27 @@ class MessageSender{
         };
         this.callSendAPI(messageData); 
     }
-
+    _voltar(recipientID, userInput){
+      var stopSearch=false;
+      if(userInput=="0" && this._stats.getHistorico()[this._stats.getHistorico().length-2][1]=="menu"){          
+        this._stats.delHistorico();
+        this.sendMenu(recipientID, this._stats.getHistorico()[this._stats.getHistorico().length-2][0][0]["id"]);
+        stopSearch=true;
+      }else if(userInput=="0"// && this._stats.getHistorico().length!=0 || this._stats.getHistorico().length==1 && this._stats.getHistorico()[0][0]["type"]=="selecao_horarios" && userInput=="0"
+      ){      
+        this._stats.delHistorico();
+        var v=this._stats.getHistorico()[this._stats.getHistorico().length-1];
+        this._stats.setRecipient(v[0]["keyword"]);            
+        userInput=v[1];
+        this._stats.delHistorico();
+      }
+      return stopSearch; 
+    }
     sendTextMessage(recipientID, userInput){
         var textId;
-        var keepGoing=true;
-        var stopSearch=false;
-        console.log(this._stats.getHistorico());
-        
-        if(userInput=="0" && this._stats.getHistorico()[this._stats.getHistorico().length-2][1]=="menu"){          
-          this._stats.delHistorico();
-          this.sendMenu(recipientID, this._stats.getHistorico()[this._stats.getHistorico().length-2][0][0]["id"]);
-          stopSearch=true;
-        }else if(userInput=="0"// && this._stats.getHistorico().length!=0 || this._stats.getHistorico().length==1 && this._stats.getHistorico()[0][0]["type"]=="selecao_horarios" && userInput=="0"
-        ){      
-          this._stats.delHistorico();
-          var v=this._stats.getHistorico()[this._stats.getHistorico().length-1];
-          this._stats.setRecipient(v[0]["keyword"]);            
-          userInput=v[1];
-          this._stats.delHistorico();
-        } 
+        var keepGoing=true;        
+        console.log(this._stats.getHistorico());        
+        var stopSearch=this._voltar(recipientID, userInput);
         for(var i of this._listaTexto){                   
           if((userInput==i["keyword"] || this._stats.getRecipient()==i["keyword"]) && stopSearch==false){            
             textId=i["text"];
@@ -76,6 +78,9 @@ class MessageSender{
         this._stats.setServices(payloader);
         if(payloader=="cadastrado"){
           this._certificaUsuario.perguntaUsuario(recipientID, "");
+        }else if(payloader=="texto_finalS"){
+          this._queriesSender.inserir(recipientID);
+          payloader=payloader.slice(0, -1);
         }
         for(var i of this._listaBotoes){          
           if(i[0]["id"]==payloader){
@@ -84,8 +89,8 @@ class MessageSender{
             textId=i[0]["text"];
             break; 
           }
-        }          
-        if(payloader.slice(0,2)=="p_"){    
+        }       
+        if(payloader.slice(0,2)=="p_"){
           this.sendSimpleMessage(recipientID, textId); 
           setTimeout(() => {
             this.sendMenu(recipientID, "texto_final");

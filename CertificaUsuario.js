@@ -1,4 +1,3 @@
-const MessageSender=require("./MessageSender.js")
 const dateFormat = require('dateformat');
 const FileOperations = require("./FileOperations.js");
 
@@ -9,9 +8,9 @@ class CertificaUsuario{
       this._stats = stats;        
     }
     
-    perguntaUsuario(sender, messageText){
+    perguntaUsuario(sender, messageText, continuar="", services=""){
         console.log(this._stats.getCpf());
-        if(this._stats.getServices()=="cadastrado"){
+        if(this._stats.getServices()=="cadastrado"||services=="cadastrado"){
           this._stats.setServices("verificação");
           this._messageSender.sendSimpleMessage(sender,"Para começarmos o atendimento, digite o seu CPF.");       
         }else if(this._stats.getCpf()==""){
@@ -19,8 +18,7 @@ class CertificaUsuario{
           this._messageSender.sendSimpleMessage(sender,"Agora, digite a sua data de nascimento.(DD-MM-AAAA)");           
         }else if(this._stats.getDNascimento()==null){
           var tt=messageText.split('-');
-          var s="";
-          var uData;
+          var s="";          
           for(var i=tt.length-1;i>=0;i--){
             s+=tt[i]+"-"
           }  
@@ -28,30 +26,39 @@ class CertificaUsuario{
           console.log(s);
           var dd=new Date(s+'T10:20:30Z');
           this._stats.setDNascimento(dateFormat(Date.parse(dd),"yyyy-mm-dd"));
-          this.verificaUsuario();
-          uData=FileOperations.readTemporary("./src/public/temporaryUser.json");
-          console.log(uData.length);
-          if(uData.length!=0){
-            this._messageSender.sendSimpleMessage(sender, `Seja bem vindo, ${uData[0]["nome"]}!`);
-            setTimeout(() => {
-              this._messageSender.sendMenu(sender, "texto_inicial");
-            }, 1000);      
-          }else{
+          this.verificaUsuario(sender);
+          //uData=FileOperations.readTemporary("./src/public/temporaryUser.json");                 
+        }else{
+          if(continuar=="recusado"){
             this._messageSender.sendSimpleMessage(sender, "CPF ou data de nascimento incorretos");
             this._stats.setServices("");
             this._stats.setCpf("");
-            this._stats.setDNascimento(null);
+            this._stats.setDNascimento(null);   
             setTimeout(() => {
-              this._messageSender.perguntaUsuario(sender, "");
-            }, 1000);      
-          }            
+              this._messageSender.sendMenu(senderID, "saudacao"); 
+            }, 1000);                     
+            setTimeout(() => {
+              this.perguntaUsuario(sender, "");
+            }, 1000);                  
+          }  
         }
       }
-      verificaUsuario(){
+      verificaUsuario(sender){
         console.log(`SELECT id_usuario, nome FROM usuario WHERE cpf='${this._stats.getCpf()}' AND data_nascimento='${this._stats.getDNascimento()}'`);
         this._database.query(`SELECT id_usuario, nome FROM usuario WHERE cpf='${this._stats.getCpf()}' AND data_nascimento='${this._stats.getDNascimento()}'`, (err, rows, inf)=>{
           if(!err){
-            FileOperations.writeTemporary(rows, './src/public/temporaryUser.json');       
+            console.log(rows.length);
+            if(rows.length>0){
+              console.log("FOOOOOOi");
+              this._messageSender.sendSimpleMessage(sender, `Seja bem vindo, ${rows[0]["nome"]}!`);
+              setTimeout(() => {
+                this._messageSender.sendMenu(sender, "texto_inicial");
+              }, 1000);      
+              FileOperations.writeTemporary(rows, './src/public/temporaryUser.json');  
+            }else{
+              this.perguntaUsuario(sender,"", "recusado", "cadastrado")
+            }
+                 
           }else{
             console.log("Não foi possível fazer a consulta de usuário")
           }
