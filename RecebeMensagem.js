@@ -24,12 +24,12 @@ class RecebeMensagem{
             }, 1000);            
           }else{      
             console.log(this._stats.getServices());      
-            if(this._stats.getServices()=="verificação"){
-              
+            if(this._stats.getServices()=="verificação"){              
               console.log(this._stats.getCpf());
               this._certificaUsuario.perguntaUsuario(senderID, messageText);
-            }
-            this._messageSender.sendTextMessage(senderID, messageText);
+            }else if(this._stats.getServices()!="cadastrado"){
+              this._messageSender.sendTextMessage(senderID, messageText);
+            }            
           }       
         }
     }

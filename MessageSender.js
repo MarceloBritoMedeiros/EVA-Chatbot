@@ -44,32 +44,13 @@ class MessageSender{
       }
       return stopSearch; 
     }
-    sendTextMessage(recipientID, userInput){
-        var textId;
-        var keepGoing=true;        
-        console.log(this._stats.getHistorico());        
+    sendTextMessage(recipientID, userInput){               
+        console.log(this._stats.getHistorico());
         var stopSearch=this._voltar(recipientID, userInput);
-        for(var i of this._listaTexto){                   
-          if((userInput==i["keyword"] || this._stats.getRecipient()==i["keyword"]) && stopSearch==false){            
-            textId=i["text"];
-            if(i["keyword"].slice(0,2)=="c_"){
-              this._stats.addHistorico([i, userInput]);
-              this._queriesSender.sendList(recipientID, textId, i, userInput);
-              keepGoing=false;
-              break;
-            }else if(i["keyword"].slice(0,2)=="b_"){
-              this._stats.setUnidade("Belo Horizonte");
-              this._queriesSender.sendList(recipientID, textId, i, userInput);
-              keepGoing=false;
-              break;
-            }
-          }else{
-            keepGoing=false;
-          }
+        if(userInput=="unidade"){
+          this._stats.setRecipient(this._stats.getTypeInput()[0]);
         }
-        if(keepGoing==true){      
-          this.sendSimpleMessage(recipientID, textId);    
-        }
+        this._queriesSender.sendList(recipientID, userInput);
     }
 
     sendMenu(recipientID, payloader, tt=""){
@@ -77,47 +58,49 @@ class MessageSender{
         console.log(payloader);
         this._stats.setServices(payloader);
         if(payloader=="cadastrado"){
-          this._certificaUsuario.perguntaUsuario(recipientID, "");
-        }else if(payloader=="texto_finalS"){
-          this._queriesSender.inserir(recipientID);
-          payloader=payloader.slice(0, -1);
-        }
-        for(var i of this._listaBotoes){          
-          if(i[0]["id"]==payloader){
-            this._stats.addHistorico([i, "menu"]);   
-            li=i.slice(1);
-            textId=i[0]["text"];
-            break; 
+          this._certificaUsuario.perguntaUsuario(recipientID, "");        
+        }else{
+          if(payloader=="texto_finalS"){
+            this._queriesSender.inserir(recipientID);
+            payloader=payloader.slice(0, -1);
           }
-        }       
-        if(payloader.slice(0,2)=="p_"){
-          this.sendSimpleMessage(recipientID, textId); 
-          setTimeout(() => {
-            this.sendMenu(recipientID, "texto_final");
-          }, 1000);    
-        }else if (li.length==0){    
-          this.sendTextMessage(recipientID, textId);
-        }else{          
-          if(textId==""){
-            textId=tt;
-          }
-          var messageData = {
-            recipient: {
-              id: recipientID
-            },
-            message: {
-              attachment: {
-                type: "template",
-                payload: {
-                  template_type: "button",
-                  text: textId,
-                  buttons: li
+          for(var i of this._listaBotoes){          
+            if(i[0]["id"]==payloader){
+              this._stats.addHistorico([i, "menu"]);   
+              li=i.slice(1);
+              textId=i[0]["text"];
+              break; 
+            }
+          }       
+          if(payloader.slice(0,2)=="p_"){
+            this.sendSimpleMessage(recipientID, textId); 
+            setTimeout(() => {
+              this.sendMenu(recipientID, "texto_final");
+            }, 1000);  
+          }else if (textId=="unidade"){    
+            this.sendTextMessage(recipientID, "unidade");           
+          }else{          
+            if(textId==""){
+              textId=tt;
+            }
+            var messageData = {
+              recipient: {
+                id: recipientID
+              },
+              message: {
+                attachment: {
+                  type: "template",
+                  payload: {
+                    template_type: "button",
+                    text: textId,
+                    buttons: li
+                  }
                 }
               }
             }
-          }
-          this.callSendAPI(messageData);
-        }  
+            this.callSendAPI(messageData);
+          } 
+      } 
     }
 
     callSendAPI(messageData){

@@ -9,7 +9,16 @@ class Stats{
         this._horario;
         this._dia;   
         this._historico=[];
+        this._typeInput=["selecao_unidades","selecao_dias","selecao_horarios", "transicao"]
     }   
+
+    getTypeInput(){
+        return this._typeInput;
+    }
+
+    setTypeInput(typeInput){
+        this._typeInput = typeInput;
+    }
 
     getRecipient(){
         return this._recipient;

@@ -18,7 +18,9 @@ class QueriesSender{
     console.log(v);
     this.sendList(recipientID, v[0]["text"], v[0], v[1]); 
   }
-  _selecaoUnidades(recipientID, textId, i){
+
+  _selecaoUnidades(recipientID){
+    var textId=`Certo, então você precisa agendar a ${this._stats.getServices()}. Agora, preciso que escolha uma das unidades abaixo.`
     console.log(`SELECT UNIDADE FROM servicos_disponiveis WHERE nome='${this._stats.getServices()}' ORDER BY nome`);
     this._database.query(`SELECT UNIDADE FROM servicos_disponiveis WHERE nome='${this._stats.getServices()}' ORDER BY nome`, (err, rows, inf)=>{       
       var cont=1;          
@@ -39,11 +41,12 @@ class QueriesSender{
       }else{
           console.log('Erro ao realizar a consulta');
       }          
-    }); 
-    this._stats.setRecipient(i["send"]);       
+    });     
+    this._stats.setRecipient(this._stats.getTypeInput()[this._stats.getTypeInput().indexOf(this._stats.getRecipient())+1]);  
+    console.log("JJJJJJJJ "+this._stats.getRecipient());     
   }
 
-  _selecaoDias(recipientID, textId, userInput, i){
+  _selecaoDias(recipientID, userInput){
     var cont=1;
     var keepGoing = false;
     if(this._stats.getUnidade()!="Belo Horizonte"){
@@ -55,6 +58,7 @@ class QueriesSender{
         cont++;
       }
     }
+    var textId=`Ok, abaixo estão os dias disponíveis para a unidade ${this._stats.getUnidade()}.`
     if(keepGoing==false){
       this._valorInvalido(); 
     }else{   
@@ -81,11 +85,11 @@ class QueriesSender{
             console.log('Erro ao realizar a consulta');
         }               
       }); 
-      this._stats.setRecipient(i["send"]);    
+      this._stats.setRecipient(this._stats.getTypeInput()[this._stats.getTypeInput().indexOf(this._stats.getRecipient())+1]);    
     }
   }
 
-  _selecaoHorarios(recipientID, textId, userInput, i){
+  _selecaoHorarios(recipientID, userInput){
     var cont=1;
     var keepGoing = false;
     for(let inf of FileOperations.readTemporary('./src/public/temporary2.json')){
@@ -95,6 +99,7 @@ class QueriesSender{
       }
       cont++;
     }            
+    var textId="Certo, agora escolha um dos horários disponíveis.";
     if(keepGoing==false){
       this._valorInvalido();
     }else{
@@ -117,10 +122,11 @@ class QueriesSender{
             console.log('Erro ao realizar a consulta');
         }               
       });
-      this._stats.setRecipient(i["send"]);
+      this._stats.setRecipient(this._stats.getTypeInput()[this._stats.getTypeInput().indexOf(this._stats.getRecipient())+1]);
     }
   }  
-  _transicao(recipientID, textId, userInput, i){
+
+  _transicao(recipientID, userInput){
     var cont=1;
     var keepGoing = false;
     console.log(require('./src/public/temporary3.json'));
@@ -136,8 +142,7 @@ class QueriesSender{
     }else{
       var string = `Confira as informações do agendamento abaixo. Está tudo ok?\n\nServiço: ${this._stats.getServices()}\nUnidade: ${this._stats.getUnidade()}\nData: ${this._stats.getDia()}\nHorario: ${this._stats.getHorario()}`
       this._messageSender.sendMenu(recipientID, "pergunta_final", string)      
-    }
-    this._stats.setRecipient(i["send"]);
+    }    
   }
 
   inserir(recipientID){
@@ -145,7 +150,7 @@ class QueriesSender{
     console.log(`INSERT INTO agendamentos(nome, unidade, horario, dia, id_usuario) VALUES( '${this._stats.getServices()}','${this._stats.getUnidade()}','${this._stats.getHorario()}','${this._stats.getDia()}','${idUser[0]["id_usuario"]}')`)
     this._database.query(`INSERT INTO agendamentos(nome, unidade, horario, dia, id_usuario, senderToken) VALUES( '${this._stats.getServices()}','${this._stats.getUnidade()}','${this._stats.getHorario()}','${this._stats.getDia()}','${idUser[0]["id_usuario"]}','${recipientID}')`,(err, rows, inf)=>{
       if(!err){
-        this._messageSender.sendTextMessage(recipientID, this._stats.getRecipient());       
+        this._messageSender.sendTextMessage(recipientID, "Informações");       
       }else{
         console.log('Erro ao realizar a consulta');
       }               
@@ -169,20 +174,19 @@ class QueriesSender{
     });
   }
 
-  sendList(recipientID, textId, i, userInput){
-    console.log("AAAAAAAAAAAA"+i["type"]);
-    switch(i["type"]){
+  sendList(recipientID, userInput){    
+    switch(this._stats.getRecipient()){
       case "selecao_unidades":
-        this._selecaoUnidades(recipientID, textId, i)
+        this._selecaoUnidades(recipientID)
         break;
       case "selecao_dias":            
-        this._selecaoDias(recipientID, textId, userInput, i);
+        this._selecaoDias(recipientID, userInput);
         break;
       case "selecao_horarios":            
-        this._selecaoHorarios(recipientID, textId, userInput, i);
+        this._selecaoHorarios(recipientID, userInput);
         break;
       case "transicao":        
-        this._transicao(recipientID, textId, userInput, i);
+        this._transicao(recipientID, userInput);
         break;
       case "cancelamento":
         this._cancelamento();
