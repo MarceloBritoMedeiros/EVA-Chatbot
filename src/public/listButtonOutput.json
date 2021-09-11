@@ -17,8 +17,8 @@
     ],
     [
         {
-            "text":"Ok, entre no link abaixo para efetuar o cadastro. Depois de se cadastrar, pode voltar aqui e dizer um Olá novamente.(y) 👍",
-            "id":"nao_cadastrado"            
+            "text":"Ok, entre no link abaixo para efetuar o cadastro. Depois de se cadastrar, pode voltar aqui e dizer um Olá novamente.(y)",
+            "id":"nao_cadastrado"
         }
     ], 
     [
@@ -35,6 +35,12 @@
             "type":"postback",
             "title":"Finalizar Atendimento",
             "payload":"fim"
+        }
+    ],
+    [
+        {
+            "text":"Atendimento Finalizado!",
+            "id":"fim"
         }
     ],
     [
@@ -66,7 +72,7 @@
         {
             "type": "postback",
             "title": "Entrega do RG",
-            "payload": "entrega de rg"
+            "payload": "entrega do rg"
         },
         {
             "type": "postback",
@@ -81,13 +87,13 @@
     ],
     [
         {
-            "text": "c_UnidadesAgendamentoRg",
+            "text": "unidade",
             "id": "agendamento de rg"
         }        
     ],
     [
         {
-            "text": "c_UnidadesCorrecaoRg",
+            "text": "unidade",
             "id": "correcao do rg"
         }        
     ],
@@ -96,12 +102,6 @@
             "text": "unidade",
             "id": "entrega do rg"
         }        
-    ],    
-    [
-        {
-            "text":"Fim",
-            "id":"fim"
-        }
     ],
     [
         {
@@ -127,7 +127,7 @@
     [
         {
             "text":"Aqui estão mais opções referentes a Segunda Via",
-            "id":"via_documentos"
+            "id":"outros_segunda_via"
         },
         {
             "type":"postback",
@@ -142,27 +142,87 @@
     ],
     [
         {
-            "text": "c_UnidadesSegundaViaRG",
+            "text": "unidade",
             "id": "segunda via rg"
         }        
     ],
     [
         {
-            "text": "c_UnidadesSegundaViaCrlv",
+            "text": "unidade",
             "id": "segunda via crlv"
         }        
     ],
     [
         {
-            "text": "c_UnidadesSegundaViaCrv",
+            "text": "unidade",
             "id": "segunda via crv"
         }        
     ],
     [
         {
-            "text": "c_UnidadesSegundaViaCnh",
+            "text": "Para continuarmos o agendamento informe o local onde reside",
             "id": "segunda via cnh"
-        }        
+        },
+        {
+            "type":"postback",
+            "title":"Belo Horizonte",
+            "payload":"segunda_via_cnh_belo_horizonte"
+        },
+        {
+            "type":"postback",
+            "title":"Interior de Minas",
+            "payload":"segunda_via_cnh_interior"
+        }     
+    ],
+    [
+        {
+            "text":"Entrega pelo Correios: O documento será enviado ao endereço do condutor que consta no sistema do Detran-MG. Serão realizadas três tentativas de entrega, e caso o carteiro não seja atendido, o documento será enviado para a Unidade de Atendimento Integrado (UAI) unidade Praça 7.\nDeseja realizar a retirada na Unidade UAI?",
+            "id":"segunda_via_cnh_belo_horizonte"
+        },
+        {
+            "type":"postback",
+            "title":"Sim",
+            "payload":"segunda via cnh(belo horizonte)"
+        },
+        {
+            "type":"postback",
+            "title":"Não",
+            "payload":"p_segunda_via_cnh_não"
+        }
+    ],
+    [
+        {
+            "text":"horario",
+            "id":"segunda via cnh(belo horizonte)"
+        }
+    ],
+    [
+        {
+            "text":"unidade",
+            "id":"segunda via cnh(interior)"
+        }
+    ],
+    [
+        {
+            "text":"Entrega pelo Correios: O documento será enviado ao endereço do condutor que consta no sistema do Detran-MG. Serão realizadas três tentativas de entrega, e caso o carteiro não seja atendido, a CNH será enviada para a Unidade de Atendimento Integrado (UAI) da cidade. Caso o município não possua uma Unidade de Atendimento Integrado, a CNH ficará disponível na Delegacia de Trânsito do município.\n Deseja realizar a retirada na Unidade UAI?",
+            "id":"segunda_via_cnh_interior"
+        },
+        {
+            "type":"postback",
+            "title":"Sim",
+            "payload":"segunda via cnh(interior)"
+        },
+        {
+            "type":"postback",
+            "title":"Não",
+            "payload":"p_segunda_via_cnh_não"
+        }
+    ],
+    [
+        {
+            "text":"Agendamento realizado! Agora, aguarde a entrega do documento",
+            "id":"p_segunda_via_cnh_não"
+        }
     ],
     [
         {
@@ -257,7 +317,7 @@
     ],
     [
         {
-            "text":"b_HorariosRecolhimentoCnh",
+            "text":"horario",
             "id":"recolhimento cnh"
         }
     ],
@@ -291,7 +351,7 @@
     ],
     [
         {
-            "text":"b_HorariosRestituicaoCnh",
+            "text":"horario",
             "id":"restituicao cnh"
         }
     ],
@@ -315,7 +375,7 @@
         {
             "type":"postback",
             "title":"Entrega CRLV",
-            "payload":"entrega crlv"
+            "payload":"entrega_crlv"
         },
         {
             "type":"postback",
@@ -327,6 +387,34 @@
             "title":"Outros",
             "payload":"outros licenciamento de veiculo"
         }        
+    ],
+    [
+        {
+            "text":"Para continuarmos o agendamento informe o local onde reside",
+            "id":"entrega_crlv"
+        },
+        {
+            "type":"postback",
+            "title":"Belo Horizonte",
+            "payload":"entrega crlv(belo horizonte)"
+        },
+        {
+            "type":"postback",
+            "title":"Interior de minas",
+            "payload":"entrega crlv(interior)"
+        }
+    ],
+    [
+        {
+            "text":"unidade",
+            "id":"entrega crlv(belo horizonte)"
+        }
+    ],
+    [
+        {
+            "text":"unidade",
+            "id":"entrega crlv(interior)"
+        }
     ],
     [
         {

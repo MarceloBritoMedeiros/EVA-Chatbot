@@ -28,36 +28,45 @@ class MessageSender{
         };
         this.callSendAPI(messageData); 
     }
-    _voltar(recipientID, userInput){
-      var stopSearch=false;
-      if(userInput=="0" && this._stats.getHistorico()[this._stats.getHistorico().length-2][1]=="menu"){          
+    _voltar(recipientID, userInput){      
+      if(userInput=="0" && this._stats.getHistorico()[this._stats.getHistorico().length-1][1]=="menu"){          
         this._stats.delHistorico();
-        this.sendMenu(recipientID, this._stats.getHistorico()[this._stats.getHistorico().length-2][0][0]["id"]);
-        stopSearch=true;
+        this.sendMenu(recipientID, this._stats.getHistorico()[this._stats.getHistorico().length-1][0][0]["id"]);   
+        return true;       
       }else if(userInput=="0"// && this._stats.getHistorico().length!=0 || this._stats.getHistorico().length==1 && this._stats.getHistorico()[0][0]["type"]=="selecao_horarios" && userInput=="0"
-      ){      
+      ){            
         this._stats.delHistorico();
         var v=this._stats.getHistorico()[this._stats.getHistorico().length-1];
-        this._stats.setRecipient(v[0]["keyword"]);            
+        console.log(v)
+        this._stats.setRecipient(v[0]);            
         userInput=v[1];
-        this._stats.delHistorico();
+        this._queriesSender.sendList(recipientID, userInput);
+        //this._stats.delHistorico();  
+        return true;      
       }
-      return stopSearch; 
+      return false;
     }
     sendTextMessage(recipientID, userInput){               
-        console.log(this._stats.getHistorico());
-        var stopSearch=this._voltar(recipientID, userInput);
+        console.log(this._stats.getHistorico());        
+        var stop=this._voltar(recipientID, userInput);
+        console.log(userInput);
         if(userInput=="unidade"){
           this._stats.setRecipient(this._stats.getTypeInput()[0]);
+        }else if(userInput=="horario"){
+          this._stats.setUnidade("Belo Horizonte");
+          this._stats.setRecipient(this._stats.getTypeInput()[1]);
         }
-        this._queriesSender.sendList(recipientID, userInput);
+        if(stop==false){
+          this._stats.addHistorico([this._stats.getRecipient(),userInput]);
+          this._queriesSender.sendList(recipientID, userInput);
+        }
     }
 
     sendMenu(recipientID, payloader, tt=""){
         var li=[],textId;        
-        console.log(payloader);
-        this._stats.setServices(payloader);
+        console.log(payloader);        
         if(payloader=="cadastrado"){
+          this._stats.setServices(payloader);
           this._certificaUsuario.perguntaUsuario(recipientID, "");        
         }else{
           if(payloader=="texto_finalS"){
@@ -71,14 +80,17 @@ class MessageSender{
               textId=i[0]["text"];
               break; 
             }
-          }       
+          }                     
           if(payloader.slice(0,2)=="p_"){
             this.sendSimpleMessage(recipientID, textId); 
             setTimeout(() => {
               this.sendMenu(recipientID, "texto_final");
-            }, 1000);  
-          }else if (textId=="unidade"){    
-            this.sendTextMessage(recipientID, "unidade");           
+            }, 1000);            
+          }else if (textId=="unidade" || textId=="horario"){ 
+            this._stats.setServices(payloader);      
+            this.sendTextMessage(recipientID, textId);             
+          }else if(li.length==0){
+            this.sendSimpleMessage(recipientID, textId);         
           }else{          
             if(textId==""){
               textId=tt;

@@ -47,10 +47,28 @@ app.post('/webhook', (req, res) => {
       // Gets the message. entry.messaging is an array, but 
       // will only ever contain one message, so we get index 0
       entry.messaging.forEach(function(event){
+
         if(event.message){          
           recebeMensagem.trataMensagem(event);
         }else{
           if(event.postback && event.postback.payload){                
+            if(event.postback.payload=="texto_inicial"){
+              stats.setServices("");
+              stats.setUnidade("");
+              stats.setRecipient("");
+              stats.setHorario(null);
+              stats.setDia(null);
+              stats.setHistorico([]);
+            }else if(event.postback.payload=="fim"){
+              stats.setServices("");
+              stats.setUnidade("");
+              stats.setRecipient("");
+              stats.setHorario(null);
+              stats.setDia(null);
+              stats.setHistorico([]);
+              stats.setDNascimento(null);
+              stats.setCpf("");
+            }
             messageSender.sendMenu(event.sender.id, event.postback.payload, listaBotoes);
           }
         }

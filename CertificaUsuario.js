@@ -5,43 +5,41 @@ class CertificaUsuario{
     constructor(stats,database, messageSender){
       this._database = database;      
       this._messageSender = messageSender;  
-      this._stats = stats;        
+      this._stats = stats;  
+      this._recusado = false;
     }
     
-    perguntaUsuario(sender, messageText, continuar="", services=""){
-        console.log(this._stats.getCpf());
-        if(this._stats.getServices()=="cadastrado"||services=="cadastrado"){
-          this._stats.setServices("verificação");
-          this._messageSender.sendSimpleMessage(sender,"Para começarmos o atendimento, digite o seu CPF.");       
-        }else if(this._stats.getCpf()==""){
-          this._stats.setCpf(messageText);
-          this._messageSender.sendSimpleMessage(sender,"Agora, digite a sua data de nascimento.(DD-MM-AAAA)");           
-        }else if(this._stats.getDNascimento()==null){
-          var tt=messageText.split('-');
-          var s="";          
-          for(var i=tt.length-1;i>=0;i--){
-            s+=tt[i]+"-"
-          }  
-          s=s.slice(0,-1);
-          console.log(s);
-          var dd=new Date(s+'T10:20:30Z');
-          this._stats.setDNascimento(dateFormat(Date.parse(dd),"yyyy-mm-dd"));
-          this.verificaUsuario(sender);
-          //uData=FileOperations.readTemporary("./src/public/temporaryUser.json");                 
-        }else{
-          if(continuar=="recusado"){
-            this._messageSender.sendSimpleMessage(sender, "CPF ou data de nascimento incorretos");
-            this._stats.setServices("");
-            this._stats.setCpf("");
-            this._stats.setDNascimento(null);   
-            setTimeout(() => {
-              this._messageSender.sendMenu(senderID, "saudacao"); 
-            }, 1000);                     
-            setTimeout(() => {
-              this.perguntaUsuario(sender, "");
-            }, 1000);                  
-          }  
+    perguntaUsuario(sender, messageText, services=""){
+      if(this._recusado==true){   
+        this._recusado=false;         
+        this._stats.setCpf("");
+        this._stats.setDNascimento(null);                  
+      } 
+      console.log(this._stats.getCpf());
+      if(this._stats.getServices()=="cadastrado"||services=="cadastrado"){
+        if(services=="cadastrado"){
+          this._messageSender.sendSimpleMessage(sender, "CPF ou data de nascimento incorretos");
         }
+        this._stats.setServices("verificação");
+        setTimeout(() => {
+          this._messageSender.sendSimpleMessage(sender,"Para começarmos o atendimento, digite o seu CPF.");
+        }, 1000);               
+      }else if(this._stats.getCpf()==""){
+        this._stats.setCpf(messageText);
+        this._messageSender.sendSimpleMessage(sender,"Agora, digite a sua data de nascimento.(DD-MM-AAAA)");           
+      }else if(this._stats.getDNascimento()==null){
+        var tt=messageText.split('-');
+        var s="";          
+        for(var i=tt.length-1;i>=0;i--){
+          s+=tt[i]+"-"
+        }  
+        s=s.slice(0,-1);
+        console.log(s);
+        var dd=new Date(s+'T10:20:30Z');
+        this._stats.setDNascimento(dateFormat(Date.parse(dd),"yyyy-mm-dd"));
+        this.verificaUsuario(sender);
+        //uData=FileOperations.readTemporary("./src/public/temporaryUser.json");                 
+      }
       }
       verificaUsuario(sender){
         console.log(`SELECT id_usuario, nome FROM usuario WHERE cpf='${this._stats.getCpf()}' AND data_nascimento='${this._stats.getDNascimento()}'`);
@@ -56,13 +54,13 @@ class CertificaUsuario{
               }, 1000);      
               FileOperations.writeTemporary(rows, './src/public/temporaryUser.json');  
             }else{
-              this.perguntaUsuario(sender,"", "recusado", "cadastrado")
-            }
-                 
+              this.perguntaUsuario(sender,"", "cadastrado")
+            }                 
           }else{
             console.log("Não foi possível fazer a consulta de usuário")
           }
         })
+        this._recusado=true;
       }
 }
 

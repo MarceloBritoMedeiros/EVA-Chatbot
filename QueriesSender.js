@@ -11,12 +11,20 @@ class QueriesSender{
       //this._notificationSender = new NotificationSender();      
   }
 
-  _valorInvalido(){
+  _semHorarios(recipientID, cont){
+    if(cont==1){
+      this._messageSender.sendSimpleMessage(recipientID, "Não há horários disponíveis");
+      this._messageSender.sendTextMessage(recipientID, "0");
+      return false;
+    }
+    return true;
+  }
+  _valorInvalido(recipientID){
     this._messageSender.sendSimpleMessage(recipientID, "VALOR INVÁLIDO! DIGITE UM DOS NÚMEROS DO MENU.");
     this._stats.delHistorico();
     var v=this._stats.getHistorico()[this._stats.getHistorico().length-1];
-    console.log(v);
-    this.sendList(recipientID, v[0]["text"], v[0], v[1]); 
+    this._stats.setRecipient(v[0]);
+    this.sendList(recipientID, v[1]); 
   }
 
   _selecaoUnidades(recipientID){
@@ -32,18 +40,20 @@ class QueriesSender{
         for(var j of mySet){            
           textId+="\n*"+cont+"* - "+j;              
           cont++;
-        }
+        }        
         textId+="\n*0* - Voltar";  
-        FileOperations.writeTemporary(Array.from(mySet), './src/public/temporary.json');    
-        setTimeout(() => {
-          this._messageSender.sendSimpleMessage(recipientID, textId);  
-        }, 1000);                          
+        var temHorario = this._semHorarios(recipientID, cont);
+        if(temHorario==true){
+          FileOperations.writeTemporary(Array.from(mySet), './src/public/temporary.json');    
+          setTimeout(() => {
+            this._messageSender.sendSimpleMessage(recipientID, textId);  
+          }, 1000); 
+        }                                 
       }else{
           console.log('Erro ao realizar a consulta');
       }          
     });     
-    this._stats.setRecipient(this._stats.getTypeInput()[this._stats.getTypeInput().indexOf(this._stats.getRecipient())+1]);  
-    console.log("JJJJJJJJ "+this._stats.getRecipient());     
+    this._stats.setRecipient(this._stats.getTypeInput()[this._stats.getTypeInput().indexOf(this._stats.getRecipient())+1]);           
   }
 
   _selecaoDias(recipientID, userInput){
@@ -57,14 +67,16 @@ class QueriesSender{
         }
         cont++;
       }
+    }else{
+      keepGoing=true;
     }
     var textId=`Ok, abaixo estão os dias disponíveis para a unidade ${this._stats.getUnidade()}.`
     if(keepGoing==false){
-      this._valorInvalido(); 
+      this._valorInvalido(recipientID); 
     }else{   
       console.log(`SELECT dia FROM servicos_disponiveis WHERE unidade='${this._stats.getUnidade()}' AND nome='${this._stats.getServices()}' ORDER BY dia`);      
       this._database.query(`SELECT dia FROM servicos_disponiveis WHERE unidade='${this._stats.getUnidade()}' AND nome='${this._stats.getServices()}' ORDER BY dia`,(err, rows, inf)=>{
-        if(!err){          
+        if(!err){
           var cont=1;              
           var mySet=new Set();    
           var dias = new Set();
@@ -101,7 +113,7 @@ class QueriesSender{
     }            
     var textId="Certo, agora escolha um dos horários disponíveis.";
     if(keepGoing==false){
-      this._valorInvalido();
+      this._valorInvalido(recipientID);
     }else{
       console.log(`SELECT horario FROM servicos_disponiveis WHERE unidade='${this._stats.getUnidade()}' AND nome='${this._stats.getServices()}' AND dia='${this._stats.getDia()}' ORDER BY horario`);      
       this._database.query(`SELECT horario FROM servicos_disponiveis WHERE unidade='${this._stats.getUnidade()}' AND nome='${this._stats.getServices()}' AND dia='${this._stats.getDia()}' ORDER BY horario`,(err, rows, inf)=>{
@@ -113,6 +125,7 @@ class QueriesSender{
             horarios.push(inf.horario);          
             cont++;
           }     
+
           textId+="\n*0* - Voltar";     
           FileOperations.writeTemporary(horarios, './src/public/temporary3.json');      
           setTimeout(() => {
@@ -138,7 +151,7 @@ class QueriesSender{
       cont++;
     }     
     if(keepGoing==false){
-      this._valorInvalido();
+      this._valorInvalido(recipientID);
     }else{
       var string = `Confira as informações do agendamento abaixo. Está tudo ok?\n\nServiço: ${this._stats.getServices()}\nUnidade: ${this._stats.getUnidade()}\nData: ${this._stats.getDia()}\nHorario: ${this._stats.getHorario()}`
       this._messageSender.sendMenu(recipientID, "pergunta_final", string)      
@@ -147,11 +160,10 @@ class QueriesSender{
 
   inserir(recipientID){
     var idUser=FileOperations.readTemporary('./src/public/temporaryUser.json');
+    var informacoes=FileOperations.readTemporary('./src/public/listTextOutput.json');
     console.log(`INSERT INTO agendamentos(nome, unidade, horario, dia, id_usuario) VALUES( '${this._stats.getServices()}','${this._stats.getUnidade()}','${this._stats.getHorario()}','${this._stats.getDia()}','${idUser[0]["id_usuario"]}')`)
     this._database.query(`INSERT INTO agendamentos(nome, unidade, horario, dia, id_usuario, senderToken) VALUES( '${this._stats.getServices()}','${this._stats.getUnidade()}','${this._stats.getHorario()}','${this._stats.getDia()}','${idUser[0]["id_usuario"]}','${recipientID}')`,(err, rows, inf)=>{
-      if(!err){
-        this._messageSender.sendTextMessage(recipientID, "Informações");       
-      }else{
+      if(err){
         console.log('Erro ao realizar a consulta');
       }               
     });
@@ -160,7 +172,15 @@ class QueriesSender{
       if(err){     
         console.log('Erro ao realizar a consulta');
       }               
-    });      
+    });     
+    for(var i of Object.keys(informacoes)){
+      console.log("BBBBB"+i)
+
+      if(i==this._stats.getServices()){
+        this._messageSender.sendSimpleMessage(recipientID, informacoes[i]); 
+        break;
+      }
+    } 
     this._stats.setHistorico([]); 
   }
   _cancelamento(){
