@@ -1,7 +1,7 @@
 const dateFormat = require('dateformat');
-const FileOperations = require("./FileOperations.js");
+const FileOperations = require("C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/helpers/FileOperations.js");
 
-class CertificaUsuario{      
+class CertificaUsuario{
     constructor(stats,database, messageSender){
       this._database = database;      
       this._messageSender = messageSender;  
@@ -52,7 +52,7 @@ class CertificaUsuario{
               setTimeout(() => {
                 this._messageSender.sendMenu(sender, "texto_inicial");
               }, 1000);      
-              FileOperations.writeTemporary(rows, './src/public/temporaryUser.json');  
+              FileOperations.writeTemporary(rows, "C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/public/temporaryUser.json");  
             }else{
               this.perguntaUsuario(sender,"", "cadastrado")
             }                 

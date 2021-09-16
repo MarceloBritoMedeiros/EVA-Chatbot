@@ -1,4 +1,4 @@
-const FileOperations = require('./FileOperations');
+const FileOperations = require("C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/helpers/FileOperations.js");
 dateFormat = require('dateformat');
 
 class QueriesSender{
@@ -44,7 +44,7 @@ class QueriesSender{
         textId+="\n*0* - Voltar";  
         var temHorario = this._semHorarios(recipientID, cont);
         if(temHorario==true){
-          FileOperations.writeTemporary(Array.from(mySet), './src/public/temporary.json');    
+          FileOperations.writeTemporary(Array.from(mySet), "C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/public/unidades.json");    
           setTimeout(() => {
             this._messageSender.sendSimpleMessage(recipientID, textId);  
           }, 1000); 
@@ -60,7 +60,7 @@ class QueriesSender{
     var cont=1;
     var keepGoing = false;
     if(this._stats.getUnidade()!="Belo Horizonte"){
-      for(let j of FileOperations.readTemporary('./src/public/temporary.json')){
+      for(let j of FileOperations.readTemporary("C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/public/unidades.json")){
         if(cont==parseInt(userInput)){
           this._stats.setUnidade(j);
           keepGoing=true;
@@ -89,7 +89,7 @@ class QueriesSender{
             cont++;
           }
           textId+="\n*0* - Voltar";
-          FileOperations.writeTemporary(Array.from(mySet), './src/public/temporary2.json');      
+          FileOperations.writeTemporary(Array.from(mySet), "C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/public/dias.json");      
           setTimeout(() => {
             this._messageSender.sendSimpleMessage(recipientID, textId);      
           }, 1000);                    
@@ -104,7 +104,7 @@ class QueriesSender{
   _selecaoHorarios(recipientID, userInput){
     var cont=1;
     var keepGoing = false;
-    for(let inf of FileOperations.readTemporary('./src/public/temporary2.json')){
+    for(let inf of FileOperations.readTemporary("C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/public/dias.json")){
       if(cont==parseInt(userInput)){
         this._stats.setDia(inf);
         keepGoing = true;
@@ -127,7 +127,7 @@ class QueriesSender{
           }     
 
           textId+="\n*0* - Voltar";     
-          FileOperations.writeTemporary(horarios, './src/public/temporary3.json');      
+          FileOperations.writeTemporary(horarios, 'C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/public/horarios.json');      
           setTimeout(() => {
             this._messageSender.sendSimpleMessage(recipientID, textId);
           }, 1000);            
@@ -141,9 +141,8 @@ class QueriesSender{
 
   _transicao(recipientID, userInput){
     var cont=1;
-    var keepGoing = false;
-    console.log(require('./src/public/temporary3.json'));
-    for(let inf of require('./src/public/temporary3.json')){      
+    var keepGoing = false;    
+    for(let inf of require('C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/public/horarios.json')){      
       if(cont==parseInt(userInput)){
         this._stats.setHorario(inf);        
         keepGoing = true; 
@@ -153,14 +152,14 @@ class QueriesSender{
     if(keepGoing==false){
       this._valorInvalido(recipientID);
     }else{
-      var string = `Confira as informações do agendamento abaixo. Está tudo ok?\n\nServiço: ${this._stats.getServices()}\nUnidade: ${this._stats.getUnidade()}\nData: ${this._stats.getDia()}\nHorario: ${this._stats.getHorario()}`
+      var string = `Confira as informações do agendamento abaixo. Está tudo ok?\n\nServiço: ${this._stats.getServices()}\nUnidade: ${this._stats.getUnidade()}\nData: ${this._stats.getDia()}\nHorário: ${dateformat(this._stats.getHorario(), "dd/mm/yyyy")}`
       this._messageSender.sendMenu(recipientID, "pergunta_final", string)      
     }    
   }
 
   inserir(recipientID){
-    var idUser=FileOperations.readTemporary('./src/public/temporaryUser.json');
-    var informacoes=FileOperations.readTemporary('./src/public/listTextOutput.json');
+    var idUser=FileOperations.readTemporary('C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/public/temporaryUser.json');
+    var informacoes=FileOperations.readTemporary('C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/public/listTextOutput.json');
     console.log(`INSERT INTO agendamentos(nome, unidade, horario, dia, id_usuario) VALUES( '${this._stats.getServices()}','${this._stats.getUnidade()}','${this._stats.getHorario()}','${this._stats.getDia()}','${idUser[0]["id_usuario"]}')`)
     this._database.query(`INSERT INTO agendamentos(nome, unidade, horario, dia, id_usuario, senderToken) VALUES( '${this._stats.getServices()}','${this._stats.getUnidade()}','${this._stats.getHorario()}','${this._stats.getDia()}','${idUser[0]["id_usuario"]}','${recipientID}')`,(err, rows, inf)=>{
       if(err){
@@ -174,8 +173,6 @@ class QueriesSender{
       }               
     });     
     for(var i of Object.keys(informacoes)){
-      console.log("BBBBB"+i)
-
       if(i==this._stats.getServices()){
         this._messageSender.sendSimpleMessage(recipientID, informacoes[i]); 
         break;
@@ -184,7 +181,7 @@ class QueriesSender{
     this._stats.setHistorico([]); 
   }
   _cancelamento(){
-    var idUser=FileOperations.readTemporary('./src/public/temporaryUser.json');
+    var idUser=FileOperations.readTemporary('C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/public/temporaryUser.json');
     this._database.query(`DELETE FROM agendamentos WHERE id_usuario='${idUser[0]["id_usuario"]}'`,(err, rows, inf)=>{
       if(!err){
         console.log(rows);

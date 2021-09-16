@@ -1,8 +1,8 @@
 {
   "id_servico": 1,
-  "nome": "entrega do rg",
-  "unidade": "Governador Valadares",
-  "horario": "14:00:00",
+  "nome": "correcao do rg",
+  "unidade": "Belo Horizonte",
+  "horario": "12:00:00",
   "dia": "2021-09-21T03:00:00.000Z",
   "id_usuario": 1,
   "senderToken": "4145891078867677"

@@ -1,5 +1,5 @@
 const fs = require('fs');
-class FileOperations{    
+class FileOperations{ 
     static writeTemporary(x, path){
         let data = JSON.stringify(x, null, 2);
         fs.writeFile(path, data, (err) => {

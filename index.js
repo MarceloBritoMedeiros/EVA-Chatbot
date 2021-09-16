@@ -1,10 +1,10 @@
 //Importação das classes
-const DbConnection = require('./dbConnection.js');
-const RecebeMensagem = require('./RecebeMensagem.js');
-const MessageSender = require('./MessageSender.js');
-const CertificaUsuario = require('./CertificaUsuario.js');
-const QueriesSender = require('./QueriesSender.js');
-const Stats = require('./Stats.js');
+const DbConnection = require('./src/helpers/dbConnection.js');
+const RecebeMensagem = require('./src/controllers/RecebeMensagem.js');
+const MessageSender = require('./src/models/MessageSender.js');
+const CertificaUsuario = require('./src/controllers/CertificaUsuario.js');
+const QueriesSender = require('./src/models/QueriesSender.js');
+const Stats = require('./src/models/Stats.js');
 const listaBotoes=require("./src/public/listButtonOutput.json"); 
 
 //Instanciação das classes e configurações iniciais
@@ -18,11 +18,6 @@ let queriesSender = new QueriesSender(stats, database, messageSender);
 messageSender.setCertificaUsuario(certificaUsuario);
 messageSender.setQueriesSender(queriesSender);
 let recebeMensagem = new RecebeMensagem(stats, messageSender, certificaUsuario);
-//var servico,services="",unidade, cpf="",dNascimento, uInput;
-
-
-
-
 
 // Imports dependencies and set up http server
 const
