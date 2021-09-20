@@ -18,7 +18,7 @@ class RecebeMensagem{
         var attachments = message.attachments;
         if(messageText){                   
           if(messageText=="olá" || messageText=="ola" || messageText=="👍"){
-            this._messageSender.sendSimpleMessage(senderID, "Olá, eu sou a Eva, a assistente pessoal da UAI."); 
+            this._messageSender.sendSimpleMessage(senderID, "Olá, meu nome é Eva e estou aqui para te ajudar."); 
             setTimeout(() => {
                 this._messageSender.sendMenu(senderID, "saudacao");             
             }, 1000);            

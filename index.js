@@ -5,12 +5,12 @@ const MessageSender = require('./src/models/MessageSender.js');
 const CertificaUsuario = require('./src/controllers/CertificaUsuario.js');
 const QueriesSender = require('./src/models/QueriesSender.js');
 const Stats = require('./src/models/Stats.js');
-const listaBotoes=require("./src/public/listButtonOutput.json"); 
+const listaBotoes=require("./src/public/listButtonOutput.json");
 
 //Instanciação das classes e configurações iniciais
-let connection = new DbConnection();
+let connection = new DbConnection('3000');
 connection.setConnection();
-let stats = new Stats(); 
+let stats = new Stats();
 let database = connection.getConnection();
 let messageSender = new MessageSender(stats);
 let certificaUsuario = new CertificaUsuario(stats,database, messageSender);

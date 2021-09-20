@@ -3,9 +3,9 @@ const FileOperations = require("C:/Users/marce/Docs/Desenvolvimento/UaiForce/mes
 
 class CertificaUsuario{
     constructor(stats,database, messageSender){
-      this._database = database;      
-      this._messageSender = messageSender;  
-      this._stats = stats;  
+      this._database = database;
+      this._messageSender = messageSender;
+      this._stats = stats;
       this._recusado = false;
     }
     
@@ -25,11 +25,11 @@ class CertificaUsuario{
           this._messageSender.sendSimpleMessage(sender,"Para começarmos o atendimento, digite o seu CPF.");
         }, 1000);               
       }else if(this._stats.getCpf()==""){
-        this._stats.setCpf(messageText);
+        this._stats.setCpf(messageText.replace('.','').replace('.','').replace('-',''));
         this._messageSender.sendSimpleMessage(sender,"Agora, digite a sua data de nascimento.(DD-MM-AAAA)");           
-      }else if(this._stats.getDNascimento()==null){
-        var tt=messageText.split('-');
-        var s="";          
+      }else if(this._stats.getDNascimento()==null){        
+        var tt=messageText.replace('/','-').replace('/','-').split('-');
+        var s="";
         for(var i=tt.length-1;i>=0;i--){
           s+=tt[i]+"-"
         }  

@@ -1,9 +1,9 @@
-const DbConnection = require('./dbConnection');
-const MessageSender = require('./MessageSender');
-const Stats = require('./Stats');
-const FileOperations = require('./FileOperations');
+const DbConnection = require('./src/helpers/dbConnection');
+const MessageSender = require('./src/models/MessageSender');
+const Stats = require('./src/models/Stats');
+const FileOperations = require('./src/helpers/FileOperations');
 var request = require('request');
-let connection = new DbConnection();
+let connection = new DbConnection('3500');
 connection.setConnection();
 let database = connection.getConnection();
 stats=new Stats();
@@ -20,18 +20,19 @@ const
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 5000, () => console.log('webhook is listening'));
 var today = new Date();
-today.setMinutes(today.getMinutes()+1);
+today.setHours(19);
 var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
 var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 console.log(time);
 sendNotification();
+
 function sendNotification(){
-  var j = schedule.scheduleJob(today, function(){
-    //date.setDate(date.getDate()+1);
+  //var j = schedule.scheduleJob(today, function(){    
+    //`SELECT * FROM agendamentos WHERE dia=${date.getDate+1}`
     database.query(`SELECT * FROM agendamentos `,(err, rows, inf)=>{
         if(!err){
-            for(i of rows){
-                enviarNotificacao(rows[0]);
+            for(var i=0;i<rows.length;i++){
+                enviarNotificacao(rows[i]);
             }
         }else{
             console.log('Erro ao realizar a consulta');
@@ -50,7 +51,7 @@ function sendNotification(){
               if(event.postback.payload=="confirma_presenca"){
                   messageSender.sendSimpleMessage(event.sender, "Agendamento Confirmado!");
               }else{
-                  var info=FileOperations.readTemporary("./src/public/temporaryNotification.json");
+                  var info=FileOperations.readTemporary("C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/public/temporaryUser.json");
                   console.log(`SELECT * FROM agendamentos WHERE senderToken='${info["senderToken"]}'`)
                   database.query(`SELECT * FROM agendamentos WHERE senderToken='${info["senderToken"]}'`,(err, rows, inf)=>{
                       if(!err){
@@ -107,13 +108,13 @@ function sendNotification(){
           }
         }
       });
-      today.setMinutes(today.getMinutes()+1);
-      sendNotification();
-  });
+      //today.setDay(today.getDay()+1);
+      //sendNotification();
+  //});
 }
 
 function enviarNotificacao(consulta){
   var string=`Olá, aqui é a Eva. Estou passando para confirmar o seu agendamento de ${consulta.nome.toUpperCase()} amanhã às ${consulta.horario.slice(0, -3)} na Uai ${consulta.unidade}. Você poderá comparecer?`    
-  FileOperations.writeTemporary(consulta, "./src/public/temporaryNotification.json");
+  FileOperations.writeTemporary(consulta, "C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/public/temporaryUser.json");
   messageSender.sendMenu(consulta.senderToken,"notificacao", string);
 }

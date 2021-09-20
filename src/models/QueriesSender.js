@@ -117,11 +117,11 @@ class QueriesSender{
     }else{
       console.log(`SELECT horario FROM servicos_disponiveis WHERE unidade='${this._stats.getUnidade()}' AND nome='${this._stats.getServices()}' AND dia='${this._stats.getDia()}' ORDER BY horario`);      
       this._database.query(`SELECT horario FROM servicos_disponiveis WHERE unidade='${this._stats.getUnidade()}' AND nome='${this._stats.getServices()}' AND dia='${this._stats.getDia()}' ORDER BY horario`,(err, rows, inf)=>{
-        if(!err){          
-          var cont=1;      
+        if(!err){ 
+          var cont=1;
           var horarios=[];
           for(var inf of rows){                
-            textId+="\n*" + cont + "* - " + inf.horario;      
+            textId+="\n*" + cont + "* - " + inf.horario.slice(0,5);      
             horarios.push(inf.horario);          
             cont++;
           }     
@@ -152,7 +152,9 @@ class QueriesSender{
     if(keepGoing==false){
       this._valorInvalido(recipientID);
     }else{
-      var string = `Confira as informações do agendamento abaixo. Está tudo ok?\n\nServiço: ${this._stats.getServices()}\nUnidade: ${this._stats.getUnidade()}\nData: ${this._stats.getDia()}\nHorário: ${dateformat(this._stats.getHorario(), "dd/mm/yyyy")}`
+      var xx=this._stats.getDia().split('-')
+      var data = `${xx[2]}/${xx[1]}/${xx[0]}`      
+      var string = `Confira as informações do agendamento abaixo. Posso confirmar?\n\nServiço: ${this._stats.getServices()}\nUnidade: ${this._stats.getUnidade()}\nData: ${data}\nHorário: ${this._stats.getHorario().slice(0,5)}`
       this._messageSender.sendMenu(recipientID, "pergunta_final", string)      
     }    
   }

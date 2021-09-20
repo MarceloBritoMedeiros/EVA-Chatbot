@@ -1,7 +1,8 @@
 const mysql2 = require('mysql2');
 const express = require('express');
 class DbConection{
-    constructor(){
+    constructor(port){
+        this._port=port;
         this.connection = mysql2.createConnection({
             host :'localhost',
             user :'root',
@@ -18,8 +19,8 @@ class DbConection{
             console.log('MySql Connected...');
         });
         const app=express();
-        app.listen('3000', ()=>{
-            console.log("Server started on port 3000");
+        app.listen(this._port, ()=>{
+            console.log("Server started on port "+this._port);
         });
     }
     //Connect

@@ -17,13 +17,13 @@
     ],
     [
         {
-            "text":"Ok, entre no link abaixo para efetuar o cadastro. Depois de se cadastrar, pode voltar aqui e dizer um Olá novamente.(y)",
+            "text":"Que pena! 🙁 Neste caso entre no link abaixo para efetuar o cadastro. Após o cadastro poderei te ajudar, basta voltar aqui e dizer um Olá novamente.",
             "id":"nao_cadastrado"
         }
     ], 
     [
         {
-            "text":"Eu poderia ajudar em mais alguma coisa?",
+            "text":"Eu posso ajudar em mais alguma coisa?",
             "id":"texto_final"
         },
         {
@@ -39,7 +39,7 @@
     ],
     [
         {
-            "text":"Atendimento Finalizado!",
+            "text":"Atendimento Finalizado! Até mais 👋",
             "id":"fim"
         }
     ],
@@ -66,7 +66,7 @@
     ],    
     [
         {
-            "text": "Ok, o que podemos fazer em relação ao seu RG?",
+            "text": "Certo, qual dos nossos serviços para RG você procura?",
             "id": "carteira_identidade"
         },
         {
@@ -105,7 +105,7 @@
     ],
     [
         {
-            "text":"Beleza, então você precisa obter uma 2º via. Selecione uma das opções abaixo",
+            "text":"Certo, então você precisa obter uma 2º via. Selecione uma das opções abaixo",
             "id":"via_documentos"
         },
         {
@@ -126,7 +126,7 @@
     ],
     [
         {
-            "text":"Aqui estão mais opções referentes a Segunda Via",
+            "text":"Aqui estão mais opções referentes a 2º Via",
             "id":"outros_segunda_via"
         },
         {
@@ -160,7 +160,7 @@
     ],
     [
         {
-            "text": "Para continuarmos o agendamento informe o local onde reside",
+            "text": "Para continuarmos com o agendamento, informe qual seria a localização mais próxima",
             "id": "segunda via cnh"
         },
         {
@@ -176,17 +176,17 @@
     ],
     [
         {
-            "text":"Entrega pelo Correios: O documento será enviado ao endereço do condutor que consta no sistema do Detran-MG. Serão realizadas três tentativas de entrega, e caso o carteiro não seja atendido, o documento será enviado para a Unidade de Atendimento Integrado (UAI) unidade Praça 7.\nDeseja realizar a retirada na Unidade UAI?",
+            "text":"Deseja realizar a retirada na Unidade UAI? Você também pode optar por receber em casa via entrega pelos Correios.\nEntrega pelo Correios: O documento será enviado ao endereço do condutor que consta no sistema do Detran-MG. Serão realizadas três tentativas de entrega, e caso o carteiro não seja atendido, o documento será enviado para a Unidade de Atendimento Integrado (UAI) unidade Praça 7.",
             "id":"segunda_via_cnh_belo_horizonte"
         },
         {
             "type":"postback",
-            "title":"Sim",
+            "title":"Sim, quero retirar.",
             "payload":"segunda via cnh(belo horizonte)"
         },
         {
             "type":"postback",
-            "title":"Não",
+            "title":"Não, quero receber em casa.",
             "payload":"p_segunda_via_cnh_não"
         }
     ],
@@ -204,23 +204,23 @@
     ],
     [
         {
-            "text":"Entrega pelo Correios: O documento será enviado ao endereço do condutor que consta no sistema do Detran-MG. Serão realizadas três tentativas de entrega, e caso o carteiro não seja atendido, a CNH será enviada para a Unidade de Atendimento Integrado (UAI) da cidade. Caso o município não possua uma Unidade de Atendimento Integrado, a CNH ficará disponível na Delegacia de Trânsito do município.\n Deseja realizar a retirada na Unidade UAI?",
+            "text":"Deseja realizar a retirada na Unidade UAI? Você também pode optar por receber em casa via entrega pelos Correios.\nEntrega pelo Correios: O documento será enviado ao endereço do condutor que consta no sistema do Detran-MG. Serão realizadas três tentativas de entrega, e caso o carteiro não seja atendido, a CNH será enviada para a Unidade de Atendimento Integrado (UAI) da cidade. Caso o município não possua uma Unidade de Atendimento Integrado, a CNH ficará disponível na Delegacia de Trânsito do município.",
             "id":"segunda_via_cnh_interior"
         },
         {
             "type":"postback",
-            "title":"Sim",
+            "title":"Sim, quero retirar.",
             "payload":"segunda via cnh(interior)"
         },
         {
             "type":"postback",
-            "title":"Não",
+            "title":"Não, quero receber em casa.",
             "payload":"p_segunda_via_cnh_não"
         }
     ],
     [
         {
-            "text":"Agendamento realizado! Agora, aguarde a entrega do documento",
+            "text":"Agendamento realizado! Agora, só aguardar a entrega do documento",
             "id":"p_segunda_via_cnh_não"
         }
     ],
@@ -247,7 +247,7 @@
     ],
     [
         {
-            "text":"Ok, então você deseja informações ou serviços sobre cnh.",
+            "text":"Ok, então você deseja informações ou serviços sobre CNH.",
             "id":"cnh"
         },
         {
@@ -268,19 +268,19 @@
     ],
     [
         {
-            "text":"Você será encaminhado ao link a seguir, basta preencher o formulário para realizar o agendamento. Todos os dias são liberados novos horários para agendamento. Por favor, tente mais tarde caso não encontre datas disponíveis.\nhttps://www.detran.mg.gov.br/habilitacao/1-habilitacao-quero-ser-condutor/como-obter-a-primeira-habilitacao-2",
+            "text":"Que pena 🙁 Este serviço precisa ser realizado diretamente pelo site do DETRAN. O link a seguir contém o que precisa, basta preencher o formulário para realizar o agendamento. Todos os dias são liberados novos horários para agendamento. Por favor, tente mais tarde caso não encontre datas disponíveis.\nhttps://www.detran.mg.gov.br/habilitacao/1-habilitacao-quero-ser-condutor/como-obter-a-primeira-habilitacao-2",
             "id":"p_entrega_cnh"
         }
     ],
     [
         {
-            "text":"Você será encaminhado ao link a seguir, basta seguir passo á passo as instruções apresentadas.\nhttps://www.detran.mg.gov.br/habilitacao/1-habilitacao-quero-ser-condutor/como-obter-a-primeira-habilitacao-2",
+            "text":"Que pena 🙁 Este serviço precisa ser realizado diretamente pelo site do DETRAN. O link a seguir contém o que precisa, basta seguir passo á passo as instruções apresentadas.\nhttps://www.detran.mg.gov.br/habilitacao/1-habilitacao-quero-ser-condutor/como-obter-a-primeira-habilitacao-2",
             "id":"p_emissao_cnh"
         }
     ],
     [
         {
-            "text":"Abaixo temos mais opções referentes a cnh.",
+            "text":"Abaixo temos mais opções referentes a CNH.",
             "id":"outros_cnh"
         },
         {
@@ -301,7 +301,7 @@
     ],
     [
         {
-            "text":"ORIENTAÇÕES: ENTREGA DA CNH Compareça à Unidade de Atendimento do Detran-MG e informe que deseja entregar sua CNH, para cumprir a penalidade; O auto de apreensão será lavrado e uma cópia será entregue ao condutor. Após essa etapa, o condutor poderá iniciar o curso de reciclagem.\n\nPara continuarmos o agendamento informe o local onde reside",
+            "text":"ORIENTAÇÕES: ENTREGA DA CNH Compareça à Unidade de Atendimento do Detran-MG e informe que deseja entregar sua CNH, para cumprir a penalidade; O auto de apreensão será lavrado e uma cópia será entregue ao condutor. Após essa etapa, o condutor poderá iniciar o curso de reciclagem.\n\nPara continuarmos o agendamento  informe qual seria a localização mais próxima",
             "id":"recolhimento_cnh"
         },
         {
@@ -323,19 +323,19 @@
     ],
     [
         {
-            "text":"Agora selecione a data e o horário em que deseja ser atendido através do link a seguir.\nhttps://www.detran.mg.gov.br/habilitacao/processo-administrativo-de-transito/atendimento/unidades-de-atendimento/lista-de-unidades",
+            "text":"Que pena 🙁 Este serviço precisa ser realizado diretamente pelo site do DETRAN. O link a seguir contém o que precisa, basta seguir passo á passo as instruções apresentadas.\nhttps://www.detran.mg.gov.br/habilitacao/processo-administrativo-de-transito/atendimento/unidades-de-atendimento/lista-de-unidades",
             "id":"p_interior_minas_recolhimento"
         }
     ],
     [
         {
-            "text":"Você será encaminhado ao link a seguir, basta seguir passo á passo as instruções apresentadas.\nhttps://www.detran.mg.gov.br/habilitacao/renovacao-da-cnh-1/solicitar-renovacao-da-cnh",
+            "text":"Que pena 🙁 Este serviço precisa ser realizado diretamente pelo site do DETRAN. O link a seguir contém o que precisa, basta seguir passo á passo as instruções apresentadas.\nhttps://www.detran.mg.gov.br/habilitacao/renovacao-da-cnh-1/solicitar-renovacao-da-cnh",
             "id":"p_renovacao_cnh"
         }
     ],
     [
         {
-            "text":"ORIENTAÇÕES: RESTITUIÇÃO DA CNH\n Compareça à Unidade de Atendimento do Detran-MG e informe que deseja a restituição de sua CNH; Caso a penalidade tenha sido cumprida, a CNH será restituída ao condutor. ATENÇÃO: CNHs recolhidas pela Polícia Militar nos municípios de Belo Horizonte, Nova Lima e Contagem estarão disponíveis para retirada na CICC, em Belo Horizonte. CNHs recolhidas nos demais municípios de Minas Gerais, estarão disponíveis na Ciretran da cidade.\n\nPara continuarmos o agendamento informe o local onde reside",
+            "text":"ORIENTAÇÕES: RESTITUIÇÃO DA CNH\n Compareça à Unidade de Atendimento do Detran-MG e informe que deseja a restituição de sua CNH; Caso a penalidade tenha sido cumprida, a CNH será restituída ao condutor. ATENÇÃO: CNHs recolhidas pela Polícia Militar nos municípios de Belo Horizonte, Nova Lima e Contagem estarão disponíveis para retirada na CICC, em Belo Horizonte. CNHs recolhidas nos demais municípios de Minas Gerais, estarão disponíveis na Ciretran da cidade.\n\nPara continuarmos o agendamento informe qual seria a localização mais próxima",
             "id":"restituicao_cnh"
         },
         {
@@ -357,13 +357,13 @@
     ],
     [
         {
-            "text":"Agora selecione a data e o horário em que deseja ser atendido através do link a seguir.\nhttps://www.detran.mg.gov.br/habilitacao/processo-administrativo-de-transito/atendimento/unidades-de-atendimento/lista-de-unidades",
+            "text":"Que pena 🙁 Este serviço precisa ser realizado diretamente pelo site do DETRAN. O link a seguir contém o que precisa, basta seguir passo á passo as instruções apresentadas.\nhttps://www.detran.mg.gov.br/habilitacao/processo-administrativo-de-transito/atendimento/unidades-de-atendimento/lista-de-unidades",
             "id":"p_interior_minas_restituicao"
         }
     ],
     [
         {
-            "text":"Agora selecione a data e o horário em que deseja ser atendido através do link a seguir.\nhttps://www.detran.mg.gov.br/habilitacao/processo-administrativo-de-transito/atendimento/unidades-de-atendimento/lista-de-unidades",
+            "text":"Que pena 🙁 Este serviço precisa ser realizado diretamente pelo site do DETRAN. O link a seguir contém o que precisa, basta seguir passo á passo as instruções apresentadas.\nhttps://www.detran.mg.gov.br/habilitacao/processo-administrativo-de-transito/atendimento/unidades-de-atendimento/lista-de-unidades",
             "id":"p_interior_minas"
         }
     ],
@@ -390,7 +390,7 @@
     ],
     [
         {
-            "text":"Para continuarmos o agendamento informe o local onde reside",
+            "text":"Para continuarmos o agendamento  informe qual seria a localização mais próxima",
             "id":"entrega_crlv"
         },
         {
@@ -418,7 +418,7 @@
     ],
     [
         {
-            "text":"Excelente! Você será encaminhado ao link a seguir, lá fará o cadastro para o CRLV digital! https://www.detran.mg.gov.br/",
+            "text":"Excelente! O link a seguir contém o que precisa, lá fará o cadastro para o CRLV digital! https://www.detran.mg.gov.br/",
             "id":"p_emissao_crlv"
         }
     ],
@@ -472,7 +472,7 @@
     ],
     [
         {
-            "text":"Excelente! Você será encaminhado ao link a seguir, basta seguir passo á passo as instruções apresentadas.https://www.mg.gov.br/servico/realizar-transformacoes-no-veiculo",
+            "text":"Excelente! O link a seguir contém o que precisa, basta seguir passo á passo as instruções apresentadas.https://www.mg.gov.br/servico/realizar-transformacoes-no-veiculo",
             "id":"p_alteracao_dados_veiculo"
         }
     ],
@@ -515,19 +515,19 @@
     ],
     [
         {
-            "text":"Agora basta acessar o link a seguir e preencher o formulário com as informações corretas que a atualização será realizada e armazenada no banco de dados do Detran.https://www.detran.mg.gov.br/veiculos/alteracoes/alteracao-de-endereco-dentro-do-municipio",
+            "text":"Este serviço precisa ser realizado diretamente pelo site responsável. Basta acessar o link a seguir e preencher o formulário com as informações corretas que a atualização seja realizada. https://www.detran.mg.gov.br/veiculos/alteracoes/alteracao-de-endereco-dentro-do-municipio",
             "id":"p_para_mesmo_municipio_veiculo"
         }
     ],
     [
         {
-            "text":"Será necessário realizar a vistoria do veículo em uma de nossas unidades. Acesse o link a seguir para agendar a vistoria.https://www.detran.mg.gov.br/veiculos/alteracoes/atendimento/agendamento-on-line/agendamento-on-line",
+            "text":"Será necessário realizar a vistoria do veículo em uma de nossas unidades. Este serviço precisa ser realizado diretamente pelo site responsável. Acesse o link a seguir para agendar a vistoria.https://www.detran.mg.gov.br/veiculos/alteracoes/atendimento/agendamento-on-line/agendamento-on-line",
             "id":"p_para_outro_municipio_veiculo"
         }
     ],
     [
         {
-            "text":"Abaixo estão opções referentes a alteração do endereco do condutor",
+            "text":"Abaixo estão opções referentes a alteração do endereço do condutor",
             "id":"alteracao_endereco_condutor"
         },
         {
@@ -543,7 +543,7 @@
     ],
     [
         {
-            "text":"Agora basta acessar o link a seguir e preencher o formulário com as informações corretas que a atualização será realizada e armazenada no banco de dados do Detran.https://ssc.prodemge.gov.br/ssc-idp-frontend/",
+            "text":"Este serviço precisa ser realizado diretamente pelo site responsável. Basta acessar o link a seguir e preencher o formulário com as informações corretas que a atualização seja realizada.https://ssc.prodemge.gov.br/ssc-idp-frontend/",
             "id":"p_para_mesmo_municipio_condutor"
         }
     ],
@@ -597,13 +597,13 @@
     ],
     [
         {
-            "text":"Você será encaminhado ao link a seguir, basta preencher o formulário para realizar o agendamento.\nhttps://www.mg.gov.br/conteudo/agendamento-online/cadastro-visita-social",
+            "text":"Que pena 🙁 Este serviço precisa ser realizado diretamente pelo site responsável. O link a seguir contém o que precisa, basta preencher o formulário para realizar o agendamento.\nhttps://www.mg.gov.br/conteudo/agendamento-online/cadastro-visita-social",
             "id":"p_cadastro_visita"
         }
     ],
     [
         {
-            "text":"Você será encaminhado ao link a seguir, basta seguir passo á passo as instruções apresentadas.\nhttps://www.mg.gov.br/servico/solicitar-cadastro-e-renovacao-de-visita-intima",
+            "text":"Que pena 🙁 Este serviço precisa ser realizado diretamente pelo site responsável. O link a seguir contém o que precisa, basta seguir passo á passo as instruções apresentadas.\nhttps://www.mg.gov.br/servico/solicitar-cadastro-e-renovacao-de-visita-intima",
             "id":"p_cadastro_visita_intima"
         }
     ],
@@ -630,25 +630,25 @@
     ],
     [
         {
-            "text":"Você será encaminhado ao link a seguir, basta seguir passo á passo as instruções apresentadas.\nhttps://www.mg.gov.br/servico/solicitar-cadastro-e-renovacao-de-visita-assistida",
+            "text":"Que pena 🙁 Este serviço precisa ser realizado diretamente pelo site responsável. O link a seguir contém o que precisa, basta seguir passo á passo as instruções apresentadas.\nhttps://www.mg.gov.br/servico/solicitar-cadastro-e-renovacao-de-visita-assistida",
             "id":"p_cadastro_visita_assistida"
         }
     ],
     [
         {
-            "text":"Você será encaminhado ao link a seguir, basta preencher os dados conforme as opções disponíveis.\nhttp://www.portalsigpri.mg.gov.br/servicos/pesquisar-individuo/",
+            "text":"Que pena 🙁 Este serviço precisa ser realizado diretamente pelo site responsável. O link a seguir contém o que precisa, basta preencher os dados conforme as opções disponíveis.\nhttp://www.portalsigpri.mg.gov.br/servicos/pesquisar-individuo/",
             "id":"p_consulta_presidio"
         }
     ],
     [
         {
-            "text":"Você será encaminhado ao link a seguir, basta preencher os dados para solicitar o documento.\nhttps://wwws.pc.mg.gov.br/atestado/solicitarsel.do?evento=x&fwPlc=s",
+            "text":"Que pena 🙁 Este serviço precisa ser realizado diretamente pelo site responsável. O link a seguir contém o que precisa, basta preencher os dados para solicitar o documento.\nhttps://wwws.pc.mg.gov.br/atestado/solicitarsel.do?evento=x&fwPlc=s",
             "id":"p_atestado_antecedente"
         }
     ],
     [
         {
-            "text":"Você será encaminhado ao link a seguir, basta preencher o formulário para realizar a inscrição.https://servicos.receita.fazenda.gov.br/servicos/cpf/inscricaopublica/inscricao.asp",
+            "text":"Que pena 🙁 Este serviço precisa ser realizado diretamente pelo site responsável. O link a seguir contém o que precisa, basta preencher o formulário para realizar a inscrição.https://servicos.receita.fazenda.gov.br/servicos/cpf/inscricaopublica/inscricao.asp",
             "id":"p_cpf"
         }
     ],
@@ -675,13 +675,13 @@
     ],
     [
         {
-            "text":"Você será encaminhado ao link a seguir, basta realizar o login em sua conta gov.br para realizar o processo.https://servicos.mte.gov.br/#/loginfailed/redirect=trabalhador.carteira",
+            "text":"Que pena 🙁 Este serviço precisa ser realizado diretamente pelo site responsável. O link a seguir contém o que precisa, basta realizar o login em sua conta gov.br para realizar o processo.https://servicos.mte.gov.br/#/loginfailed/redirect=trabalhador.carteira",
             "id":"p_carteira_de_trabalho"
         }
     ],
     [
         {
-            "text":"Você será encaminhado ao link a seguir, basta preencher o formulário para realizar o agendamento. https://www.mg.gov.br/conteudo/agendamento-online/entrega-de-ctps",
+            "text":"Que pena 🙁 Este serviço precisa ser realizado diretamente pelo site responsável. O link a seguir contém o que precisa, basta preencher o formulário para realizar o agendamento. https://www.mg.gov.br/conteudo/agendamento-online/entrega-de-ctps",
             "id":"p_entrega_carteira_de_trabalho"
         }
     ],
@@ -714,7 +714,7 @@
     ],
     [
         {
-            "text":"Você será encaminhado ao link a seguir, basta preencher o formulário para realizar o agendamento. https://www.mg.gov.br/conteudo/agendamento-online/intermediacao-de-mao-de-obra",
+            "text":"Que pena 🙁 Este serviço precisa ser realizado diretamente pelo site responsável. O link a seguir contém o que precisa, basta preencher o formulário para realizar o agendamento. https://www.mg.gov.br/conteudo/agendamento-online/intermediacao-de-mao-de-obra",
             "id":"p_intermediacao_mao_de_obra"
         }
     ],
@@ -736,13 +736,13 @@
     ],
     [
         {
-            "text":"Você será encaminhado ao link a seguir, basta realizar o login em sua conta gov.br para realizar o processo.https://servicos.mte.gov.br/#/loginfailed/redirect=",
+            "text":"Que pena 🙁 Este serviço precisa ser realizado diretamente pelo site responsável. O link a seguir contém o que precisa, basta realizar o login em sua conta gov.br para realizar o processo.https://servicos.mte.gov.br/#/loginfailed/redirect=",
             "id":"p_solicitar_online"
         }
     ],
     [
         {
-            "text":"Você será encaminhado ao link a seguir, basta preencher o formulário para realizar o agendamento.\nhttps://www.mg.gov.br/conteudo/agendamento-online/solicitar-o-seguro-desemprego",
+            "text":"Que pena 🙁 Este serviço precisa ser realizado diretamente pelo site responsável. O link a seguir contém o que precisa, basta preencher o formulário para realizar o agendamento.\nhttps://www.mg.gov.br/conteudo/agendamento-online/solicitar-o-seguro-desemprego",
             "id":"p_atendimento_presencial"
         }
     ],
@@ -758,7 +758,7 @@
         },
         {
             "type":"postback",
-            "title":"Não vou comparecer",
+            "title":"Não vou poder comparecer",
             "payload":"nao_confima_presenca"
         }
     ],
@@ -769,7 +769,7 @@
         },
         {
             "type":"postback",
-            "title":"Tudo ok",
+            "title":"Sim, pode confirmar.",
             "payload":"texto_finalS"
         },
         {
