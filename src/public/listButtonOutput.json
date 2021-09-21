@@ -77,7 +77,7 @@
         {
             "type": "postback",
             "title": "Emissão do RG",
-            "payload": "agendamento de rg"
+            "payload": "emissao de rg"
         },
         {
             "type": "postback",
@@ -88,7 +88,7 @@
     [
         {
             "text": "unidade",
-            "id": "agendamento de rg"
+            "id": "emissao de rg"
         }        
     ],
     [

@@ -1,20 +1,8 @@
 [
-  {
-    "UNIDADE": "Betim"
-  },
-  {
-    "UNIDADE": "Governador Valadares"
-  },
-  {
-    "UNIDADE": "Juiz de Fora"
-  },
-  {
-    "UNIDADE": "Montes Claros"
-  },
-  {
-    "UNIDADE": "Uberlândia"
-  },
-  {
-    "UNIDADE": "Varginha"
-  }
+  "Betim",
+  "Governador Valadares",
+  "Juiz de Fora",
+  "Montes Claros",
+  "Uberlândia",
+  "Varginha"
 ]

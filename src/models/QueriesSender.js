@@ -35,8 +35,8 @@ class QueriesSender{
       var unidades = [];         
       if(!err){
         for(var j of rows){            
-          textId+="\n*"+cont+"* - "+j;   
-          unidades.push(j);           
+          textId+="\n*"+cont+"* - "+j.UNIDADE;   
+          unidades.push(j.UNIDADE);           
           cont++;
         }        
         textId+="\n*0* - Voltar";  
