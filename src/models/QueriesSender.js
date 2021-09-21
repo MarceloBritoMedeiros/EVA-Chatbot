@@ -29,22 +29,20 @@ class QueriesSender{
 
   _selecaoUnidades(recipientID){
     var textId=`Certo, então você precisa agendar a ${this._stats.getServices()}. Agora, preciso que escolha uma das unidades abaixo.`
-    console.log(`SELECT UNIDADE FROM servicos_disponiveis WHERE nome='${this._stats.getServices()}' ORDER BY nome`);
-    this._database.query(`SELECT UNIDADE FROM servicos_disponiveis WHERE nome='${this._stats.getServices()}' ORDER BY nome`, (err, rows, inf)=>{       
-      var cont=1;          
+    console.log(`SELECT DISTINCT UNIDADE FROM servicos_disponiveis WHERE nome='${this._stats.getServices()}' ORDER BY nome`);
+    this._database.query(`SELECT DISTINCT UNIDADE FROM servicos_disponiveis WHERE nome='${this._stats.getServices()}' ORDER BY nome`, (err, rows, inf)=>{       
+      var cont=1; 
+      var unidades = [];         
       if(!err){
-        var mySet=new Set();   
-        for(var j of rows){
-          mySet.add(j.UNIDADE);
-        }
-        for(var j of mySet){            
-          textId+="\n*"+cont+"* - "+j;              
+        for(var j of rows){            
+          textId+="\n*"+cont+"* - "+j;   
+          unidades.push(j);           
           cont++;
         }        
         textId+="\n*0* - Voltar";  
         var temHorario = this._semHorarios(recipientID, cont);
         if(temHorario==true){
-          FileOperations.writeTemporary(Array.from(mySet), "C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/public/unidades.json");    
+          FileOperations.writeTemporary(unidades, "C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/public/unidades.json");    
           setTimeout(() => {
             this._messageSender.sendSimpleMessage(recipientID, textId);  
           }, 1000); 
@@ -74,22 +72,18 @@ class QueriesSender{
     if(keepGoing==false){
       this._valorInvalido(recipientID); 
     }else{   
-      console.log(`SELECT dia FROM servicos_disponiveis WHERE unidade='${this._stats.getUnidade()}' AND nome='${this._stats.getServices()}' ORDER BY dia`);      
-      this._database.query(`SELECT dia FROM servicos_disponiveis WHERE unidade='${this._stats.getUnidade()}' AND nome='${this._stats.getServices()}' ORDER BY dia`,(err, rows, inf)=>{
+      console.log(`SELECT DISTINCT dia FROM servicos_disponiveis WHERE unidade='${this._stats.getUnidade()}' AND nome='${this._stats.getServices()}' ORDER BY dia`);      
+      this._database.query(`SELECT DISTINCT dia FROM servicos_disponiveis WHERE unidade='${this._stats.getUnidade()}' AND nome='${this._stats.getServices()}' ORDER BY dia`,(err, rows, inf)=>{
         if(!err){
-          var cont=1;              
-          var mySet=new Set();    
-          var dias = new Set();
-          for(let inf of rows){               
-            mySet.add(dateFormat(inf.dia, "yyyy-mm-dd"));       
-            dias.add(dateFormat(inf.dia, "dd/mm/yyyy"));         
-          }
-          for(let inf of dias){
-            textId+="\n*" + cont + "* - " + inf;                
+          var cont=1;        
+          var dias = [];          
+          for(let inf of rows){            
+            textId+="\n*" + cont + "* - " + dateFormat(inf.dia, "dd/mm/yyyy");   
+            dias.push(dateFormat(inf.dia, "yyyy-mm-dd"));
             cont++;
           }
           textId+="\n*0* - Voltar";
-          FileOperations.writeTemporary(Array.from(mySet), "C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/public/dias.json");      
+          FileOperations.writeTemporary(dias, "C:/Users/marce/Docs/Desenvolvimento/UaiForce/messenger-webhook/src/public/dias.json");      
           setTimeout(() => {
             this._messageSender.sendSimpleMessage(recipientID, textId);      
           }, 1000);                    
